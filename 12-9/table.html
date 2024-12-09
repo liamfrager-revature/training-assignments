@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tables</title>
+</head>
+<body>
+    <h1>Tables</h1><hr>
+
+    <h3>Basic Table</h3>
+    <table border>
+        <thead>
+            <th>ID</th>
+            <th>Name</th>
+        </thead>
+        <tr>
+            <td>001</td>
+            <td>Jasdhir</td>
+        </tr>
+        <tr>
+            <td>002</td>
+            <td>Liam</td>
+        </tr>
+    </table>
+
+    <h3>Row/Col Span</h3>
+    <table border>
+        <tr>
+            <td colspan="2" style="background-color: red;"></td>
+            <td rowspan="2" style="background-color: orange;"></td>
+        </tr>
+        <tr>
+            <td rowspan="2" style="background-color: blue;"></td>
+            <td style="background-color: purple;"></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="background-color: green;"></td>
+        </tr>
+    </table>
+
+    <hr>
+    <a href="welcome.html">Back</a>
+    
+</body>
+<style>
+    td {
+        padding: 10px
+    }
+</style>
+</html>

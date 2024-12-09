@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forms</title>
+</head>
+<body>
+    <h1>Forms</h1><hr>
+    <form action="form.html" method="post">
+        <label for="name">Name:</label>
+        <input type="text" name="name" placeholder="Name" required>
+        <br>
+
+        <label for="email">Name:</label>
+        <input type="email" name="email" placeholder="Email" required>
+        <br>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" placeholder="Password" required minlength="8">
+        <br>
+
+        <label for="age">Age:</label>
+        <input type="number" name="age" placeholder="Age">
+        <br>
+
+        <label for="gender">Gender:</label>
+        <input type="radio" name="gender" value="male" checked required>Male
+        <input type="radio" name="gender" value="female">Female
+        <br>
+
+        <label for="hobbies">Hobbies:</label>
+        <input type="checkbox" name="hobbies">Eat
+        <input type="checkbox" name="hobbies">Sleep
+        <input type="checkbox" name="hobbies">Repeat
+        <br>
+        
+        <label for="food">Food:</label>
+        <select name="food">
+            <option value="italian">Italian</option>
+            <option value="french">french</option>
+            <option value="indian">Indian</option>
+        </select>
+        <br>
+
+        <label for="color">Favorite Color:</label><br>
+        <select name="color" id="color" multiple>
+            <option value="red">red</option>
+            <option value="orange">orange</option>
+            <option value="yellow">yellow</option>
+            <option value="green">green</option>
+            <option value="turquoise">turquoise</option>
+            <option value="blue">blue</option>
+            <option value="purple">purple</option>
+            <option value="pink">pink</option>
+            <option value="brown">brown</option>
+            <option value="black">black</option>
+            <option value="gray">gray</option>
+            <option value="white">white</option>
+        </select>
+        <br>
+
+        <label for="comments">Additional Comments:</label>
+        <textarea name="comments" rows="5" cols="30"></textarea>
+        <br>
+
+        <input type="submit" value="Submit">
+    </form>
+    <hr>
+    <a href="welcome.html">Back</a>
+</body>
+</html>
