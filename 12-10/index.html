@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Demo</title>
+    <!-- External Style -->
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js"></script>
+
+    <!-- Internal Style -->
+    <style>
+        /* Universal Selector */
+        * {
+            color: gray;
+        }
+        /* Element Selector */
+        p {
+            color: green;
+        }
+        /* ID Selector */
+        #para1 {
+            color: orange;
+        }
+        /* Class Selector */
+        .myclass {
+            color: purple;
+        }
+        /* Grouping Selector */
+        h1, h2 {
+            font-style: italic;
+        }
+        /* Attribute Selector */
+        [att1=att], [att2] {
+            text-decoration: underline;
+        }
+        [att1] {
+            color: pink;
+        }
+        /* Child Selector */
+        /* Pseudo Selector */
+    </style>
+</head>
+<body>
+    <!-- Inline Style -->
+    <h1 style="color:blue; text-align:center; background-color: yellow;">Cascading Style Sheets</h1><hr>
+    <h2 att1="att">Fun colors and stuff!</h2>
+    <p att2="att" id="para1">This is a demo of CSS.</p>
+    <p>This is a second paragraph for demonstration purposes.</p>
+    <table>
+        <thead>
+            <th class="myclass" onclick="doSomething(this)">First</th>
+            <th>Last</th>
+        </thead>
+        <tr>
+            <td>Jasdhir</td>
+            <td>Singh</td>
+        </tr>
+        <tr>
+            <td>Liam</td>
+            <td>Frager</td>
+        </tr>
+    </table>
+</body>
+</html>
