@@ -15,11 +15,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 
-import com.liamfrager.connect.entity.Message;
+import com.liamfrager.connect.entity.Post;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class RetrieveAllMessagesTest {
+public class RetrieveAllPostsForUserTest {
 	ApplicationContext app;
     HttpClient webClient;
     ObjectMapper objectMapper;
@@ -44,19 +44,43 @@ public class RetrieveAllMessagesTest {
     	SpringApplication.exit(app);
     }
     
+    /**
+     * Sending an http request to GET localhost:8080/accounts/9999/posts (posts exist for user) 
+     * 
+     * Expected Response:
+     *  Status Code: 200
+     *  Response Body: JSON representation of a list of posts
+     */
     @Test
-    public void getAllMessagesMessagesAvailable() throws IOException, InterruptedException {
+    public void getAllPostsFromUserPostExists() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/messages"))
+                .uri(URI.create("http://localhost:8080/accounts/9999/posts"))
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
         Assertions.assertEquals(200, status, "Expected Status Code 200 - Actual Code was: " + status);
-        List<Message> expectedResult = new ArrayList<Message>();
-        expectedResult.add(new Message(9996, 9996, "test message 3", 1669947792L));
-        expectedResult.add(new Message(9997, 9997, "test message 2", 1669947792L));
-        expectedResult.add(new Message(9999, 9999, "test message 1", 1669947792L));
-        List<Message> actualResult = objectMapper.readValue(response.body().toString(), new TypeReference<List<Message>>(){});
+        List<Post> expectedResult = new ArrayList<Post>();
+        expectedResult.add(new Post(9999, 9999, "test post 1", 1669947792L));
+        List<Post> actualResult = objectMapper.readValue(response.body().toString(), new TypeReference<List<Post>>(){});
         Assertions.assertEquals(expectedResult, actualResult, "Expected="+expectedResult + ", Actual="+actualResult);
+    }
+    
+    /**
+     * Sending an http request to GET localhost:8080/accounts/9998/posts (posts does NOT exist for user) 
+     * 
+     * Expected Response:
+     *  Status Code: 200
+     *  Response Body: 
+     */
+    @Test
+    public void getAllPostsFromUserNoPostsFound() throws IOException, InterruptedException {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/accounts/9998/posts"))
+                .build();
+        HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
+        int status = response.statusCode();
+        Assertions.assertEquals(200, status, "Expected Status Code 200 - Actual Code was: " + status);
+        List<Post> actualResult = objectMapper.readValue(response.body().toString(), new TypeReference<List<Post>>(){});
+        Assertions.assertTrue(actualResult.isEmpty(), "Expected Empty Result, but Result was not Empty");
     }
 }

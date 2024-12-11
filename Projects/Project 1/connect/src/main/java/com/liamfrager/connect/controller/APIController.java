@@ -7,24 +7,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.liamfrager.connect.entity.Account;
-import com.liamfrager.connect.entity.Message;
+import com.liamfrager.connect.entity.Post;
 import com.liamfrager.connect.exception.*;
 import com.liamfrager.connect.service.AccountService;
-import com.liamfrager.connect.service.MessageService;
+import com.liamfrager.connect.service.PostService;
 
 /**
  * The REST controller that exposes the endpoints for the social media API.
  */
 @RestController
 public class APIController {
-    private MessageService messageService;
+    private PostService postService;
     private AccountService accountService;
 
     /**
      * Constructor for the social media controller.
      */
-    public APIController(MessageService messageService, AccountService accountService){
-        this.messageService = messageService;
+    public APIController(PostService postService, AccountService accountService){
+        this.postService = postService;
         this.accountService = accountService;
     }
 
@@ -51,64 +51,64 @@ public class APIController {
     }
 
     /**
-     * Handler for the <code>/messages</code> <code>POST</code> endpoint.
-     * @param message The body of the request containing the message data to be added.
+     * Handler for the <code>/posts</code> <code>POST</code> endpoint.
+     * @param post The body of the request containing the post data to be added.
      */
-    @PostMapping("/messages")
-    private ResponseEntity<Message> postMessage(@RequestBody Message message) throws InvalidMessageTextException , InvalidUserIDException {
-        return ResponseEntity.ok(messageService.postMessage(message));
+    @PostMapping("/posts")
+    private ResponseEntity<Post> postPost(@RequestBody Post post) throws InvalidPostTextException , InvalidUserIDException {
+        return ResponseEntity.ok(postService.postPost(post));
     }
 
     /**
-     * Handler for the <code>/messages</code> <code>GET</code> endpoint.
+     * Handler for the <code>/posts</code> <code>GET</code> endpoint.
      */
-    @GetMapping("/messages")
-    private ResponseEntity<List<Message>> getAllMessages() {
-        return ResponseEntity.ok(messageService.getAllMessages());
+    @GetMapping("/posts")
+    private ResponseEntity<List<Post>> getAllPosts() {
+        return ResponseEntity.ok(postService.getAllPosts());
     }
 
     /**
-     * Handler for the <code>/messages/{id}</code> <code>GET</code> endpoint.
-     * @param id The ID of the message to be returned.
+     * Handler for the <code>/posts/{id}</code> <code>GET</code> endpoint.
+     * @param id The ID of the post to be returned.
      */
-    @GetMapping("/messages/{id}")
-    private ResponseEntity<Message> getMessageByID(@PathVariable int id) {
-        Message message = messageService.getMessageByID(id);
-        if (message == null)
+    @GetMapping("/posts/{id}")
+    private ResponseEntity<Post> getPostByID(@PathVariable int id) {
+        Post post = postService.getPostByID(id);
+        if (post == null)
             return ResponseEntity.ok().build();
         else
-            return ResponseEntity.ok(message);
+            return ResponseEntity.ok(post);
     }
 
     /**
-     * Handler for the <code>/messages/{id}</code> <code>DELETE</code> endpoint.
-     * @param id The ID of the message to be deleted.
+     * Handler for the <code>/posts/{id}</code> <code>DELETE</code> endpoint.
+     * @param id The ID of the post to be deleted.
      */
-    @DeleteMapping("/messages/{id}")
-    private ResponseEntity<Integer> deleteMessageByID(@PathVariable int id) {
-        int deletedRows = messageService.deleteMessageByID(id);
+    @DeleteMapping("/posts/{id}")
+    private ResponseEntity<Integer> deletePostByID(@PathVariable int id) {
+        int deletedRows = postService.deletePostByID(id);
         if (deletedRows > 0)
             return ResponseEntity.ok(deletedRows);
         return ResponseEntity.ok().build();
     }
 
     /**
-     * Handler for the <code>/messages/{id}</code> <code>PATCH</code> endpoint.
-     * @param id The ID of the message to be updated.
-     * @param message The body of the request containing the message data to be updated.
+     * Handler for the <code>/posts/{id}</code> <code>PATCH</code> endpoint.
+     * @param id The ID of the post to be updated.
+     * @param post The body of the request containing the post data to be updated.
      */
-    @PatchMapping("/messages/{id}")
-    private ResponseEntity<Integer> patchMessageByID(@PathVariable int id, @RequestBody Message message) throws InvalidMessageTextException, InvalidMessageIDException {
-        return ResponseEntity.ok(messageService.patchMessageByID(id, message));
+    @PatchMapping("/posts/{id}")
+    private ResponseEntity<Integer> patchPostByID(@PathVariable int id, @RequestBody Post post) throws InvalidPostTextException, InvalidPostIDException {
+        return ResponseEntity.ok(postService.patchPostByID(id, post));
     }
 
     /**
-     * Handler for the <code>/accounts/{account_id}/messages</code> <code>GET</code> endpoint.
+     * Handler for the <code>/accounts/{account_id}/posts</code> <code>GET</code> endpoint.
      * @param account_id The ID of the account of whose messsages will be returned.
      */
-    @GetMapping("/accounts/{account_id}/messages")
-    private ResponseEntity<List<Message>> getAllMessagesByAccountID(@PathVariable int account_id) {
-        return ResponseEntity.ok(messageService.getAllMessagesByAccountID(account_id));
+    @GetMapping("/accounts/{account_id}/posts")
+    private ResponseEntity<List<Post>> getAllPostsByAccountID(@PathVariable int account_id) {
+        return ResponseEntity.ok(postService.getAllPostsByAccountID(account_id));
     }
 
     // ------------------
@@ -127,15 +127,15 @@ public class APIController {
     /**
      * <code>400 Bad Request</code>.
      * Exception handler for:
-     * <code>InvalidMessageTextException</code>,
-     * <code>InvalidMessageIDException</code>,
+     * <code>InvalidPostTextException</code>,
+     * <code>InvalidPostIDException</code>,
      * <code>InvalidUserIDException</code>,
      * <code>InvalidUsernameException</code>,
      * <code>InvalidPasswordException</code>.
      */
     @ExceptionHandler({
-        InvalidMessageTextException.class,
-        InvalidMessageIDException.class,
+        InvalidPostTextException.class,
+        InvalidPostIDException.class,
         InvalidUserIDException.class,
         InvalidUsernameException.class,
         InvalidPasswordException.class

@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class UpdateMessageTest {
+public class UpdatePostTest {
 	ApplicationContext app;
     HttpClient webClient;
     ObjectMapper objectMapper;
@@ -41,21 +41,21 @@ public class UpdateMessageTest {
     }
     
     /**
-     * Sending an http request to PATCH localhost:8080/messages/9999 (message id exists in db) and successful message text
+     * Sending an http request to PATCH localhost:8080/posts/9999 (post id exists in db) and successful post text
      * 
      * Expected Response:
      *  Status Code: 200
      *  Response Body: 1 (one row modified)
      */
     @Test
-    public void updateMessageSuccessful() throws IOException, InterruptedException {
-    	String json = "{\"messageText\": \"text changed\"}";
-        HttpRequest postMessageRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/messages/9999"))
+    public void updatePostSuccessful() throws IOException, InterruptedException {
+    	String json = "{\"postText\": \"text changed\"}";
+        HttpRequest postPostRequest = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/posts/9999"))
                 .method("PATCH", HttpRequest.BodyPublishers.ofString(json))
                 .header("Content-Type", "application/json")
                 .build();
-        HttpResponse<String> response = webClient.send(postMessageRequest, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = webClient.send(postPostRequest, HttpResponse.BodyHandlers.ofString());
         System.out.println(response);
         int status = response.statusCode();
         Assertions.assertEquals(200, status, "Expected Status Code 200 - Actual Code was: " + status);
@@ -65,20 +65,20 @@ public class UpdateMessageTest {
 
 
     /**
-     * Sending an http request to PATCH localhost:8080/messages/100 (message does not exist in database)
+     * Sending an http request to PATCH localhost:8080/posts/100 (post does not exist in database)
      * 
      * Expected Response:
      *  Status Code: 400
      */
     @Test
-    public void updateMessageMessageNotFound() throws IOException, InterruptedException {
-    	String json = "{\"messageText\": \"text changed\"}";
-        HttpRequest postMessageRequest = HttpRequest.newBuilder()
-        		.uri(URI.create("http://localhost:8080/messages/5050"))
+    public void updatePostPostNotFound() throws IOException, InterruptedException {
+    	String json = "{\"postText\": \"text changed\"}";
+        HttpRequest postPostRequest = HttpRequest.newBuilder()
+        		.uri(URI.create("http://localhost:8080/posts/5050"))
                 .method("PATCH", HttpRequest.BodyPublishers.ofString(json))
                 .header("Content-Type", "application/json")
                 .build();
-        HttpResponse<String> response = webClient.send(postMessageRequest, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = webClient.send(postPostRequest, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
         Assertions.assertEquals(400, status, "Expected Status Code 400 - Actual Code was: " + status);
         System.out.println(response.body());
@@ -86,40 +86,40 @@ public class UpdateMessageTest {
 
 
     /**
-     * Sending an http request to PATCH localhost:8080/messages/9999 with empty message string 
+     * Sending an http request to PATCH localhost:8080/posts/9999 with empty post string 
      * 
      * Expected Response:
      *  Status Code: 400
      */
     @Test
-    public void updateMessageMessageStringEmpty() throws IOException, InterruptedException {
-    	String json = "{\"messageText\": \"\"}";
-        HttpRequest postMessageRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/messages/9999"))
+    public void updatePostPostStringEmpty() throws IOException, InterruptedException {
+    	String json = "{\"postText\": \"\"}";
+        HttpRequest postPostRequest = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/posts/9999"))
                 .method("PATCH", HttpRequest.BodyPublishers.ofString(json))
                 .header("Content-Type", "application/json")
                 .build();
-        HttpResponse<String> response = webClient.send(postMessageRequest, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = webClient.send(postPostRequest, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
         Assertions.assertEquals(400, status, "Expected Status Code 400 - Actual Code was: " + status);
     }
 
 
     /**
-     * Sending an http request to PATCH localhost:8080/messages/9999 with message string over 255 characters 
+     * Sending an http request to PATCH localhost:8080/posts/9999 with post string over 255 characters 
      * 
      * Expected Response:
      *  Status Code: 400
      */
     @Test
-    public void updateMessageMessageTooLong() throws IOException, InterruptedException {
-    	String json = "{\"messageText\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}";
-        HttpRequest postMessageRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/messages/9999"))
+    public void updatePostPostTooLong() throws IOException, InterruptedException {
+    	String json = "{\"postText\": \"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\"}";
+        HttpRequest postPostRequest = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/posts/9999"))
                 .method("PATCH", HttpRequest.BodyPublishers.ofString(json))
                 .header("Content-Type", "application/json")
                 .build();
-        HttpResponse<String> response = webClient.send(postMessageRequest, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = webClient.send(postPostRequest, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
         Assertions.assertEquals(400, status, "Expected Status Code 400 - Actual Code was: " + status);
     }

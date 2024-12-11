@@ -15,7 +15,7 @@ import org.springframework.context.ApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class DeleteMessageByMessageIdTest {
+public class DeletePostByPostIdTest {
 	ApplicationContext app;
     HttpClient webClient;
     ObjectMapper objectMapper;
@@ -41,16 +41,16 @@ public class DeleteMessageByMessageIdTest {
     }
     
     /**
-     * Sending an http request to DELETE localhost:8080/messages/1 (message exists)
+     * Sending an http request to DELETE localhost:8080/posts/1 (post exists)
      * 
      * Expected Response:
      *  Status Code: 200
      *  Response Body: count of rows modified (should only modify a single row)
      */
     @Test
-    public void deleteMessageGivenMessageIdMessageFound() throws IOException, InterruptedException {
+    public void deletePostGivenPostIdPostFound() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/messages/9999"))
+                .uri(URI.create("http://localhost:8080/posts/9999"))
                 .DELETE()
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -61,16 +61,16 @@ public class DeleteMessageByMessageIdTest {
     }
 
     /**
-     * Sending an http request to DELETE localhost:8080/messages/100 (message does NOT exists)
+     * Sending an http request to DELETE localhost:8080/posts/100 (post does NOT exists)
      * 
      * Expected Response:
      *  Status Code: 200
      *  Response Body: 
      */
     @Test
-    public void deleteMessageGivenMessageIdMessageNotFound() throws IOException, InterruptedException {
+    public void deletePostGivenPostIdPostNotFound() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/messages/100"))
+                .uri(URI.create("http://localhost:8080/posts/100"))
                 .DELETE()
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());

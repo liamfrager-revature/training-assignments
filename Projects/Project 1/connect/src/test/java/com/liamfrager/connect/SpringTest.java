@@ -2,11 +2,11 @@ package com.liamfrager.connect;
 
 import com.liamfrager.connect.controller.APIController;
 import com.liamfrager.connect.entity.Account;
-import com.liamfrager.connect.entity.Message;
+import com.liamfrager.connect.entity.Post;
 import com.liamfrager.connect.repository.AccountRepository;
-import com.liamfrager.connect.repository.MessageRepository;
+import com.liamfrager.connect.repository.PostRepository;
 import com.liamfrager.connect.service.AccountService;
-import com.liamfrager.connect.service.MessageService;
+import com.liamfrager.connect.service.PostService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,12 +60,12 @@ public class SpringTest {
         Assertions.assertNotNull(bean);
     }
     /**
-     * Retrieve the MessageService as a bean.
-     * The MessageService must be a bean in order for this test to pass.
+     * Retrieve the PostService as a bean.
+     * The PostService must be a bean in order for this test to pass.
      */
     @Test
-    public void getMessageServiceBean(){
-        MessageService bean = applicationContext.getBean(MessageService.class);
+    public void getPostServiceBean(){
+        PostService bean = applicationContext.getBean(PostService.class);
         Assertions.assertNotNull(bean);
     }
     /**
@@ -78,12 +78,12 @@ public class SpringTest {
         Assertions.assertNotNull(bean);
     }
     /**
-     * Retrieve the MessageRepository as a bean.
-     * The MessageRepository must be a bean in order for this test to pass.
+     * Retrieve the PostRepository as a bean.
+     * The PostRepository must be a bean in order for this test to pass.
      */
     @Test
-    public void getMessageRepositoryBean(){
-        MessageRepository bean = applicationContext.getBean(MessageRepository.class);
+    public void getPostRepositoryBean(){
+        PostRepository bean = applicationContext.getBean(PostRepository.class);
         Assertions.assertNotNull(bean);
     }
     /**
@@ -97,8 +97,9 @@ public class SpringTest {
         Method saveMethod = null;
         Method findAllMethod = null;
         String expectedUsername = "ted";
+        String expectedEmail = "test@email.com";
         String expectedPassword = "password123";
-        Account testAccount = new Account(expectedUsername, expectedPassword);
+        Account testAccount = new Account(expectedUsername, expectedEmail, expectedPassword);
         for(Method m : repositoryMethods){
             System.out.println(m.getName());
             if(m.getName().equals("save") && m.getParameterCount() == 1){
@@ -122,19 +123,19 @@ public class SpringTest {
                 "JPARepository.");
     }
     /**
-     * After retrieving the MessageRepository bean, it should exhibit the functionality of a JPARepository
-     * for a "Message" entity.
+     * After retrieving the PostRepository bean, it should exhibit the functionality of a JPARepository
+     * for a "Post" entity.
      */
     @Test
-    public void messageRepositoryIsRepositoryTest() throws ReflectiveOperationException{
-        MessageRepository repository = applicationContext.getBean(MessageRepository.class);
+    public void postRepositoryIsRepositoryTest() throws ReflectiveOperationException{
+        PostRepository repository = applicationContext.getBean(PostRepository.class);
         Method[] repositoryMethods = repository.getClass().getMethods();
         Method saveMethod = null;
         Method findAllMethod = null;
         int expectedPostedBy = 9999;
         String expectedText = "ted test 1";
         long expectedTimePosted = 999999999999L;
-        Message testMessage = new Message(expectedPostedBy, expectedText, expectedTimePosted);
+        Post testPost = new Post(expectedPostedBy, expectedText, expectedTimePosted);
         for(Method m : repositoryMethods){
             System.out.println(m.getName());
             if(m.getName().equals("save") && m.getParameterCount() == 1){
@@ -144,17 +145,17 @@ public class SpringTest {
             }
         }
         if(saveMethod == null || findAllMethod == null){
-            Assertions.fail("The save / findAll methods were not found. Ensure that MessageRepository properly " +
+            Assertions.fail("The save / findAll methods were not found. Ensure that PostRepository properly " +
                     "extends JPARepository.");
         }
         List<Account> accountList1 = (List<Account>) findAllMethod.invoke(repository, new Object[]{});
         System.out.println(accountList1);
-        Assertions.assertTrue(accountList1.size() == 3, "There should be no messages in the " +
+        Assertions.assertTrue(accountList1.size() == 3, "There should be no posts in the " +
                 "JPARepository on startup.");
-        Message actualMessage = (Message) saveMethod.invoke(repository, testMessage);
-        Assertions.assertEquals(actualMessage.getMessageText(), expectedText);
+        Post actualPost = (Post) saveMethod.invoke(repository, testPost);
+        Assertions.assertEquals(actualPost.getPostText(), expectedText);
         List<Account> accountList2 = (List<Account>) findAllMethod.invoke(repository, new Object[]{});
-        Assertions.assertTrue(accountList2.size() > 3, "The message should be addable to the " +
+        Assertions.assertTrue(accountList2.size() > 3, "The post should be addable to the " +
                 "JPARepository.");
     }
     /**
