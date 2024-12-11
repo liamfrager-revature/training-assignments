@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        .list-item:hover, .task-complete {
+            text-decoration: line-through;
+        }
+        .list-item:hover {
+            cursor: pointer;
+        }
+        .task-complete {
+            color: gray;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <ul>
+        <li>Click to mark as <span class="task-complete">complete</span>.</li>
+        <li>Double click to remove from list.</li>
+        <li>Right click to edit.</li>
+    </ul>
+    <hr>
+    <input id="input" type="text">
+    <button onclick="addListItem()">Add To List</button>
+    <hr>
+    <ul id="list"></ul>
+    <button onclick="clearList()">Clear List</button>
+    <script>
+        document.getElementById("input").addEventListener("keydown", event => {
+            if (event.key === "Enter") {
+                addListItem();
+            }
+        })
+        function addListItem() {
+            let input = document.getElementById("input");
+            const text = input.value;
+            if (text.length > 0) {
+                let li = document.createElement("li");
+                li.innerHTML = text;
+                li.classList.add("list-item");
+                li.addEventListener("click", event => {
+                    event.preventDefault()
+                    li.classList.toggle('task-complete');
+                });
+                li.addEventListener("dblclick", event => {
+                    event.preventDefault();
+                    event.target.parentElement.removeChild(event.target);
+                });
+                li.addEventListener("contextmenu", event => {
+                    event.preventDefault()
+                    const editInput = document.createElement("input");
+                    editInput.value = li.innerText;
+                    editInput.addEventListener("keydown", event => {
+                        if (event.key === "Enter") {
+                            editListItem(li);
+                        }
+                    })
+                    const editButton = document.createElement("button");
+                    editButton.innerHTML = "Save"
+                    editButton.addEventListener("click", event => {
+                        editListItem(li);
+                    });
+                    li.innerHTML = "";
+                    li.appendChild(editInput);
+                    editInput.focus();
+                })
+                document.getElementById("list").append(li);
+                input.value = "";
+            }
+        }
+
+        function editListItem(li) {
+            const text = li.getElementsByTagName("input")[0].value;
+            li.innerHTML = text;
+            document.getElementById("input").focus();
+        }
+
+        function clearList() {
+            document.getElementById("list").innerHTML="";
+        }
+    </script>
+</body>
+</html>
