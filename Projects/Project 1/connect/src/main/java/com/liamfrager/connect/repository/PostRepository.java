@@ -18,10 +18,10 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
     /**
      * Get all posts posted by the user with the given ID.
-     * @param postedBy The ID of the user whose posts will be returned.
+     * @param postedBy The user whose posts will be returned.
      * @return A list of <code>Post</code>s posted by the given user.
      */
-    List<Post> findByPostedBy(int postedBy);
+    List<Post> findByUserId(int id);
     
     /**
      * Delete a post with the given ID.
@@ -30,8 +30,8 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
      */
     @Modifying
     @Transactional
-    @Query("DELETE FROM Post WHERE postId = ?1")
-    int deletePostByPostId(int postID);
+    @Query("DELETE FROM Post WHERE id = ?1")
+    int deletePostById(int postID);
 
     /**
      * Update the post text of the post with the given ID.
@@ -41,6 +41,6 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
      */
     @Modifying
     @Transactional
-    @Query("UPDATE Post SET postText = ?2 WHERE postId = ?1")
-    int updatePostTextById(int postID, String postText);
+    @Query("UPDATE Post SET content = ?2 WHERE id = ?1")
+    int updateContentById(int postID, String postText);
 }

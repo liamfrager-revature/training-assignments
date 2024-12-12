@@ -1,11 +1,11 @@
 package com.liamfrager.connect;
 
 import com.liamfrager.connect.controller.APIController;
-import com.liamfrager.connect.entity.Account;
+import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.entity.Post;
-import com.liamfrager.connect.repository.AccountRepository;
+import com.liamfrager.connect.repository.UserRepository;
 import com.liamfrager.connect.repository.PostRepository;
-import com.liamfrager.connect.service.AccountService;
+import com.liamfrager.connect.service.UserService;
 import com.liamfrager.connect.service.PostService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -51,12 +51,12 @@ public class SpringTest {
         Assertions.assertNotNull(bean);
     }
     /**
-     * Retrieve the AccountService as a bean.
-     * The AccountService must be a bean in order for this test to pass.
+     * Retrieve the UserService as a bean.
+     * The UserService must be a bean in order for this test to pass.
      */
     @Test
-    public void getAccountServiceBean(){
-        AccountService bean = applicationContext.getBean(AccountService.class);
+    public void getUserServiceBean(){
+        UserService bean = applicationContext.getBean(UserService.class);
         Assertions.assertNotNull(bean);
     }
     /**
@@ -69,12 +69,12 @@ public class SpringTest {
         Assertions.assertNotNull(bean);
     }
     /**
-     * Retrieve the AccountRepository as a bean.
-     * The AccountRepository must be a bean in order for this test to pass.
+     * Retrieve the UserRepository as a bean.
+     * The UserRepository must be a bean in order for this test to pass.
      */
     @Test
-    public void getAccountRepositoryBean(){
-        AccountRepository bean = applicationContext.getBean(AccountRepository.class);
+    public void getUserRepositoryBean(){
+        UserRepository bean = applicationContext.getBean(UserRepository.class);
         Assertions.assertNotNull(bean);
     }
     /**
@@ -87,19 +87,19 @@ public class SpringTest {
         Assertions.assertNotNull(bean);
     }
     /**
-     * After retrieving the AccountRepository bean, it should exhibit the functionality of a JPARepository
-     * for an "Account" entity.
+     * After retrieving the UserRepository bean, it should exhibit the functionality of a JPARepository
+     * for an "User" entity.
      */
     @Test
-    public void accountRepositoryIsRepositoryTest() throws ReflectiveOperationException {
-        AccountRepository repository = applicationContext.getBean(AccountRepository.class);
+    public void userRepositoryIsRepositoryTest() throws ReflectiveOperationException {
+        UserRepository repository = applicationContext.getBean(UserRepository.class);
         Method[] repositoryMethods = repository.getClass().getMethods();
         Method saveMethod = null;
         Method findAllMethod = null;
         String expectedUsername = "ted";
         String expectedEmail = "test@email.com";
         String expectedPassword = "password123";
-        Account testAccount = new Account(expectedUsername, expectedEmail, expectedPassword);
+        User testUser = new User(expectedUsername, expectedEmail, expectedPassword);
         for(Method m : repositoryMethods){
             System.out.println(m.getName());
             if(m.getName().equals("save") && m.getParameterCount() == 1){
@@ -109,17 +109,17 @@ public class SpringTest {
             }
         }
         if(saveMethod == null || findAllMethod == null){
-            Assertions.fail("The save / findAll methods were not found. Ensure that AccountRepository properly " +
+            Assertions.fail("The save / findAll methods were not found. Ensure that UserRepository properly " +
                     "extends JPARepository.");
         }
-        List<Account> accountList1 = (List<Account>) findAllMethod.invoke(repository, new Object[]{});
-        System.out.println(accountList1);
-        Assertions.assertTrue(accountList1.size() == 4, "There should be no accounts in the " +
+        List<User> userList1 = (List<User>) findAllMethod.invoke(repository, new Object[]{});
+        System.out.println(userList1);
+        Assertions.assertTrue(userList1.size() == 4, "There should be no users in the " +
                 "JPARepository on startup.");
-        Account actualAccount = (Account) saveMethod.invoke(repository, testAccount);
-        Assertions.assertEquals(actualAccount.getUsername(), expectedUsername);
-        List<Account> accountList2 = (List<Account>) findAllMethod.invoke(repository, new Object[]{});
-        Assertions.assertTrue(accountList2.size() > 4, "The account should be addable to the " +
+        User actualUser = (User) saveMethod.invoke(repository, testUser);
+        Assertions.assertEquals(actualUser.getUsername(), expectedUsername);
+        List<User> userList2 = (List<User>) findAllMethod.invoke(repository, new Object[]{});
+        Assertions.assertTrue(userList2.size() > 4, "The user should be addable to the " +
                 "JPARepository.");
     }
     /**
@@ -148,14 +148,14 @@ public class SpringTest {
             Assertions.fail("The save / findAll methods were not found. Ensure that PostRepository properly " +
                     "extends JPARepository.");
         }
-        List<Account> accountList1 = (List<Account>) findAllMethod.invoke(repository, new Object[]{});
-        System.out.println(accountList1);
-        Assertions.assertTrue(accountList1.size() == 3, "There should be no posts in the " +
+        List<User> userList1 = (List<User>) findAllMethod.invoke(repository, new Object[]{});
+        System.out.println(userList1);
+        Assertions.assertTrue(userList1.size() == 3, "There should be no posts in the " +
                 "JPARepository on startup.");
         Post actualPost = (Post) saveMethod.invoke(repository, testPost);
         Assertions.assertEquals(actualPost.getPostText(), expectedText);
-        List<Account> accountList2 = (List<Account>) findAllMethod.invoke(repository, new Object[]{});
-        Assertions.assertTrue(accountList2.size() > 3, "The post should be addable to the " +
+        List<User> userList2 = (List<User>) findAllMethod.invoke(repository, new Object[]{});
+        Assertions.assertTrue(userList2.size() > 3, "The post should be addable to the " +
                 "JPARepository.");
     }
     /**

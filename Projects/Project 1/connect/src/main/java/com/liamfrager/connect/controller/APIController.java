@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.liamfrager.connect.entity.Account;
+import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.entity.Post;
 import com.liamfrager.connect.exception.*;
-import com.liamfrager.connect.service.AccountService;
+import com.liamfrager.connect.service.UserService;
 import com.liamfrager.connect.service.PostService;
 
 /**
@@ -18,14 +18,14 @@ import com.liamfrager.connect.service.PostService;
 @RestController
 public class APIController {
     private PostService postService;
-    private AccountService accountService;
+    private UserService userService;
 
     /**
      * Constructor for the social media controller.
      */
-    public APIController(PostService postService, AccountService accountService){
+    public APIController(PostService postService, UserService userService){
         this.postService = postService;
-        this.accountService = accountService;
+        this.userService = userService;
     }
 
     // --------------
@@ -34,20 +34,20 @@ public class APIController {
 
     /**
      * Handler for the <code>/register</code> <code>POST</code> endpoint.
-     * @param account The body of the request containing the account to be registered.
+     * @param user The body of the request containing the user to be registered.
      */
     @PostMapping("/register")
-    private ResponseEntity<Account> register(@RequestBody Account account) throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
-        return ResponseEntity.ok(accountService.register(account));
+    private ResponseEntity<User> register(@RequestBody User user) throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
+        return ResponseEntity.ok(userService.register(user));
     }
 
     /**
      * Handler for the <code>/login</code> <code>POST</code> endpoint.
-     * @param account The body of the request containing the account to be logged in.
+     * @param user The body of the request containing the user to be logged in.
      */
     @PostMapping("/login")
-    private ResponseEntity<Account> login(@RequestBody Account account) throws InvalidLoginException {
-        return ResponseEntity.ok(accountService.login(account));
+    private ResponseEntity<User> login(@RequestBody User user) throws InvalidLoginException {
+        return ResponseEntity.ok(userService.login(user));
     }
 
     /**
@@ -103,12 +103,12 @@ public class APIController {
     }
 
     /**
-     * Handler for the <code>/accounts/{account_id}/posts</code> <code>GET</code> endpoint.
-     * @param account_id The ID of the account of whose messsages will be returned.
+     * Handler for the <code>/users/{user_id}/posts</code> <code>GET</code> endpoint.
+     * @param user_id The ID of the user of whose messsages will be returned.
      */
-    @GetMapping("/accounts/{account_id}/posts")
-    private ResponseEntity<List<Post>> getAllPostsByAccountID(@PathVariable int account_id) {
-        return ResponseEntity.ok(postService.getAllPostsByAccountID(account_id));
+    @GetMapping("/users/{user_id}/posts")
+    private ResponseEntity<List<Post>> getAllPostsByUserID(@PathVariable int user_id) {
+        return ResponseEntity.ok(postService.getAllPostsByUserID(user_id));
     }
 
     // ------------------

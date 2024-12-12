@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 
-import com.liamfrager.connect.entity.Account;
+import com.liamfrager.connect.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class UserLoginTest {
@@ -51,7 +51,7 @@ public class UserLoginTest {
      */
     @Test
     public void loginSuccessful() throws IOException, InterruptedException {
-    	String json = "{\"accountId\":0,\"username\":\"testuser1\",\"password\":\"password\"}";
+    	String json = "{\"userId\":0,\"username\":\"testuser1\",\"password\":\"password\"}";
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/login"))
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -61,8 +61,8 @@ public class UserLoginTest {
         int status = response.statusCode();
         Assertions.assertEquals(200, status);
         ObjectMapper om = new ObjectMapper();
-        Account expectedResult = new Account(9999, "testuser1", "test@email.com", "password");
-        Account actualResult = om.readValue(response.body().toString(), Account.class);
+        User expectedResult = new User(9999, "testuser1", "test@email.com", "password");
+        User actualResult = om.readValue(response.body().toString(), User.class);
         Assertions.assertEquals(expectedResult, actualResult);        
     }
 
@@ -74,7 +74,7 @@ public class UserLoginTest {
      */
     @Test
     public void loginInvalidUsername() throws IOException, InterruptedException {
-    	String json = "{\"accountId\":9999,\"username\":\"testuser404\",\"password\":\"password\"}";
+    	String json = "{\"userId\":9999,\"username\":\"testuser404\",\"password\":\"password\"}";
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/login"))
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -94,7 +94,7 @@ public class UserLoginTest {
      */
     @Test
     public void loginInvalidPassword() throws IOException, InterruptedException {
-    	String json = "{\"accountId\":9999,\"username\":\"testuser1\",\"password\":\"pass404\"}";
+    	String json = "{\"userId\":9999,\"username\":\"testuser1\",\"password\":\"pass404\"}";
         HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/login"))
                 .POST(HttpRequest.BodyPublishers.ofString(json))

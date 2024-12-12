@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.liamfrager.connect.entity.Post;
 import com.liamfrager.connect.exception.*;
-import com.liamfrager.connect.repository.AccountRepository;
+import com.liamfrager.connect.repository.UserRepository;
 import com.liamfrager.connect.repository.PostRepository;
 
 /**
@@ -15,14 +15,14 @@ import com.liamfrager.connect.repository.PostRepository;
 @Service
 public class PostService {
     private final PostRepository postRepository;
-    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
 
     /**
      * Constructor for the post service.
      */
-    public PostService(PostRepository postRepository, AccountRepository accountRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
-        this.accountRepository = accountRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -50,10 +50,10 @@ public class PostService {
      * @throws InvalidUserIDException There is no user with the given <code>post.posted_by</code> ID.
      */
     public Post postPost(Post post) throws InvalidPostTextException, InvalidUserIDException {
-        if (post.getPostText().length() <= 0 || post.getPostText().length() >= 255)
+        if (post.getContent().length() <= 0 || post.getContent().length() >= 255)
             throw new InvalidPostTextException();
-        if (accountRepository.findById(post.getPostedBy()).isEmpty())
-            throw new InvalidUserIDException(post.getPostedBy());
+        if (userRepository.findById(post.getUser().getId()).isEmpty())
+            throw new InvalidUserIDException(post.getUser().getId());
         return postRepository.save(post);
         
     }
@@ -67,9 +67,9 @@ public class PostService {
      * @throws InvalidPostIDException There is no post with the given <code>id</code>.
      */
     public int patchPostByID(int id, Post newPost) throws InvalidPostTextException, InvalidPostIDException {
-        if (newPost.getPostText().length() <= 0 || newPost.getPostText().length() >= 255)
+        if (newPost.getContent().length() <= 0 || newPost.getContent().length() >= 255)
             throw new InvalidPostTextException();
-        int updatedRows = postRepository.updatePostTextById(id, newPost.getPostText());
+        int updatedRows = postRepository.updateContentById(id, newPost.getContent());
         if (updatedRows > 0)
             return updatedRows;
         throw new InvalidPostIDException();
@@ -81,7 +81,7 @@ public class PostService {
      * @return The number of entries removed from the database.
      */
     public int deletePostByID(int id) {
-        return postRepository.deletePostByPostId(id);
+        return postRepository.deletePostById(id);
     }
     
     /**
@@ -89,7 +89,7 @@ public class PostService {
      * @param id The ID of the user whose posts will be returned. Returns null if the ID is invalid
      * @return A list of all posts by the user with the given <code>id</code>.
      */
-    public List<Post> getAllPostsByAccountID(int id) {
-        return postRepository.findByPostedBy(id);
+    public List<Post> getAllPostsByUserID(int id) {
+        return postRepository.findByUserId(id);
     }
 }

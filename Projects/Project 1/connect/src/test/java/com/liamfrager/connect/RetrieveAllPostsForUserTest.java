@@ -45,7 +45,7 @@ public class RetrieveAllPostsForUserTest {
     }
     
     /**
-     * Sending an http request to GET localhost:8080/accounts/9999/posts (posts exist for user) 
+     * Sending an http request to GET localhost:8080/users/9999/posts (posts exist for user) 
      * 
      * Expected Response:
      *  Status Code: 200
@@ -54,7 +54,7 @@ public class RetrieveAllPostsForUserTest {
     @Test
     public void getAllPostsFromUserPostExists() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/accounts/9999/posts"))
+                .uri(URI.create("http://localhost:8080/users/9999/posts"))
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
@@ -66,7 +66,7 @@ public class RetrieveAllPostsForUserTest {
     }
     
     /**
-     * Sending an http request to GET localhost:8080/accounts/9998/posts (posts does NOT exist for user) 
+     * Sending an http request to GET localhost:8080/users/9998/posts (posts does NOT exist for user) 
      * 
      * Expected Response:
      *  Status Code: 200
@@ -75,7 +75,7 @@ public class RetrieveAllPostsForUserTest {
     @Test
     public void getAllPostsFromUserNoPostsFound() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/accounts/9998/posts"))
+                .uri(URI.create("http://localhost:8080/users/9998/posts"))
                 .build();
         HttpResponse<String> response = webClient.send(request, HttpResponse.BodyHandlers.ofString());
         int status = response.statusCode();
