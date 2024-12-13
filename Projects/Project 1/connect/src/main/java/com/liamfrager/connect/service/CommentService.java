@@ -38,7 +38,7 @@ public class CommentService {
     public Comment postComment(Comment comment) throws InvalidCommentContentException, InvalidUserException {
         if (comment.getContent().length() <= 0 || comment.getContent().length() >= 255)
             throw new InvalidCommentContentException(comment.getContent());
-        if (userRepository.existsById(comment.getUser().getId()))
+        if (!userRepository.existsById(comment.getUser().getId()))
             throw new InvalidUserException(comment.getUser());
         return commentRepository.save(comment);
     }

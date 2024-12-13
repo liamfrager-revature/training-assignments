@@ -47,7 +47,7 @@ public class CommentServiceTest {
     @Test
     void postComment_ShouldThrowException_WhenInvalidContent() {
         Comment comment = TestData.generateComment();
-
+        comment.setContent("");
         assertThrows(InvalidCommentContentException.class, () -> commentService.postComment(comment));
     }
 

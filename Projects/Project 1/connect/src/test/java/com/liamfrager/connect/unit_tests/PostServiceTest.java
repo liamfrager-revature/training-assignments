@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.liamfrager.connect.entity.Post;
-import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.exception.InvalidPostContentException;
 import com.liamfrager.connect.exception.InvalidPostIDException;
 import com.liamfrager.connect.exception.InvalidUserException;
@@ -56,7 +54,8 @@ public class PostServiceTest {
     @Test
     void patchPostByID_ShouldThrowException_WhenPostNotFound() {
         when(postRepository.updateContentById(1L, "New Content")).thenReturn(0);
-
-        assertThrows(InvalidPostIDException.class, () -> postService.patchPostByID(1L, new Post(1L, new User(1L, "username", "test@email.com", "password"), "Content", LocalDateTime.now())));
+        Post newPost = TestData.generatePost();
+        newPost.setContent("New Content");
+        assertThrows(InvalidPostIDException.class, () -> postService.patchPostByID(1L, newPost));
     }
 }

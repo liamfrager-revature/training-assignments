@@ -29,7 +29,7 @@ public class LikeService {
      * @throws InvalidLikeException
      */
     public Like postLike(Like like) throws InvalidLikeException {
-        if (!like.getPost().equals(null) && !like.getComment().equals(null))
+        if ((like.getPost() != null && like.getComment() != null) || (like.getPost() == null && like.getComment() == null))
             throw new InvalidLikeException(like);
         return likeRepository.save(like);
     }
