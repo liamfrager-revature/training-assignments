@@ -52,7 +52,7 @@ public class PostService {
     public Post postPost(Post post) throws InvalidPostContentException, InvalidUserException {
         if (post.getContent().length() <= 0 || post.getContent().length() >= 255)
             throw new InvalidPostContentException(post.getContent());
-        if (userRepository.existsById(post.getUser().getId()))
+        if (!userRepository.existsById(post.getUser().getId()))
             throw new InvalidUserException(post.getUser());
         return postRepository.save(post);
     }

@@ -46,9 +46,8 @@ public class PostServiceTest {
     @Test
     void postPost_ShouldSavePost_WhenValid() throws InvalidPostContentException, InvalidUserException {
         Post post = TestData.generatePost();
-        when(userRepository.existsById(1L)).thenReturn(true);
+        when(userRepository.existsById(post.getUser().getId())).thenReturn(true);
         when(postRepository.save(post)).thenReturn(post);
-
         Post result = postService.postPost(post);
 
         assertEquals(post, result);
