@@ -1,12 +1,11 @@
 import './App.css';
+import Hello from './Hello.js'
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Hello messageProp="Hello from props!" />
       </header>
     </div>
   );
