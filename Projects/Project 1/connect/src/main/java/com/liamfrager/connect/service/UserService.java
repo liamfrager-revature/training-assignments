@@ -1,5 +1,7 @@
 package com.liamfrager.connect.service;
 
+import java.util.Set;
+
 import org.springframework.stereotype.Service;
 
 import com.liamfrager.connect.entity.User;
@@ -45,7 +47,37 @@ public class UserService {
      * @throws InvalidLoginException <code>user.username</code> and <code>user.password</code> do not make a valid login.
      */
     public User login(User user) throws InvalidLoginException {
-        // If the username and password provided in the request body JSON match a real user existing on the database.
         return userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword()).orElseThrow(() -> new InvalidLoginException());
+    }
+
+    /**
+     * Get the friends of a given user.
+     * @param userID The ID of the user whose friends to return.
+     * @return The friends of the user.
+     * @throws InvalidLoginException User with id <code>userID</code> does not exist.
+     */
+    public Set<User> getAllFriendsByUserID(long userID) throws InvalidUserException {
+        return userRepository.findById(userID).orElseThrow(() -> new InvalidUserException(userID)).getFollowing();
+    }
+
+    /**
+     * Get the followers of a given user.
+     * @param userID The ID of the user whose followers to return.
+     * @return The followers of the user.
+     * @throws InvalidLoginException User with id <code>userID</code> does not exist.
+     */
+    public Set<User> getAllFollowersByUserID(long userID) throws InvalidUserException {
+        return userRepository.findById(userID).orElseThrow(() -> new InvalidUserException(userID)).getFollowers();
+    }
+
+    /**
+     * Get the followers of a given user.
+     * @param userID The ID of the user whose followers to return.
+     * @return The followers of the user.
+     * @throws InvalidLoginException User with id <code>userID</code> does not exist.
+     */
+    public void followUser(long followerUserID, long followeeUserID) throws InvalidUserException {
+        userRepository.findById(followerUserID).orElseThrow(() -> new InvalidUserException(followerUserID));
+        userRepository.findById(followeeUserID).orElseThrow(() -> new InvalidUserException(followeeUserID));
     }
 }

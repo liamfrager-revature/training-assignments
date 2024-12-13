@@ -11,14 +11,14 @@ import com.liamfrager.connect.entity.User;
  * A JPA repository for users.
  */
 @Repository
-public interface UserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
      * Get the user with the given username.
      * @param username The username of the user to return.
      * @return An <code>Optional</code> of the user's user information.
      */
-    Optional<User> findByUsername(String username);
+    public Optional<User> findByUsername(String username);
 
     /**
      * Get the user with the given username and password.
@@ -26,5 +26,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      * @param password The password of the user to return.
      * @return An <code>Optional</code> of the user's user information.
      */
-    Optional<User> findByUsernameAndPassword(String username, String password);
+    public Optional<User> findByUsernameAndPassword(String username, String password);
 }

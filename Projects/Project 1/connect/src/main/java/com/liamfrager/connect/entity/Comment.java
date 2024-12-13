@@ -15,28 +15,31 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="posts")
-public class Post {
+@Table(name="comments")
+public class Comment {
+
     @NonNull
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    
+
+    @NonNull
+    private String content;
+
     @NonNull
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
 
     @NonNull
-    private String content;
+    @ManyToOne
+    @JoinColumn(name="post_id")
+    private Post post;
 
-    @Lob
-    private byte[] attachment;
+    @OneToMany(mappedBy="comment", cascade=CascadeType.ALL, orphanRemoval=true)
+    private Set<Like> likes;
 
     @NonNull
     @CreationTimestamp
     private LocalDateTime timestamp;
-
-    @OneToMany(mappedBy="post")
-    private Set<Like> likes;
 }
