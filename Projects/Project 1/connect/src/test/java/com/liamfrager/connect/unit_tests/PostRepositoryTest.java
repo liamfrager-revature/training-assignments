@@ -1,8 +1,10 @@
 package com.liamfrager.connect.unit_tests;
 
+import com.liamfrager.connect.TestData;
 import com.liamfrager.connect.entity.Post;
 import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.repository.PostRepository;
+import com.liamfrager.connect.repository.UserRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,23 +18,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PostRepositoryTest {
 
     @Autowired
+    private UserRepository userRepository;
+    
+    @Autowired
     private PostRepository postRepository;
 
+    private User user;
     private Post post;
 
     @BeforeEach
     public void setUp() {
-        post = TestData.generatePost();
-        postRepository.save(post);
+        userRepository.deleteAll();
+        postRepository.deleteAll();
+        user = userRepository.save(TestData.generateNewUser());
+        post = postRepository.save(TestData.generateNewPost(user)); 
     }
 
     @Test
     public void testFindByUserId() {
-        User user = TestData.generateUser();
-        post.setUser(user); // Assuming User entity is set properly
-
-        postRepository.save(post);
-
         assertThat(postRepository.findByUserId(user.getId())).isNotEmpty();
     }
 
@@ -52,8 +55,10 @@ public class PostRepositoryTest {
         long postId = post.getId();
         String newContent = "Updated post content";
         int rowsUpdated = postRepository.updateContentById(postId, newContent);
-
+        postRepository.flush();
+        System.err.println(rowsUpdated);
         assertThat(rowsUpdated).isEqualTo(1);
+        System.err.println(postRepository.findById(postId));
         Post updatedPost = postRepository.findById(postId).orElseThrow();
         assertThat(updatedPost.getContent()).isEqualTo(newContent);
     }

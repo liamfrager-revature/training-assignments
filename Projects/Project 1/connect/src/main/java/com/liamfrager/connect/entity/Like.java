@@ -4,14 +4,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
 
-
 @Data
 @Entity
 @Table(name="likes")
 public class Like {
-    @NonNull
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="like_id")
     private Long id;
 
     @NonNull
@@ -28,13 +27,12 @@ public class Like {
     private Comment comment;
 
     // CONSTRUCTORS
-    public Like(long id, User user, Post post) {
-        this.id = id;
+    public Like() {}
+    public Like(User user, Post post) {
         this.user = user;
         this.post = post;
     }
-    public Like(long id, User user, Comment comment) {
-        this.id = id;
+    public Like(User user, Comment comment) {
         this.user = user;
         this.comment = comment;
     }

@@ -1,12 +1,20 @@
 package com.liamfrager.connect.unit_tests;
+import com.liamfrager.connect.TestData;
+import com.liamfrager.connect.entity.Comment;
 import com.liamfrager.connect.entity.Like;
+import com.liamfrager.connect.entity.Post;
+import com.liamfrager.connect.entity.User;
+import com.liamfrager.connect.repository.CommentRepository;
 import com.liamfrager.connect.repository.LikeRepository;
+import com.liamfrager.connect.repository.PostRepository;
+import com.liamfrager.connect.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,60 +22,74 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class LikeRepositoryTest {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+    
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
     private LikeRepository likeRepository;
 
-    private Like like;
+    private User user;
+    private Post post;
+    private Comment comment;
+    private Like postLike;
+    private Like commentLike;
 
     @BeforeEach
     public void setUp() {
-        like = TestData.generatePostLike();
-        // Set properties of Like (post, user, etc.)
-        likeRepository.save(like);
+        userRepository.deleteAll();
+        postRepository.deleteAll();
+        commentRepository.deleteAll();
+        user = userRepository.save(TestData.generateNewUser());
+        post = postRepository.save(TestData.generateNewPost(user)); 
+        comment = commentRepository.save(TestData.generateNewComment(post));
+        postLike = likeRepository.save(TestData.generateNewPostLike(user, post));
+        commentLike = likeRepository.save(TestData.generateNewCommentLike(user, comment));
     }
 
     @Test
     @Transactional
     public void testDeleteLikeById() {
-        long likeId = like.getId();
-        int rowsDeleted = likeRepository.deleteLikeById(likeId);
-
+        // Test for posts
+        long id = postLike.getId();
+        int rowsDeleted = likeRepository.deleteLikeById(id);
         assertThat(rowsDeleted).isEqualTo(1);
-        assertThat(likeRepository.findById(likeId)).isEmpty();
+        assertThat(likeRepository.findById(id).isEmpty());
+
+        // Test for comments
+        id = commentLike.getId();
+        rowsDeleted = likeRepository.deleteLikeById(id);
+        assertThat(rowsDeleted).isEqualTo(1);
+        assertThat(likeRepository.findById(id).isEmpty());
     }
 
     @Test
     public void testCountLikesByPostId() {
-        long postId = 1L;
-        long likeCount = likeRepository.countLikesByPostId(postId);
+        long likeCount = likeRepository.countLikesByPostId(post.getId());
 
-        assertThat(likeCount).isEqualTo(0); // Assuming no likes initially
+        assertThat(likeCount).isEqualTo(1);
     }
 
     @Test
     public void testCountLikesByCommentId() {
-        long commentId = 1L;
-        long likeCount = likeRepository.countLikesByCommentId(commentId);
+        long likeCount = likeRepository.countLikesByCommentId(comment.getId());
 
-        assertThat(likeCount).isEqualTo(0); // Assuming no likes initially
+        assertThat(likeCount).isEqualTo(1);
     }
 
     @Test
     public void testFindByPostIdAndUserId() {
-        long postId = 1L;
-        long userId = 1L;
-
-        Like foundLike = likeRepository.findByPostIdAndUserId(postId, userId);
-
-        assertThat(foundLike).isNull(); // Assuming no like exists with these IDs
+        Like foundLike = likeRepository.findByPostIdAndUserId(post.getId(), user.getId());
+        assertThat(foundLike).isEqualTo(postLike);
     }
 
     @Test
     public void testFindByCommentIdAndUserId() {
-        long commentId = 1L;
-        long userId = 1L;
-
-        Like foundLike = likeRepository.findByCommentIdAndUserId(commentId, userId);
-
-        assertThat(foundLike).isNull(); // Assuming no like exists with these IDs
+        Like foundLike = likeRepository.findByCommentIdAndUserId(comment.getId(), user.getId());
+        assertThat(foundLike).isEqualTo(commentLike);
     }
 }

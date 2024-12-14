@@ -1,5 +1,6 @@
 package com.liamfrager.connect.unit_tests;
 
+import com.liamfrager.connect.TestData;
 import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.repository.UserRepository;
 
@@ -22,23 +23,24 @@ public class UserRepositoryTest {
 
     @BeforeEach
     public void setUp() {
-        user = TestData.generateUser();
-        userRepository.save(user);
+        userRepository.deleteAll();
+        user = userRepository.save(TestData.generateNewUser());
     }
 
     @Test
     public void testFindByUsername() {
-        Optional<User> foundUser = userRepository.findByUsername("testuser");
+        Optional<User> foundUser = userRepository.findByUsername(user.getUsername());
 
         assertThat(foundUser).isPresent();
-        assertThat(foundUser.get().getUsername()).isEqualTo("testuser");
+        assertThat(foundUser.get().getUsername()).isEqualTo(user.getUsername());
     }
 
     @Test
     public void testFindByUsernameAndPassword() {
-        Optional<User> foundUser = userRepository.findByUsernameAndPassword("testuser", "password");
+        Optional<User> foundUser = userRepository.findByUsernameAndPassword(user.getUsername(), user.getPassword());
 
         assertThat(foundUser).isPresent();
-        assertThat(foundUser.get().getUsername()).isEqualTo("testuser");
+        assertThat(foundUser.get().getUsername()).isEqualTo(user.getUsername());
+        assertThat(foundUser.get().getPassword()).isEqualTo(user.getPassword());
     }
 }

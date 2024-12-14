@@ -3,6 +3,7 @@ package com.liamfrager.connect.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.liamfrager.connect.entity.Like;
@@ -18,18 +19,18 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
      */
     @Modifying
     @Transactional
-    @Query("DELETE FROM Like WHERE id = ?1")
-    public int deleteLikeById(long likeID);
+    @Query("DELETE FROM Like WHERE id = :likeID")
+    public int deleteLikeById(@Param("likeID") long likeID);
 
-    @Query("SELECT COUNT(l) FROM Like l WHERE l.post.id = ?1")
-    public long countLikesByPostId(long postId);
+    @Query("SELECT COUNT(l) FROM Like l WHERE l.post.id = :postID")
+    public long countLikesByPostId(@Param("postID") long postID);
 
-    @Query("SELECT COUNT(l) FROM Like l WHERE l.comment.id = ?1")
-    public long countLikesByCommentId(long commentId);
+    @Query("SELECT COUNT(l) FROM Like l WHERE l.comment.id = :commentID")
+    public long countLikesByCommentId(@Param("commentID") long commentId);
 
-    @Query("SELECT l FROM Like l WHERE l.post.id = ?1 AND l.user.id = ?2")
-    public Like findByPostIdAndUserId(long postID, long userId);
+    @Query("SELECT l FROM Like l WHERE l.post.id = :postID AND l.user.id = :userID")
+    public Like findByPostIdAndUserId(@Param("postID") long postID, @Param("userID") long userId);
 
-    @Query("SELECT l FROM Like l WHERE l.comment.id = ?1 AND l.user.id = ?2")
-    public Like findByCommentIdAndUserId(long commentID, long userID);
+    @Query("SELECT l FROM Like l WHERE l.comment.id = :commentID AND l.user.id = :userID")
+    public Like findByCommentIdAndUserId(@Param("commentID") long commentID, @Param("userID") long userID);
 }

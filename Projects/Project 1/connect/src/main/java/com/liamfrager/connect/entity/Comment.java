@@ -8,19 +8,20 @@ import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="comments")
 public class Comment {
-
-    @NonNull
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="comment_id")
     private Long id;
 
     @NonNull

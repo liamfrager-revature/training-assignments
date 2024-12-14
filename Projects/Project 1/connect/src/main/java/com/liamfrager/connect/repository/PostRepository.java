@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,8 +31,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      */
     @Modifying
     @Transactional
-    @Query("DELETE FROM Post WHERE id = ?1")
-    public int deletePostById(long postID);
+    @Query("DELETE FROM Post WHERE id = :postID")
+    public int deletePostById(@Param("postID") long postID);
 
     /**
      * Update the post text of the post with the given ID.
@@ -41,6 +42,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
      */
     @Modifying
     @Transactional
-    @Query("UPDATE Post SET content = ?2 WHERE id = ?1")
-    public int updateContentById(long postID, String postContent);
+    @Query("UPDATE Post SET content = :postContent WHERE id = :postID")
+    public int updateContentById(@Param("postID") long postID, @Param("postContent") String postContent);
 }

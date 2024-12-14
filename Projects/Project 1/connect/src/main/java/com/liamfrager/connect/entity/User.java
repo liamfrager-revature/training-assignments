@@ -6,18 +6,20 @@ import java.util.Set;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="users")
 public class User {
-    @NonNull
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @Column(name="user_id")
     private Long id;
 
     @NonNull

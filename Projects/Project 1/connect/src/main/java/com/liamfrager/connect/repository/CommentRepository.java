@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +25,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      */
     @Modifying
     @Transactional
-    @Query("DELETE FROM Comment WHERE id = ?1")
-    public int deleteCommentById(long commentID);
+    @Query("DELETE FROM Comment WHERE id = :commentID")
+    public int deleteCommentById(@Param("commentID") long commentID);
 
     /**
      * Update the comment text of the comment with the given ID.
@@ -35,6 +36,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
      */
     @Modifying
     @Transactional
-    @Query("UPDATE Comment SET content = ?2 WHERE id = ?1")
-    public int updateContentById(long commentID, String commentContent);
+    @Query("UPDATE Comment SET content = :commentContent WHERE id = :commentID")
+    public int updateContentById(@Param("commentID") long commentID, @Param("commentContent") String commentContent);
 }

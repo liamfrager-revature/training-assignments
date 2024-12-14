@@ -8,18 +8,20 @@ import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name="posts")
 public class Post {
-    @NonNull
     @Id
     @GeneratedValue
+    @Column(name="post_id")
     private Long id;
     
     @NonNull
@@ -37,6 +39,6 @@ public class Post {
     @CreationTimestamp
     private LocalDateTime timestamp;
 
-    @OneToMany(mappedBy="post")
+    @OneToMany(mappedBy="post", cascade=CascadeType.ALL, orphanRemoval=true)
     private Set<Like> likes;
 }

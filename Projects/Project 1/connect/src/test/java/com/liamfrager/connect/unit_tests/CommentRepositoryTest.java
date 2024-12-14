@@ -1,39 +1,55 @@
 package com.liamfrager.connect.unit_tests;
 
+
+import com.liamfrager.connect.TestData;
 import com.liamfrager.connect.entity.Comment;
 import com.liamfrager.connect.entity.Post;
+import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.repository.CommentRepository;
+import com.liamfrager.connect.repository.PostRepository;
+import com.liamfrager.connect.repository.UserRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Transactional(propagation = Propagation .NOT_SUPPORTED)
 public class CommentRepositoryTest {
 
     @Autowired
-    private CommentRepository commentRepository;
+    private UserRepository userRepository;
 
+    @Autowired
+    private CommentRepository commentRepository;
+    
+    @Autowired
+    private PostRepository postRepository;
+
+    private User user;
+    private Post post;
     private Comment comment;
 
     @BeforeEach
     public void setUp() {
-        comment = TestData.generateComment();
-        commentRepository.save(comment);
+        userRepository.deleteAll();
+        postRepository.deleteAll();
+        commentRepository.deleteAll();
+        user = userRepository.save(TestData.generateNewUser());
+        post = postRepository.save(TestData.generateNewPost(user)); 
+        comment = commentRepository.save(TestData.generateNewComment(post));
     }
 
     @Test
     public void testFindAllByPostId() {
-        // Assuming you have a Post entity setup in your Comment object
-        Post post = TestData.generatePost();
-        comment.setPost(post); // Set the postId to be used in the test
-
-        commentRepository.save(comment);
-
+        System.err.println("Starting test");
         assertThat(commentRepository.findAllByPostId(post.getId())).isNotEmpty();
     }
 
