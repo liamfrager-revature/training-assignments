@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.liamfrager.connect.entity.Like;
 import com.liamfrager.connect.entity.LikeResponse;
 import com.liamfrager.connect.exception.InvalidLikeException;
-import com.liamfrager.connect.exception.InvalidPostContentException;
 import com.liamfrager.connect.exception.InvalidPostIDException;
 import com.liamfrager.connect.exception.InvalidUserException;
 import com.liamfrager.connect.service.LikeService;
@@ -42,8 +41,8 @@ public class LikeController {
      * @throws InvalidLikeContentException 
      */
     @PostMapping("/likes")
-    private ResponseEntity<Like> postLike(@RequestBody Like post) throws InvalidLikeException {
-        return ResponseEntity.ok(likeService.postLike(post));
+    private ResponseEntity<Like> postLike(@RequestBody Like like) throws InvalidLikeException {
+        return ResponseEntity.ok(likeService.postLike(like));
     }
 
     /**

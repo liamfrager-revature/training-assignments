@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.liamfrager.connect.entity.Comment;
-import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.exception.InvalidCommentContentException;
 import com.liamfrager.connect.exception.InvalidCommentIDException;
 import com.liamfrager.connect.exception.InvalidUserException;

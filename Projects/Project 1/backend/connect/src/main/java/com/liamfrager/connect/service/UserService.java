@@ -71,13 +71,20 @@ public class UserService {
     }
 
     /**
-     * Get the followers of a given user.
+     * follow a given user.
      * @param userID The ID of the user whose followers to return.
      * @return The followers of the user.
      * @throws InvalidLoginException User with id <code>userID</code> does not exist.
      */
     public void followUser(long followerUserID, long followeeUserID) throws InvalidUserException {
-        userRepository.findById(followerUserID).orElseThrow(() -> new InvalidUserException(followerUserID));
-        userRepository.findById(followeeUserID).orElseThrow(() -> new InvalidUserException(followeeUserID));
+        User follower = userRepository.findById(followerUserID).orElseThrow(() -> new InvalidUserException(followerUserID));
+        User followee = userRepository.findById(followeeUserID).orElseThrow(() -> new InvalidUserException(followeeUserID));
+
+        // Add to 'following' and 'followers' relationships
+        follower.getFollowing().add(followee);
+        followee.getFollowers().add(follower);
+
+        // Persist changes (only need to save one side since it's bidirectional)
+        userRepository.save(follower);
     }
 }
