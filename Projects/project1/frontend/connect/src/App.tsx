@@ -1,25 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomeRoute from './routes/HomeRoute';
+import ProfileRoute from './routes/ProfileRoute';
+import PostRoute from './routes/PostRoute';
+import RegisterRoute from './routes/RegisterRoute';
+import LoginRoute from './routes/LoginRoute';
+import FriendsRoute from './routes/FriendsRoute';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/home" element={<HomeRoute />} />
+        <Route path="/profile/:userID" element={<ProfileRoute />} />
+        <Route path="/post/:postID" element={<PostRoute />} />
+        <Route path="/friends" element={<FriendsRoute/>} />
+        <Route path="/register" element={<RegisterRoute />} />
+        <Route path="/login" element={<LoginRoute />} />
+      </Routes>
+    </Router>
   );
 }
 

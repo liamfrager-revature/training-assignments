@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NonNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Data
 @Entity
 @Table(name="likes")
@@ -15,14 +17,17 @@ public class Like {
 
     @NonNull
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="user_id")
     private User user;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="post_id", nullable=true)
     private Post post;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="comment_id", nullable=true)
     private Comment comment;
 

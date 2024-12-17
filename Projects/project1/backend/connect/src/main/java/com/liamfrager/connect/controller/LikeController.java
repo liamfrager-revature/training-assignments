@@ -1,16 +1,10 @@
 package com.liamfrager.connect.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.liamfrager.connect.entity.Like;
-import com.liamfrager.connect.entity.LikeResponse;
+import main.java.com.liamfrager.connect.dto.LikeDTO;
 import com.liamfrager.connect.exception.InvalidLikeException;
 import com.liamfrager.connect.exception.InvalidPostIDException;
 import com.liamfrager.connect.exception.InvalidUserException;
@@ -19,6 +13,7 @@ import com.liamfrager.connect.service.LikeService;
 /**
  * The REST controller that exposes the like endpoints for the API.
  */
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 public class LikeController {
     private LikeService likeService;
@@ -51,8 +46,8 @@ public class LikeController {
      * @throws InvalidPostIDException
      */
     @GetMapping("/post/{postID}/likes")
-    private ResponseEntity<LikeResponse> getPostLikeResponse(@PathVariable long postID) throws InvalidPostIDException {
-        return ResponseEntity.ok(likeService.getLikeResponseFromPost(postID));
+    private ResponseEntity<LikeDTO> getPostLikes(@PathVariable long postID) throws InvalidPostIDException {
+        return ResponseEntity.ok(likeService.getLikesFromPost(postID));
     }
 
     /**
@@ -61,8 +56,8 @@ public class LikeController {
      * @throws InvalidPostIDException
      */
     @GetMapping("/comment/{commentID}/likes")
-    private ResponseEntity<LikeResponse> getCommentLikeResponse(@PathVariable long commentID) throws InvalidPostIDException {
-        return ResponseEntity.ok(likeService.getLikeResponseFromPost(commentID));
+    private ResponseEntity<LikeDTO> getCommentLikes(@PathVariable long commentID) throws InvalidPostIDException {
+        return ResponseEntity.ok(likeService.getLikesFromComment(commentID));
     }
 
      /**

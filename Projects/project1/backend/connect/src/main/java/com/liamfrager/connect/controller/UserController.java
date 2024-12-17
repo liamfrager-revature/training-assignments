@@ -16,6 +16,7 @@ import com.liamfrager.connect.service.PostService;
 /**
  * The REST controller that exposes the user endpoints for the API.
  */
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 public class UserController {
     private PostService postService;
@@ -34,21 +35,30 @@ public class UserController {
     // --------------
 
     /**
-     * Handler for the <code>/register</code> <code>POST</code> endpoint.
+     * Handler for the <code>/users</code> <code>POST</code> endpoint.
      * @param user The body of the request containing the user to be registered.
      */
-    @PostMapping("/register")
+    @PostMapping("/users")
     private ResponseEntity<User> register(@RequestBody User user) throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(user));
     }
 
     /**
-     * Handler for the <code>/login</code> <code>POST</code> endpoint.
+     * Handler for the <code>/users/login</code> <code>POST</code> endpoint.
      * @param user The body of the request containing the user to be logged in.
      */
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     private ResponseEntity<User> login(@RequestBody User user) throws InvalidLoginException {
         return ResponseEntity.ok(userService.login(user));
+    }
+
+    /**
+     * Handler for the <code>/login</code> <code>GET</code> endpoint.
+     * @param userID The ID of the user whose data will be returned.
+     */
+    @GetMapping("/users/{userID}")
+    private ResponseEntity<User> getUser(@PathVariable long userID) throws InvalidUserException {
+        return ResponseEntity.ok(userService.getUser(userID));
     }
 
     /**

@@ -4,9 +4,9 @@ package com.liamfrager.connect.service;
 import org.springframework.stereotype.Service;
 
 import com.liamfrager.connect.entity.Like;
-import com.liamfrager.connect.entity.LikeResponse;
 import com.liamfrager.connect.exception.InvalidLikeException;
 import com.liamfrager.connect.repository.LikeRepository;
+import main.java.com.liamfrager.connect.dto.LikeDTO;
 
 /**
  * A service for handling the <code>Like</code> business logic.
@@ -45,17 +45,17 @@ public class LikeService {
         return likeRepository.deleteLikeById(likeID);
     }
 
-    public LikeResponse getLikeResponseFromPost(long postID) {
-        return new LikeResponse(
+    public LikeDTO getLikesFromPost(long postID) {
+        return new LikeDTO(
             likeRepository.countLikesByPostId(postID),
-            likeRepository.findByPostIdAndUserId(postID, 1L) // TODO: get current user id
+            likeRepository.existsByPostIdAndUserId(postID, 1L) // TODO: get current user id
         );
     }
 
-    public LikeResponse getLikeResponseFromComment(long commentID) {
-        return new LikeResponse(
+    public LikeDTO getLikesFromComment(long commentID) {
+        return new LikeDTO(
             likeRepository.countLikesByCommentId(commentID),
-            likeRepository.findByCommentIdAndUserId(commentID, 1L) // TODO: get current user id
+            likeRepository.existsByCommentIdAndUserId(commentID, 1L) // TODO: get current user id
         );
     }
 }

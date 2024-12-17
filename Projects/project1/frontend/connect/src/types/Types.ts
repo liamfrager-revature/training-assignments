@@ -17,9 +17,11 @@ export interface Post {
 }
 
 export interface User {
-  id: number,
-  name: string
-  pfp: Blob,
+  id?: number,
+  username: string,
+  email: string,
+  password: string,
+  pfp?: Blob,
 }
 
 export interface Like {

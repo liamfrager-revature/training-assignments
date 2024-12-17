@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.liamfrager.connect.entity.Post;
+import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.exception.*;
 import com.liamfrager.connect.repository.UserRepository;
+
 import com.liamfrager.connect.repository.PostRepository;
 
 /**
@@ -52,8 +54,8 @@ public class PostService {
     public Post postPost(Post post) throws InvalidPostContentException, InvalidUserException {
         if (post.getContent().length() <= 0 || post.getContent().length() >= 255)
             throw new InvalidPostContentException(post.getContent());
-        if (!userRepository.existsById(post.getUser().getId()))
-            throw new InvalidUserException(post.getUser());
+        User user = userRepository.findById(post.getUser().getId()).orElseThrow(() -> new InvalidUserException(post.getUser().getId()));
+        post.setUser(user);
         return postRepository.save(post);
     }
     

@@ -28,9 +28,9 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     @Query("SELECT COUNT(l) FROM Like l WHERE l.comment.id = :commentID")
     public long countLikesByCommentId(@Param("commentID") long commentId);
 
-    @Query("SELECT l FROM Like l WHERE l.post.id = :postID AND l.user.id = :userID")
-    public Like findByPostIdAndUserId(@Param("postID") long postID, @Param("userID") long userId);
+    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN TRUE ELSE FALSE END FROM Like l WHERE l.post.id = :postID AND l.user.id = :userID")
+    public boolean existsByPostIdAndUserId(@Param("postID") long postID, @Param("userID") long userID);
 
-    @Query("SELECT l FROM Like l WHERE l.comment.id = :commentID AND l.user.id = :userID")
-    public Like findByCommentIdAndUserId(@Param("commentID") long commentID, @Param("userID") long userID);
+    @Query("SELECT CASE WHEN COUNT(l) > 0 THEN TRUE ELSE FALSE END FROM Like l WHERE l.comment.id = :commentID AND l.user.id = :userID")
+    public boolean existsByCommentIdAndUserId(@Param("commentID") long commentID, @Param("userID") long userID);
 }

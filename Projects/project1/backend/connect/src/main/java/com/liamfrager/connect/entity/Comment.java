@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import com.fasterxml.jackson.annotation.*;
+
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -29,16 +31,21 @@ public class Comment {
 
     @NonNull
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="user_id")
     private User user;
 
     @NonNull
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name="post_id")
     private Post post;
 
     @OneToMany(mappedBy="comment", cascade=CascadeType.ALL, orphanRemoval=true)
+    @JsonManagedReference
     private Set<Like> likes;
+
+    private Integer likesCount;
 
     @NonNull
     @CreationTimestamp

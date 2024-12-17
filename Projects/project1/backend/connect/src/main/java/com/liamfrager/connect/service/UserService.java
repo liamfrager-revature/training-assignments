@@ -51,10 +51,22 @@ public class UserService {
     }
 
     /**
+     * Get data for the given user.
+     * @param userID The ID of the user whose data to return.
+     * @return The friends of the user.
+     * @throws InvalidUserException User with id <code>userID</code> does not exist.
+     */
+    public User getUser(long userID) throws InvalidUserException {
+        User user = userRepository.findById(userID).orElseThrow(() -> new InvalidUserException(userID));
+        user.setPassword(null);
+        return user;
+    }
+
+    /**
      * Get the friends of a given user.
      * @param userID The ID of the user whose friends to return.
      * @return The friends of the user.
-     * @throws InvalidLoginException User with id <code>userID</code> does not exist.
+     * @throws InvalidUserException User with id <code>userID</code> does not exist.
      */
     public Set<User> getAllFriendsByUserID(long userID) throws InvalidUserException {
         return userRepository.findById(userID).orElseThrow(() -> new InvalidUserException(userID)).getFollowing();
@@ -64,7 +76,7 @@ public class UserService {
      * Get the followers of a given user.
      * @param userID The ID of the user whose followers to return.
      * @return The followers of the user.
-     * @throws InvalidLoginException User with id <code>userID</code> does not exist.
+     * @throws InvalidUserException User with id <code>userID</code> does not exist.
      */
     public Set<User> getAllFollowersByUserID(long userID) throws InvalidUserException {
         return userRepository.findById(userID).orElseThrow(() -> new InvalidUserException(userID)).getFollowers();
@@ -74,7 +86,7 @@ public class UserService {
      * follow a given user.
      * @param userID The ID of the user whose followers to return.
      * @return The followers of the user.
-     * @throws InvalidLoginException User with id <code>userID</code> does not exist.
+     * @throws InvalidUserException User with id <code>userID</code> does not exist.
      */
     public void followUser(long followerUserID, long followeeUserID) throws InvalidUserException {
         User follower = userRepository.findById(followerUserID).orElseThrow(() -> new InvalidUserException(followerUserID));

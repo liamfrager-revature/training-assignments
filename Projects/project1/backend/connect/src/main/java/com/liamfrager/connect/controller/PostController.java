@@ -2,25 +2,22 @@ package com.liamfrager.connect.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.liamfrager.connect.entity.Post;
+import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.exception.InvalidPostContentException;
 import com.liamfrager.connect.exception.InvalidPostIDException;
 import com.liamfrager.connect.exception.InvalidUserException;
 import com.liamfrager.connect.service.PostService;
+import com.liamfrager.connect.repository.UserRepository;
 
 /**
  * The REST controller that exposes the post endpoints for the API.
  */
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 public class PostController {
     private PostService postService;
@@ -28,7 +25,7 @@ public class PostController {
     /**
      * Constructor for the post controller.
      */
-    public PostController(PostService postService){
+    public PostController(PostService postService) {
         this.postService = postService;
     }
 
@@ -44,7 +41,7 @@ public class PostController {
      */
     @PostMapping("/posts")
     private ResponseEntity<Post> postPost(@RequestBody Post post) throws InvalidPostContentException, InvalidUserException {
-        return ResponseEntity.ok(postService.postPost(post));
+        return ResponseEntity.status(HttpStatus.CREATED).body(postService.postPost(post));
     }
 
     /**

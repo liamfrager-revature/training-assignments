@@ -16,9 +16,9 @@ const CommentComponent = (props: {comment: Comment}) => {
 
     return (
         <div>
-            <img src={URL.createObjectURL(user.pfp)} alt={user.name + " profile picture"} />
+            {user.pfp ? <img src={URL.createObjectURL(user.pfp)} alt={user.username + " profile picture"} /> : null}
             <div className="comment-text">
-                <span>{user.name}</span>
+                <span>{user.username}</span>
                 <span>{comment.content}</span>
                 <br />
                 <span>{comment.timestamp}</span>

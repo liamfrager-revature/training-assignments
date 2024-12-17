@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.liamfrager.connect.TestData;
 import com.liamfrager.connect.entity.Like;
-import com.liamfrager.connect.entity.LikeResponse;
+import main.java.com.liamfrager.connect.dto.LikeDTO;
 import com.liamfrager.connect.exception.InvalidLikeException;
 import com.liamfrager.connect.repository.LikeRepository;
 import com.liamfrager.connect.service.LikeService;
@@ -59,12 +59,12 @@ public class LikeServiceTest {
     }
 
     @Test
-    void getLikeResponseFromPost_ShouldReturnLikeResponse() {
+    void getLikesFromPost_ShouldReturnLikes() {
         when(likeRepository.countLikesByPostId(1L)).thenReturn(10L);
-        when(likeRepository.findByPostIdAndUserId(1L, 1L)).thenReturn(null);
+        when(likeRepository.existsByPostIdAndUserId(1L, 1L)).thenReturn(false);
 
-        LikeResponse response = likeService.getLikeResponseFromPost(1L);
+        LikeDTO response = likeService.getLikesFromPost(1L);
 
-        assertEquals(10, response.getTotalLikes());
+        assertEquals(10, response.getLikesCount());
     }
 }

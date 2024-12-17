@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import com.fasterxml.jackson.annotation.*;
+
 @Data
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -26,19 +28,25 @@ public class Post {
     
     @NonNull
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JsonBackReference
+    @JoinColumn(name = "user_id")
     private User user;
 
     @NonNull
     private String content;
 
     @Lob
-    private byte[] attachment;
+    private Byte[] attachment;
 
     @NonNull
     @CreationTimestamp
     private LocalDateTime timestamp;
 
+    @JsonIgnore
+    @OneToMany(mappedBy="post", cascade=CascadeType.ALL, orphanRemoval=true)
+    private Set<Comment> comments;
+
+    @JsonIgnore
     @OneToMany(mappedBy="post", cascade=CascadeType.ALL, orphanRemoval=true)
     private Set<Like> likes;
 }

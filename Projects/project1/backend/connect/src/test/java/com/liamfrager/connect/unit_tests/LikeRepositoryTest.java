@@ -82,14 +82,14 @@ public class LikeRepositoryTest {
     }
 
     @Test
-    public void testFindByPostIdAndUserId() {
-        Like foundLike = likeRepository.findByPostIdAndUserId(post.getId(), user.getId());
-        assertThat(foundLike).isEqualTo(postLike);
+    public void testExistsByPostIdAndUserId() {
+        boolean exists = likeRepository.existsByPostIdAndUserId(post.getId(), user.getId());
+        assertThat(exists).isEqualTo(true);
     }
 
     @Test
-    public void testFindByCommentIdAndUserId() {
-        Like foundLike = likeRepository.findByCommentIdAndUserId(comment.getId(), user.getId());
-        assertThat(foundLike).isEqualTo(commentLike);
+    public void testExistsByCommentIdAndUserId() {
+        boolean exists = likeRepository.existsByCommentIdAndUserId(comment.getId(), user.getId());
+        assertThat(exists).isEqualTo(true);
     }
 }
