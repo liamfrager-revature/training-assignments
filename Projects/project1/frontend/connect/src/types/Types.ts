@@ -24,6 +24,18 @@ export interface User {
   pfp?: Blob,
 }
 
+export interface RegisterUser {
+  username: string,
+  email: string,
+  password: string,
+}
+
+export interface AuthenticateUser {
+  username?: string,
+  email?: string,
+  password: string,
+}
+
 export interface Like {
     
 }

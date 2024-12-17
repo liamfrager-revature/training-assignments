@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { User } from "../../types/Types";
+import { RegisterUser } from "../../types/Types";
 
 const RegisterUserComponent = () => {
     const URL = process.env.REACT_APP_DB_API_URL;
@@ -10,7 +10,7 @@ const RegisterUserComponent = () => {
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const newUser: User = {
+        const newUser: RegisterUser = {
             username: username,
             email: email,
             password: password,
