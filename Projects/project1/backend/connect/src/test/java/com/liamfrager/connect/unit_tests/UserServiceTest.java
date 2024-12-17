@@ -19,13 +19,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.liamfrager.connect.TestData;
 import com.liamfrager.connect.entity.User;
-import com.liamfrager.connect.exception.InvalidLoginException;
-import com.liamfrager.connect.exception.InvalidPasswordException;
 import com.liamfrager.connect.exception.InvalidUserException;
-import com.liamfrager.connect.exception.InvalidUsernameException;
-import com.liamfrager.connect.exception.UserAlreadyExistsException;
 import com.liamfrager.connect.repository.UserRepository;
 import com.liamfrager.connect.service.UserService;
 
@@ -60,28 +55,6 @@ public class UserServiceTest {
         user2.getFollowers().add(user1);
         user3.getFollowing().add(user1);
     }
-
-    @Test
-    void testRegister() throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
-        User user = TestData.generateUser();
-        when(userRepository.findByUsername("username")).thenReturn(Optional.empty());
-        when(userRepository.save(user)).thenReturn(user);
-
-        User result = userService.register(user);
-
-        assertEquals(user, result);
-    }
-
-    @Test
-    void testLogin() throws InvalidLoginException {
-        User user = TestData.generateUser();
-        when(userRepository.findByUsernameAndPassword("username", "password")).thenReturn(Optional.of(user));
-
-        User result = userService.login(user);
-
-        assertEquals(user, result);
-    }
-
     
     @Test
     void testGetAllFriendsByUserID() throws InvalidUserException {

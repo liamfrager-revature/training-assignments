@@ -3,7 +3,6 @@ package com.liamfrager.connect.controller;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,24 +32,6 @@ public class UserController {
     // --------------
     // ROUTE HANDLERS
     // --------------
-
-    /**
-     * Handler for the <code>/users</code> <code>POST</code> endpoint.
-     * @param user The body of the request containing the user to be registered.
-     */
-    @PostMapping("/users")
-    private ResponseEntity<User> register(@RequestBody User user) throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.register(user));
-    }
-
-    /**
-     * Handler for the <code>/users/login</code> <code>POST</code> endpoint.
-     * @param user The body of the request containing the user to be logged in.
-     */
-    @PostMapping("/users/login")
-    private ResponseEntity<User> login(@RequestBody User user) throws InvalidLoginException {
-        return ResponseEntity.ok(userService.login(user));
-    }
 
     /**
      * Handler for the <code>/login</code> <code>GET</code> endpoint.
@@ -102,36 +83,14 @@ public class UserController {
     // ------------------
 
     /**
-     * <code>401 Unauthorized</code>.
-     * Exception handler for: <code>InvalidLoginException</code>.
-     */
-    @ExceptionHandler(InvalidLoginException.class)
-    private ResponseEntity<Exception> invalidLoginExceptionHandler(Exception ex) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex);
-    }
-
-    /**
      * <code>400 Bad Request</code>.
      * Exception handler for:
-     * <code>InvalidUserException</code>,
-     * <code>InvalidUsernameException</code>,
-     * <code>InvalidPasswordException</code>.
+     * <code>InvalidUserException</code>.
      */
     @ExceptionHandler({
-        InvalidUserException.class,
-        InvalidUsernameException.class,
-        InvalidPasswordException.class
+        InvalidUserException.class
     })
     private ResponseEntity<Exception> badRequestExceptionHandler(Exception ex) {
         return ResponseEntity.badRequest().body(ex);
-    }
-
-    /**
-     * <code>409 Conflict</code>.
-     * Exception handler for: <code>UserAlreadyExistsException</code>.
-     */
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    private ResponseEntity<Exception> userAlreadyExistsExceptionHandler(Exception ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex);
     }
 }

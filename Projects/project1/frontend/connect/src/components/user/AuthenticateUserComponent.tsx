@@ -23,7 +23,7 @@ const AuthenticateUserComponent = () => {
                 'Content-Type': 'application/json'
             }
         }
-        axios.post(`${URL}/users`, JSON.stringify(authUser), config).then(res => console.log("user created", res.data));
+        axios.post(`${URL}/auth/login`, JSON.stringify(authUser), config).then(res => console.log("user logged in", res));
     }
 
     return (

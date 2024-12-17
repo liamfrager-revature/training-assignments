@@ -1,4 +1,4 @@
-package main.java.com.liamfrager.connect.dto;
+package com.liamfrager.connect.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

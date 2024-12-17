@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.liamfrager.connect.entity.Like;
-import main.java.com.liamfrager.connect.dto.LikeDTO;
+import com.liamfrager.connect.dto.LikeDTO;
 import com.liamfrager.connect.exception.InvalidLikeException;
 import com.liamfrager.connect.exception.InvalidPostIDException;
 import com.liamfrager.connect.exception.InvalidUserException;

@@ -20,7 +20,7 @@ const RegisterUserComponent = () => {
                 'Content-Type': 'application/json'
             }
         }
-        axios.post(`${URL}/users`, JSON.stringify(newUser), config).then(res => console.log("user created", res.data));
+        axios.post(`${URL}/auth/register`, JSON.stringify(newUser), config).then(res => console.log("user created", res.data));
     }
 
     return (

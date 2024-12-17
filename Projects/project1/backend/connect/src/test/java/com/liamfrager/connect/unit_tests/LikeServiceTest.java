@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.liamfrager.connect.TestData;
 import com.liamfrager.connect.entity.Like;
-import main.java.com.liamfrager.connect.dto.LikeDTO;
+import com.liamfrager.connect.dto.LikeDTO;
 import com.liamfrager.connect.exception.InvalidLikeException;
 import com.liamfrager.connect.repository.LikeRepository;
 import com.liamfrager.connect.service.LikeService;

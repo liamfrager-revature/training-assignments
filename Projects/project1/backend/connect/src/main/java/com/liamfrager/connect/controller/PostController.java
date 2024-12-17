@@ -7,12 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.liamfrager.connect.entity.Post;
-import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.exception.InvalidPostContentException;
 import com.liamfrager.connect.exception.InvalidPostIDException;
 import com.liamfrager.connect.exception.InvalidUserException;
 import com.liamfrager.connect.service.PostService;
-import com.liamfrager.connect.repository.UserRepository;
 
 /**
  * The REST controller that exposes the post endpoints for the API.

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.liamfrager.connect.entity.Like;
 import com.liamfrager.connect.exception.InvalidLikeException;
 import com.liamfrager.connect.repository.LikeRepository;
-import main.java.com.liamfrager.connect.dto.LikeDTO;
+import com.liamfrager.connect.dto.LikeDTO;
 
 /**
  * A service for handling the <code>Like</code> business logic.
