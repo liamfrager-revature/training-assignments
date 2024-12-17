@@ -1,9 +1,11 @@
 package com.liamfrager.connect.controller;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.liamfrager.connect.AuthUtil;
 import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.exception.*;
 import com.liamfrager.connect.service.AuthService;
@@ -33,7 +35,12 @@ public class AuthController {
      */
     @PostMapping("/auth/register")
     private ResponseEntity<User> register(@RequestBody User user) throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.register(user));
+        System.err.println(user);
+        User registeredUser = authService.register(user);
+        String token = AuthUtil.generateToken(registeredUser.getUsername());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(registeredUser);
     }
 
     /**
@@ -42,7 +49,11 @@ public class AuthController {
      */
     @PostMapping("/auth/login")
     private ResponseEntity<User> login(@RequestBody User user) throws InvalidLoginException {
-        return ResponseEntity.ok(authService.login(user));
+        User authenticatedUser = authService.login(user);
+        String token = AuthUtil.generateToken(authenticatedUser.getUsername());
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", token);
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(authenticatedUser);
     }
 
 

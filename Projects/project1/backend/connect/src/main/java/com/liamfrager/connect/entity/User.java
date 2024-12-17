@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.*;
 @NoArgsConstructor
 @Entity
 @Table(name="users")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
@@ -33,6 +34,10 @@ public class User {
     private String email;
 
     private String password;
+    @JsonIgnore
+    public String getPassword() {return this.password;}
+    @JsonProperty
+    public void setPassword(String password) {this.password = password;}
 
     @Lob
     private Byte[] pfp;

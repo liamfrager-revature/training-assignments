@@ -1,4 +1,4 @@
-import { Comment } from "../types/Types";
+import { Comment } from "../utils/Types";
 
 const CommentComponent = (props: {comment: Comment}) => {
     const comment = props.comment

@@ -1,5 +1,5 @@
 import CommentComponent from "./CommentComponent";
-import { Comment } from "../types/Types"
+import { Comment } from "../utils/Types"
 
 const CommentsDisplayComponent = (props: {comments: Array<Comment>}) => {
 

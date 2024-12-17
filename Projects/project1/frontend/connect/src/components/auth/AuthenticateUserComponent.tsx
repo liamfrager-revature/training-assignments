@@ -1,9 +1,10 @@
-import axios from "axios";
 import { useState } from "react";
-import { AuthenticateUser, User } from "../../types/Types";
+import { AuthenticateUser } from "../../utils/Types";
+import axiosUtil from "../../utils/AxiosUtil";
+import { useNavigate } from "react-router-dom";
 
 const AuthenticateUserComponent = () => {
-    const URL = process.env.REACT_APP_DB_API_URL;
+    const navigate = useNavigate();
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -18,12 +19,23 @@ const AuthenticateUserComponent = () => {
             username: usernameOrEmail,
             password: password,
         }
-        const config = {
-            headers: {
-                'Content-Type': 'application/json'
+        axiosUtil.post('/auth/login', JSON.stringify(authUser)).then(res => {
+            const authHeader = res.headers['authorization'];
+            if (authHeader) {
+                sessionStorage.setItem('token', authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader);
+                navigate('/home');
+                return;
             }
-        }
-        axios.post(`${URL}/auth/login`, JSON.stringify(authUser), config).then(res => console.log("user logged in", res));
+            throw new Error();
+        }).catch(err => {
+            if (err.status === 401) {
+                // TODO: invalid login
+                console.error('invalid login')
+            } else {
+                // TODO: generic error
+                console.error('something went wrong')
+            }
+        });
     }
 
     return (
@@ -31,7 +43,7 @@ const AuthenticateUserComponent = () => {
         <form onSubmit={onSubmit}>
             <input type="text" name="usernameOrEmail" placeholder="username/email" onChange={(e) => setUsernameOrEmail(e.target.value)}/><br/>
             <input type="password" name="password" placeholder="password" onChange={(e) => setPassword(e.target.value)}/><br/>
-            <button type="submit">Register</button>
+            <button type="submit">Login</button>
         </form>
         </>
     )

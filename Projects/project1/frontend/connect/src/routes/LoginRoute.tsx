@@ -1,4 +1,4 @@
-import AuthenticateUserComponent from "../components/user/AuthenticateUserComponent";
+import AuthenticateUserComponent from "../components/auth/AuthenticateUserComponent";
 
 const LoginRoute = () => {
     return (

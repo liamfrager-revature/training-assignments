@@ -28,7 +28,6 @@ public class Post {
     
     @NonNull
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "user_id")
     private User user;
 

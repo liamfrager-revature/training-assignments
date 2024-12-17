@@ -1,4 +1,4 @@
-import RegisterUserComponent from "../components/user/RegisterUserComponent";
+import RegisterUserComponent from "../components/auth/RegisterUserComponent";
 
 const RegisterRoute = () => {
     return (

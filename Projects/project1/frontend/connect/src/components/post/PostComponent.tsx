@@ -1,13 +1,12 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { Post } from "../../types/Types";
+import { Post } from "../../utils/Types";
+import axiosUtil from "../../utils/AxiosUtil";
 
 const PostComponent = (props: {postID: string}) => {
-    const URL = process.env.DB_API_URL;
     const [post, setPost] = useState<Post>();
 
     useEffect(() => {
-        axios.get(`${URL}/posts/${props.postID}`).then(res => setPost(res.data))
+        axiosUtil.get(`/posts/${props.postID}`).then(res => setPost(res.data))
     }, [])
     return (
         <>

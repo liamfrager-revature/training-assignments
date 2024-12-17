@@ -26,9 +26,9 @@ public class AuthService {
     public User register(User user) throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
         if (user.getUsername().length() <= 0)
             throw new InvalidUsernameException();
-        if (user.getPassword().length() < 4)
+        if (user.getPassword().length() < 8)
             throw new InvalidPasswordException();
-        if (userRepository.findByUsername(user.getUsername()).isPresent())
+        if (userRepository.findByUsername(user.getUsername()).isPresent() || userRepository.findByEmail(user.getEmail()).isPresent())
             throw new UserAlreadyExistsException();
 
         user.setPassword(AuthUtil.hashPassword(user.getPassword()));
@@ -46,10 +46,8 @@ public class AuthService {
             .or(() -> userRepository.findByEmail(user.getEmail()))
             .orElseThrow(() -> new InvalidLoginException());
         boolean isValidLogin = AuthUtil.checkPassword(user.getPassword(), userData.getPassword());
-        if (isValidLogin) {
-            userData.setPassword(null);
+        if (isValidLogin)
             return userData;
-        }
         throw new InvalidLoginException();
     }
 }
