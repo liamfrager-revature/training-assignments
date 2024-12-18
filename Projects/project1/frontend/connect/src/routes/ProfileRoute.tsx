@@ -8,7 +8,7 @@ const ProfileRoute = () => {
     return (
         <>
             { userID ? (
-                <ProfileDisplayComponent userID={userID}/>
+                <ProfileDisplayComponent userID={Number(userID)}/>
             ) : (
                 <ErrorComponent statusCode={400} message={`User ID not valid.`}/>
             )}

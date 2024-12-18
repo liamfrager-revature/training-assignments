@@ -1,12 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AuthenticateUser } from "../../utils/Types";
 import axiosUtil from "../../utils/AxiosUtil";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../utils/Context";
 
 const AuthenticateUserComponent = () => {
     const navigate = useNavigate();
+    const { currentUser, setCurrentUser } = useUser();
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    useEffect(() => {
+        if (currentUser)
+            navigate('/home');
+    }, [currentUser])
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -23,7 +30,8 @@ const AuthenticateUserComponent = () => {
             const authHeader = res.headers['authorization'];
             if (authHeader) {
                 sessionStorage.setItem('token', authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader);
-                navigate('/home');
+                sessionStorage.setItem('currentUser', JSON.stringify(res.data));
+                setCurrentUser(res.data);
                 return;
             }
             throw new Error();

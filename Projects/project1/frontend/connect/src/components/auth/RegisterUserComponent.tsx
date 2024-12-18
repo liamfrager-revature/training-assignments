@@ -2,9 +2,11 @@ import { useState } from "react";
 import { RegisterUser } from "../../utils/Types";
 import { useNavigate } from "react-router-dom";
 import axiosUtil from "../../utils/AxiosUtil";
+import { useUser } from "../../utils/Context";
 
 const RegisterUserComponent = () => {
     const navigate = useNavigate();
+    const { currentUser, setCurrentUser } = useUser();
     // Form control
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -24,6 +26,8 @@ const RegisterUserComponent = () => {
             const authHeader = res.headers['authorization'];
             if (authHeader) {
                 sessionStorage.setItem('token', authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader);
+                sessionStorage.setItem('currentUser', JSON.stringify(res.data));
+                setCurrentUser(res.data);
                 navigate('/home');
                 return;
             }

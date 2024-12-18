@@ -7,7 +7,6 @@ const PostRoute = () => {
 
     return (
         <>  
-            <h1>Home</h1>
             {postID ? (
                 <PostComponent postID={postID}/>
             ) : (
