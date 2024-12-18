@@ -12,6 +12,7 @@ const PostsDisplayComponent = () => {
 
     return (
         <>
+        <h1>Home</h1>
         { posts ? (
             posts.length > 0 ? (
                 posts.map(post => <PostDisplayComponent key={post.id} post={post} />)

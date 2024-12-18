@@ -1,11 +1,17 @@
 package com.liamfrager.connect.service;
 
 
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.liamfrager.connect.entity.Like;
+import com.liamfrager.connect.exception.InvalidCommentIDException;
 import com.liamfrager.connect.exception.InvalidLikeException;
+import com.liamfrager.connect.exception.InvalidPostIDException;
+import com.liamfrager.connect.repository.CommentRepository;
 import com.liamfrager.connect.repository.LikeRepository;
+import com.liamfrager.connect.repository.PostRepository;
 import com.liamfrager.connect.dto.LikeDTO;
 
 /**
@@ -14,12 +20,16 @@ import com.liamfrager.connect.dto.LikeDTO;
 @Service
 public class LikeService {
     private final LikeRepository likeRepository;
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
 
     /**
      * Constructor for the like service.
      */
-    public LikeService(LikeRepository likeRepository) {
+    public LikeService(LikeRepository likeRepository, PostRepository postRepository, CommentRepository commentRepository) {
         this.likeRepository = likeRepository;
+        this.postRepository = postRepository;
+        this.commentRepository = commentRepository;
     }
 
     /**
@@ -28,9 +38,17 @@ public class LikeService {
      * @return The new like.
      * @throws InvalidLikeException
      */
-    public Like postLike(Like like) throws InvalidLikeException {
-        if ((like.getPost() != null && like.getComment() != null) || (like.getPost() == null && like.getComment() == null))
+    public Like postLike(Map<String, Long> likeRequest) throws InvalidLikeException, InvalidPostIDException, InvalidCommentIDException {
+        Like like = new Like();
+        Long postID = likeRequest.get("postID");
+        Long commentID = likeRequest.get("commentID");
+        if (postID != null) {
+            like.setPost(postRepository.findById(postID).orElseThrow(() -> new InvalidPostIDException(postID)));
+        } else if (commentID != null) {
+            like.setComment(commentRepository.findById(commentID).orElseThrow(() -> new InvalidCommentIDException(commentID)));
+        } else {
             throw new InvalidLikeException(like);
+        }
         return likeRepository.save(like);
     }
 

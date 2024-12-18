@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -48,4 +51,10 @@ public class Post {
     @JsonIgnore
     @OneToMany(mappedBy="post", cascade=CascadeType.ALL, orphanRemoval=true)
     private Set<Like> likes;
+
+    @Formula("(select count(*) from likes l where l.post_id = post_id)")
+    private Long likeCount;
+
+    @Formula("(select count(*) from comments c where c.post_id = post_id)")
+    private Long commentCount;
 }

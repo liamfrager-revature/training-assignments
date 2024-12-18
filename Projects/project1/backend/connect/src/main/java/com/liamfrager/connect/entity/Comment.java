@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -45,7 +46,8 @@ public class Comment {
     @JsonManagedReference
     private Set<Like> likes;
 
-    private Integer likesCount;
+    @Formula("(select count(*) from likes l where l.comment_id = comment_id)")
+    private Long likeCount;
 
     @NonNull
     @CreationTimestamp

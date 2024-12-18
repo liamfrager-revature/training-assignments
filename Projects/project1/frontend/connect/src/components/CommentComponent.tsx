@@ -22,7 +22,7 @@ const CommentComponent = (props: {comment: Comment}) => {
                 <span>{comment.content}</span>
                 <br />
                 <span>{comment.timestamp}</span>
-                <span>❤️🤍</span><span>{formatLikes(comment.likesCount)}</span>
+                <span>❤️🤍</span><span>{formatLikes(comment.likeCount)}</span>
             </div>
         </div>
     )

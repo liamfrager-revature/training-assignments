@@ -1,10 +1,13 @@
 package com.liamfrager.connect.controller;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.liamfrager.connect.entity.Like;
 import com.liamfrager.connect.dto.LikeDTO;
+import com.liamfrager.connect.exception.InvalidCommentIDException;
 import com.liamfrager.connect.exception.InvalidLikeException;
 import com.liamfrager.connect.exception.InvalidPostIDException;
 import com.liamfrager.connect.exception.InvalidUserException;
@@ -36,8 +39,8 @@ public class LikeController {
      * @throws InvalidLikeContentException 
      */
     @PostMapping("/likes")
-    private ResponseEntity<Like> postLike(@RequestBody Like like) throws InvalidLikeException {
-        return ResponseEntity.ok(likeService.postLike(like));
+    private ResponseEntity<Like> postLike(@RequestBody Map<String, Long> likeRequest) throws InvalidLikeException, InvalidPostIDException, InvalidCommentIDException {
+        return ResponseEntity.ok(likeService.postLike(likeRequest));
     }
 
     /**
@@ -80,9 +83,12 @@ public class LikeController {
      * <code>400 Bad Request</code>.
      * Exception handler for:
      * <code>InvalidPostIDException</code>,
+     * <code>InvalidCommentIDException</code>,
      * <code>InvalidLikeException</code>.
      */
     @ExceptionHandler({
+        InvalidPostIDException.class,
+        InvalidCommentIDException.class,
         InvalidLikeException.class,
     })
     private ResponseEntity<Exception> badRequestExceptionHandler(Exception ex) {

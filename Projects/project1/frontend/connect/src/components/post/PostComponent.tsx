@@ -7,7 +7,7 @@ const PostComponent = (props: {postID: string}) => {
 
     useEffect(() => {
         axiosUtil.get(`/posts/${props.postID}`).then(res => setPost(res.data))
-    }, [])
+    }, [props.postID])
     return (
         <>
         { post ? (

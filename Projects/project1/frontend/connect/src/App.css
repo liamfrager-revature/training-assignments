@@ -1,0 +1,15 @@
+.border {
+    border: 1px solid lightgray;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.space-right{
+    margin-right: .5rem;
+}
+
+.metadata {
+    color: lightgray;
+}
