@@ -20,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.liamfrager.connect.entity.User;
+import com.liamfrager.connect.exception.InvalidFollowException;
 import com.liamfrager.connect.exception.InvalidUserException;
 import com.liamfrager.connect.repository.UserRepository;
 import com.liamfrager.connect.service.UserService;
@@ -48,32 +49,26 @@ public class UserServiceTest {
 
         user3 = new User("user3", "user3@example.com", "password3");
         user3.setId(3L);
-
-        user1.getFollowing().add(user2);
-        user1.getFollowers().add(user3);
-
-        user2.getFollowers().add(user1);
-        user3.getFollowing().add(user1);
     }
     
     @Test
-    void testGetAllFriendsByUserID() throws InvalidUserException {
+    void testGetAllFollowingByUserID() throws InvalidUserException {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
 
-        Set<User> friends = userService.getAllFriendsByUserID(1L);
+        Set<User> following = userService.getAllFollowingByUserID(1L);
 
-        assertNotNull(friends);
-        assertEquals(1, friends.size());
-        assertTrue(friends.contains(user2));
+        assertNotNull(following);
+        assertEquals(1, following.size());
+        assertTrue(following.contains(user2));
 
         verify(userRepository, times(1)).findById(1L);
     }
 
     @Test
-    void testGetAllFriendsByUserID_UserNotFound() {
+    void testGetAllFollowingByUserID_UserNotFound() {
         when(userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThrows(InvalidUserException.class, () -> userService.getAllFriendsByUserID(99L));
+        assertThrows(InvalidUserException.class, () -> userService.getAllFollowingByUserID(99L));
 
         verify(userRepository, times(1)).findById(99L);
     }
@@ -101,14 +96,14 @@ public class UserServiceTest {
     }
 
     @Test
-    void testFollowUser() throws InvalidUserException {
+    void testFollowUser() throws InvalidUserException, InvalidFollowException {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
         when(userRepository.findById(2L)).thenReturn(Optional.of(user2));
 
         userService.followUser(1L, 2L);
 
-        assertTrue(user1.getFollowing().contains(user2));
-        assertTrue(user2.getFollowers().contains(user1));
+        assertTrue(user1.getFollowing().stream().anyMatch(follow -> follow.getFollowee().equals(user2)));
+        assertTrue(user2.getFollowers().stream().anyMatch(follow -> follow.getFollower().equals(user1)));
 
         verify(userRepository, times(1)).findById(1L);
         verify(userRepository, times(1)).findById(2L);

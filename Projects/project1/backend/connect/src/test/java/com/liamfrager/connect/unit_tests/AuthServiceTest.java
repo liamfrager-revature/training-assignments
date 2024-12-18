@@ -46,12 +46,6 @@ public class AuthServiceTest {
 
         user3 = new User("user3", "user3@example.com", "password3");
         user3.setId(3L);
-
-        user1.getFollowing().add(user2);
-        user1.getFollowers().add(user3);
-
-        user2.getFollowers().add(user1);
-        user3.getFollowing().add(user1);
     }
 
     @Test
