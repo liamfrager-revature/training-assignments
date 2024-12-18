@@ -1,6 +1,6 @@
 package com.liamfrager.connect.service;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +45,7 @@ public class UserService {
      * @return The friends of the user.
      * @throws InvalidUserException User with id <code>userID</code> does not exist.
      */
-    public Set<User> getAllFollowingByUserID(long userID) throws InvalidUserException {
+    public List<User> getAllFollowingByUserID(long userID) throws InvalidUserException {
         return followRepository.findFollowing(userID).orElseThrow(() -> new InvalidUserException(userID));
     }
 
@@ -55,7 +55,7 @@ public class UserService {
      * @return The followers of the user.
      * @throws InvalidUserException User with id <code>userID</code> does not exist.
      */
-    public Set<User> getAllFollowersByUserID(long userID) throws InvalidUserException {
+    public List<User> getAllFollowersByUserID(long userID) throws InvalidUserException {
         return followRepository.findFollowers(userID).orElseThrow(() -> new InvalidUserException(userID));
     }
 

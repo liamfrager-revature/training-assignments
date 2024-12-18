@@ -21,6 +21,7 @@ public class AuthUtil implements ApplicationContextAware{
 
     private static UserRepository userRepository;
 
+    @SuppressWarnings("unused")
     @Autowired
     private ApplicationContext applicationContext;
 

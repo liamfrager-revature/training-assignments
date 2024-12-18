@@ -13,7 +13,7 @@ const AuthenticateUserComponent = () => {
     useEffect(() => {
         if (currentUser)
             navigate('/home');
-    }, [currentUser])
+    }, [currentUser, navigate])
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

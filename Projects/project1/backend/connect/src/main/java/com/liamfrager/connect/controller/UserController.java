@@ -1,7 +1,6 @@
 package com.liamfrager.connect.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,8 +55,8 @@ public class UserController {
      * Handler for the <code>/users/{userID}/friends</code> <code>GET</code> endpoint.
      * @param userID The ID of the user of whose friends will be returned.
      */
-    @GetMapping("/users/{userID}/friends")
-    private ResponseEntity<Set<User>> getAllFollowingByUserID(@PathVariable long userID) throws InvalidUserException {
+    @GetMapping("/users/{userID}/following")
+    private ResponseEntity<List<User>> getAllFollowingByUserID(@PathVariable long userID) throws InvalidUserException {
         return ResponseEntity.ok(userService.getAllFollowingByUserID(userID));
     }
 
@@ -66,7 +65,7 @@ public class UserController {
      * @param userID The ID of the user of whose followers will be returned.
      */
     @GetMapping("/users/{userID}/followers")
-    private ResponseEntity<Set<User>> getAllFollowersByUserID(@PathVariable long userID) throws InvalidUserException {
+    private ResponseEntity<List<User>> getAllFollowersByUserID(@PathVariable long userID) throws InvalidUserException {
         return ResponseEntity.ok(userService.getAllFollowersByUserID(userID));
     }
 

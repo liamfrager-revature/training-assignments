@@ -8,8 +8,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,7 +55,7 @@ public class UserServiceTest {
     void testGetAllFollowingByUserID() throws InvalidUserException {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
 
-        Set<User> following = userService.getAllFollowingByUserID(1L);
+        List<User> following = userService.getAllFollowingByUserID(1L);
 
         assertNotNull(following);
         assertEquals(1, following.size());
@@ -77,7 +77,7 @@ public class UserServiceTest {
     void testGetAllFollowersByUserID() throws InvalidUserException {
         when(userRepository.findById(1L)).thenReturn(Optional.of(user1));
 
-        Set<User> followers = userService.getAllFollowersByUserID(1L);
+        List<User> followers = userService.getAllFollowersByUserID(1L);
 
         assertNotNull(followers);
         assertEquals(1, followers.size());

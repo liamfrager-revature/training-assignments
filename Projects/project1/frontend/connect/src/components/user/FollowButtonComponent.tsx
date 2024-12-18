@@ -5,7 +5,7 @@ const FollowButtonComponent = (props: {userID: number}) => {
     const [followingUser, setFollowingUser] = useState<Boolean>();
 
     useEffect(() => {
-        axiosUtil.get(`users/${props.userID}/follow`).then(res => {console.log('res', res.data); setFollowingUser(res.data)});
+        axiosUtil.get(`users/${props.userID}/follow`).then(res => setFollowingUser(res.data));
     }, [])
     
 

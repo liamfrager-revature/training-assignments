@@ -3,6 +3,7 @@ import axiosUtil from "../../utils/AxiosUtil";
 import { Post } from "../../utils/Types";
 import Metadata from "../Metadata";
 import { useNavigate } from "react-router-dom";
+import UsernameComponent from "../user/UsernameComponent";
 
 const PostDisplayComponent = (props: {post: Post}) => {
     const navigate = useNavigate();
@@ -26,7 +27,7 @@ const PostDisplayComponent = (props: {post: Post}) => {
             <div>
                 <img src={"null"} alt="" />
                 <div>
-                    <span className="bold space-right">{post.user.username}</span>
+                    <UsernameComponent user={props.post.user} />
                     <span>{post.content}</span>
                     <br/>
                     <Metadata

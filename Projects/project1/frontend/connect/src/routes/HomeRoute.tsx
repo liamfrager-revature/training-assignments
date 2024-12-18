@@ -4,10 +4,10 @@ import axiosUtil from "../utils/AxiosUtil";
 import { Post } from "../utils/Types";
 
 const HomeRoute = () => {
-    const [posts, setPosts] = useState<Array<Post>>();
+    const [posts, setPosts] = useState<Post[]>();
 
     useEffect(() => {
-        axiosUtil.get('/posts').then(res => {console.log(res.data); setPosts(res.data)})
+        axiosUtil.get('/posts').then(res => setPosts(res.data))
     }, [])
     return (
         <>

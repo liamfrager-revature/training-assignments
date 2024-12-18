@@ -5,9 +5,10 @@ import ProfileRoute from './routes/ProfileRoute';
 import PostRoute from './routes/PostRoute';
 import RegisterRoute from './routes/RegisterRoute';
 import LoginRoute from './routes/LoginRoute';
-import FriendsRoute from './routes/FriendsRoute';
+import FollowingRoute from './routes/FollowingRoute';
 import ProtectedRoute from './utils/ProtectedRoute';
 import { UserContextProvider } from './utils/Context';
+import LogoutRoute from './routes/LogoutRoute';
 
 function App() {
   return (
@@ -17,12 +18,14 @@ function App() {
           <Routes>
             <Route element={<ProtectedRoute />}>
               <Route path="/home" element={<HomeRoute />} />
+              <Route path="/profile" element={<ProfileRoute />} />
               <Route path="/profile/:userID" element={<ProfileRoute />} />
               <Route path="/post/:postID" element={<PostRoute />} />
-              <Route path="/friends" element={<FriendsRoute/>} />
+              <Route path="/following" element={<FollowingRoute/>} />
             </Route>
             <Route path="/register" element={<RegisterRoute />} />
             <Route path="/login" element={<LoginRoute />} />
+            <Route path="/logout" element={<LogoutRoute />} />
           </Routes>
         </Router>
       </UserContextProvider>

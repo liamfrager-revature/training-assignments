@@ -26,6 +26,10 @@ export interface Post {
   likedByUser: boolean
 }
 
+export interface NewPost {
+  content: string
+}
+
 export interface User {
   id?: number,
   username: string,

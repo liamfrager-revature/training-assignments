@@ -1,7 +1,7 @@
 package com.liamfrager.connect.entity;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
@@ -36,7 +36,7 @@ public class Comment {
 
     @OneToMany(mappedBy="comment", cascade=CascadeType.ALL, orphanRemoval=true)
     @JsonIgnore
-    private Set<Like> likes;
+    private List<Like> likes;
 
     @Formula("(select coalesce(count(*), 0) from likes l where l.comment_id = comment_id)")
     private Long likeCount;

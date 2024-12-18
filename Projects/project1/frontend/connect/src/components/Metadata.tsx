@@ -33,6 +33,17 @@ const Metadata = (props: {
         }
     }
 
+    const formatNum = (likes: number) => {
+        const suffixes = ['K', 'M', 'B', 'T'];
+        let i = -1;
+        while (likes >= 1000 && i < suffixes.length - 1) {
+            likes /= 1000;
+            i++;
+        }
+        const formattedLikes = likes % 1 === 0 ? likes.toFixed(0) : likes.toFixed(1);
+        return `${formattedLikes}${suffixes[i] || ''}`;
+    }
+
     const handleCommentClick = (e: React.MouseEvent) => {
         e.stopPropagation();
         props.onComment!();
@@ -51,13 +62,13 @@ const Metadata = (props: {
             { props.commentCount !== undefined && props.onComment &&
                 <span className="space-right">
                     <FontAwesomeIcon icon={faComment} onClick={(e) => handleCommentClick(e)} className="space-right"/>
-                    <span>{props.commentCount}</span>
+                    <span>{formatNum(props.commentCount)}</span>
                 </span>
             }
             { props.likeCount !== undefined && props.onLike &&
                 <span className="space-right">
                     <FontAwesomeIcon icon={faHeart} onClick={(e) => handleLikeClick(e)} className="space-right"/>
-                    <span>{props.likeCount}</span>
+                    <span>{formatNum(props.likeCount)}</span>
                 </span>
             }
         </span>

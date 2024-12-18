@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RegisterUser } from "../../utils/Types";
 import { useNavigate } from "react-router-dom";
 import axiosUtil from "../../utils/AxiosUtil";
@@ -12,7 +12,10 @@ const RegisterUserComponent = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    // 
+    useEffect(() => {
+        if (currentUser)
+            navigate('/home');
+    }, [currentUser, navigate])
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -28,8 +31,6 @@ const RegisterUserComponent = () => {
                 sessionStorage.setItem('token', authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader);
                 sessionStorage.setItem('currentUser', JSON.stringify(res.data));
                 setCurrentUser(res.data);
-                navigate('/home');
-                return;
             }
             throw new Error();
         }).catch(err => {

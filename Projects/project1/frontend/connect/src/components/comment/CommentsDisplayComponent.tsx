@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import AddCommentComponent from "./AddCommentComponent";
 
 const CommentsDisplayComponent = (props: {postID: number}) => {
-    const [comments, setComments] = useState<Array<Comment>>();
+    const [comments, setComments] = useState<Comment[]>();
 
     useEffect(() => {
       axiosUtil.get(`posts/${props.postID}/comments`).then(res => {
@@ -21,7 +21,6 @@ const CommentsDisplayComponent = (props: {postID: number}) => {
             }
         }
         axiosUtil.post(`posts/${props.postID}/comments`, JSON.stringify(newComment)).then(res => {
-            console.log(res.data);
             setComments([...comments!, res.data]);
         })
     }

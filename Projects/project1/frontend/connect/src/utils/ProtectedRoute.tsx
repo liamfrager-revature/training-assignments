@@ -11,7 +11,7 @@ const ProtectedRoute = () =>{
     useEffect(() => {
         if (!currentUser)
             navigate("/login");
-    }, [currentUser]);
+    }, [currentUser, navigate]);
 
     if (currentUser)
         return (

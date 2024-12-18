@@ -1,7 +1,7 @@
 package com.liamfrager.connect.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.Formula;
 
@@ -41,14 +41,14 @@ public class User {
 
     @OneToMany(mappedBy="follower")
     @JsonIgnore
-    private Set<Follow> following = new HashSet<>();
+    private List<Follow> following = new ArrayList<>();
 
     @Formula("(select count(*) from follow f where f.follower_id = user_id)")
     private Long followingCount;
 
     @OneToMany(mappedBy="followee")
     @JsonIgnore
-    private Set<Follow> followers = new HashSet<>();
+    private List<Follow> followers = new ArrayList<>();
 
     @Formula("(select count(*) from follow f where f.followee_id = user_id)")
     private Long followersCount;

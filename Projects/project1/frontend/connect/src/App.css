@@ -20,6 +20,10 @@
     margin-right: .5rem;
 }
 
+.space-left{
+    margin-left: .5rem;
+}
+
 .metadata {
     color: var(--gray);
 }
@@ -40,9 +44,13 @@
     ul {
         list-style: none;
     }
-    a {
-        text-decoration: none;
-    }
+}
+.nav-link {
+    text-decoration: none;
+    color: inherit;
+}
+.nav-link:hover {
+    color: var(--d2); /* Define your custom color on hover */
 }
 
 #page-content {
@@ -50,11 +58,21 @@
     padding: 1em;
 }
 
-.logo {
+.align-center {
     display: flex;
     align-items: center;
-    color: var(--gray);
+}
+
+.logo, .user-display {
+    color: var(--d1);
     img {
         max-height: 5em;
     }
+}
+
+.user-display {
+    border: 1px solid var(--black);
+    border-radius: 5em;
+    padding: 1em;
+    justify-content: space-between;
 }
