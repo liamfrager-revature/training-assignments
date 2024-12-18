@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Post } from "../../utils/Types";
 import axiosUtil from "../../utils/AxiosUtil";
+import PfpComponent from "../user/PfpComponent";
 
 const PostComponent = (props: {postID: string}) => {
     const [post, setPost] = useState<Post>();
@@ -14,7 +15,7 @@ const PostComponent = (props: {postID: string}) => {
             <>
             <span>{post.user.username}</span>
             <div>
-                <img src="" alt="" />
+                <PfpComponent pfp={post.user.pfp}/>
             </div>
             </>
         ) : (

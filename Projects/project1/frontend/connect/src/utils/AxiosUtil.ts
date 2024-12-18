@@ -11,7 +11,7 @@ const axiosUtil = axios.create({
 
 // Add JWT token from localStorage to each request's Authorization header
 axiosUtil.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
   }

@@ -17,32 +17,35 @@ public class AuthUtil {
     }
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    public static String generateToken(String username) {
+    public static String generateToken(String username, Long userID) {
         return Jwts.builder()
-                .setSubject(username) // Set subject
-                .setIssuedAt(new Date()) // Issued at
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // Expires in 10 hours
-                .signWith(key) // Use HMAC-SHA key
+                .setSubject(username)
+                .claim("id", userID)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .signWith(key)
                 .compact();
     }
 
-    // Extract the username (subject) from the token
     public static String extractUsername(String token) {
         return extractClaims(token).getSubject();
     }
 
-    // Check if the token is expired
+    public static Long extractID(String token) {
+        return extractClaims(token).get("id", Long.class);
+    }
+
     public static boolean isTokenExpired(String token) {
         return extractClaims(token).getExpiration().before(new Date());
     }
 
-    // Validate the token
     public static boolean validateToken(String token, String username) {
         return username.equals(extractUsername(token)) && !isTokenExpired(token);
     }
 
-    // Extract claims from a token
     private static Claims extractClaims(String token) {
+        if (token.startsWith("Bearer "))
+            token = token.substring(7);
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

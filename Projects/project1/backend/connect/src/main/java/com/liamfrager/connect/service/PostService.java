@@ -92,7 +92,7 @@ public class PostService {
      * @throws InvalidUserException
      */
     public List<Post> getAllPostsByUserID(long id) throws InvalidUserException {
-        if (userRepository.existsById(id)) throw new InvalidUserException(id);
+        if (!userRepository.existsById(id)) throw new InvalidUserException(id);
         return postRepository.findByUserId(id);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.liamfrager.connect.entity.User;
+import com.liamfrager.connect.AuthUtil;
 import com.liamfrager.connect.entity.Post;
 import com.liamfrager.connect.exception.*;
 import com.liamfrager.connect.service.UserService;
@@ -56,8 +57,8 @@ public class UserController {
      * @param userID The ID of the user of whose friends will be returned.
      */
     @GetMapping("/users/{userID}/friends")
-    private ResponseEntity<Set<User>> getAllFriendsByUserID(@PathVariable long userID) throws InvalidUserException {
-        return ResponseEntity.ok(userService.getAllFriendsByUserID(userID));
+    private ResponseEntity<Set<User>> getAllFollowingByUserID(@PathVariable long userID) throws InvalidUserException {
+        return ResponseEntity.ok(userService.getAllFollowingByUserID(userID));
     }
 
     /**
@@ -73,9 +74,29 @@ public class UserController {
      * Handler for the <code>/users/{userID}/followers</code> <code>GET</code> endpoint.
      * @param userID The ID of the user of whose followers will be returned.
      */
+    @GetMapping("/users/{userID}/follow")
+    private ResponseEntity<Boolean> isFollowing(@RequestHeader("Authorization") String token, @PathVariable long userID) {
+        return ResponseEntity.ok(userService.isFollowing(AuthUtil.extractID(token), userID));
+    }
+
+    /**
+     * Handler for the <code>/users/{userID}/followers</code> <code>GET</code> endpoint.
+     * @param userID The ID of the user to follow.
+     */
     @PostMapping("/users/{userID}/follow")
-    private ResponseEntity<Set<User>> followUser(@PathVariable long userID) throws InvalidUserException {
-        return ResponseEntity.ok(userService.getAllFollowersByUserID(userID));
+    private ResponseEntity<Void> followUser(@RequestHeader("Authorization") String token, @PathVariable long userID) throws InvalidUserException, InvalidFollowException {
+        userService.followUser(AuthUtil.extractID(token), userID);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Handler for the <code>/users/{userID}/followers</code> <code>Delete</code> endpoint.
+     * @param userID The ID of the user to unfollow.
+     */
+    @DeleteMapping("/users/{userID}/follow")
+    private ResponseEntity<Void> unfollowUser(@RequestHeader("Authorization") String token, @PathVariable long userID) throws InvalidUserException, InvalidFollowException {
+        userService.unfollowUser(AuthUtil.extractID(token), userID);
+        return ResponseEntity.ok().build();
     }
 
     // ------------------
@@ -85,10 +106,12 @@ public class UserController {
     /**
      * <code>400 Bad Request</code>.
      * Exception handler for:
-     * <code>InvalidUserException</code>.
+     * <code>InvalidUserException</code>,
+     * <code>InvalidFollowException</code>.
      */
     @ExceptionHandler({
-        InvalidUserException.class
+        InvalidUserException.class,
+        InvalidFollowException.class
     })
     private ResponseEntity<Exception> badRequestExceptionHandler(Exception ex) {
         return ResponseEntity.badRequest().body(ex);

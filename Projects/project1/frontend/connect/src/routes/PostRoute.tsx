@@ -6,14 +6,13 @@ const PostRoute = () => {
     const { postID } = useParams();
 
     return (
-        <>  {
-            postID ? (
+        <>  
+            <h1>Home</h1>
+            {postID ? (
                 <PostComponent postID={postID}/>
             ) : (
                 <ErrorComponent statusCode={400} message={`Post ID not valid.`}/>
-            )
-
-            }
+            )}
         </>
     );
 }

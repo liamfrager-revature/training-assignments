@@ -37,7 +37,7 @@ public class AuthController {
     private ResponseEntity<User> register(@RequestBody User user) throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
         System.err.println(user);
         User registeredUser = authService.register(user);
-        String token = AuthUtil.generateToken(registeredUser.getUsername());
+        String token = AuthUtil.generateToken(registeredUser.getUsername(), registeredUser.getId());
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
         return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(registeredUser);
@@ -50,7 +50,7 @@ public class AuthController {
     @PostMapping("/auth/login")
     private ResponseEntity<User> login(@RequestBody User user) throws InvalidLoginException {
         User authenticatedUser = authService.login(user);
-        String token = AuthUtil.generateToken(authenticatedUser.getUsername());
+        String token = AuthUtil.generateToken(authenticatedUser.getUsername(), authenticatedUser.getId());
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", token);
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(authenticatedUser);

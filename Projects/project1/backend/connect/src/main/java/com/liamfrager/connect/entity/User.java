@@ -3,6 +3,8 @@ package com.liamfrager.connect.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.hibernate.annotations.Formula;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,20 +44,19 @@ public class User {
     @Lob
     private Byte[] pfp;
 
-    @ManyToMany
-    // @JsonManagedReference
+    @OneToMany(mappedBy="follower")
     @JsonIgnore
-    @JoinTable(
-        name="followers", // Name of the join table
-        joinColumns=@JoinColumn(name="follower_id"), // Column for the follower
-        inverseJoinColumns=@JoinColumn(name="followee_id") // Column for the followee
-    )
-    private Set<User> following = new HashSet<>();
+    private Set<Follow> following = new HashSet<>();
 
-    @ManyToMany(mappedBy="following")
-    // @JsonBackReference
+    @Formula("(select count(*) from follow f where f.follower_id = user_id)")
+    private Long followingCount;
+
+    @OneToMany(mappedBy="followee")
     @JsonIgnore
-    private Set<User> followers = new HashSet<>();
+    private Set<Follow> followers = new HashSet<>();
+
+    @Formula("(select count(*) from follow f where f.followee_id = user_id)")
+    private Long followersCount;
 
     public User(String username, String email, String password) {
         this.username = username;
