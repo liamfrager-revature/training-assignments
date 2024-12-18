@@ -10,7 +10,10 @@ import com.liamfrager.connect.entity.User;
 public class TestData {
 
     public static Post generatePost() {
-        Post x = new Post(generateUser(), "Content", LocalDateTime.now());
+        Post x = new Post();
+        x.setUser(generateUser());
+        x.setContent("Content");
+        x.setTimestamp(LocalDateTime.now());
         x.setId(1L);
         return x;
     }
@@ -22,7 +25,11 @@ public class TestData {
     }
 
     public static Comment generateComment() {
-        Comment x = new Comment("Content", generateUser(), generatePost(), LocalDateTime.now());
+        Comment x = new Comment();
+        x.setContent("Content");
+        x.setUser(generateUser());
+        x.setPost(generatePost());
+        x.setTimestamp(LocalDateTime.now());
         x.setId(1L);
         return x;
     }
@@ -40,7 +47,11 @@ public class TestData {
     }
 
     public static Post generateNewPost(User user) {
-        return new Post(user, "Content", LocalDateTime.now());
+        Post x = new Post();
+        x.setUser(user);
+        x.setContent("Content");
+        x.setTimestamp(LocalDateTime.now());
+        return x;
     }
 
     public static User generateNewUser() {
@@ -48,7 +59,11 @@ public class TestData {
     }
 
     public static Comment generateNewComment(Post post) {
-        return new Comment("Content", post.getUser(), post, LocalDateTime.now());
+        Comment x = new Comment();
+            x.setUser(post.getUser());
+            x.setContent("Content");
+            x.setTimestamp(LocalDateTime.now());
+        return x;
     }
 
     public static Like generateNewPostLike(User user, Post post) {

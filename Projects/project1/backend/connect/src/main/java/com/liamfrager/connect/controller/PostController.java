@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.liamfrager.connect.AuthUtil;
 import com.liamfrager.connect.entity.Post;
 import com.liamfrager.connect.exception.InvalidPostContentException;
 import com.liamfrager.connect.exception.InvalidPostIDException;
@@ -38,7 +39,8 @@ public class PostController {
      * @throws InvalidPostContentException 
      */
     @PostMapping("/posts")
-    private ResponseEntity<Post> postPost(@RequestBody Post post) throws InvalidPostContentException, InvalidUserException {
+    private ResponseEntity<Post> postPost(@RequestHeader("Authorization") String token, @RequestBody Post post) throws InvalidPostContentException, InvalidUserException {
+        post.setUser(AuthUtil.getUserFromToken(token));
         return ResponseEntity.status(HttpStatus.CREATED).body(postService.postPost(post));
     }
 

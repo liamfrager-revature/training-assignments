@@ -11,6 +11,7 @@ const HomeRoute = () => {
     }, [])
     return (
         <>
+            <h1>Home</h1>
             <PostsDisplayComponent posts={posts}/>
         </>
     );

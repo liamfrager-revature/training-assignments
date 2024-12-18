@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 const Metadata = (props: {
     timestamp?: EpochTimeStamp,
     commentCount?: number,
-    onPostComment?: () => void,
+    onComment?: () => void,
     likeCount?: number,
-    onPostLike?: () => void
+    onLike?: () => void
 }) => {
 
     const timeAgo = (epochTimeStamp: EpochTimeStamp) => {
@@ -33,20 +33,30 @@ const Metadata = (props: {
         }
     }
 
+    const handleCommentClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        props.onComment!();
+    }
+
+    const handleLikeClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        props.onLike!();
+    }
+
     return (
         <span className="metadata">
             { props.timestamp && 
                 <span className="space-right">{timeAgo(props.timestamp)}</span>
             }
-            { props.commentCount !== undefined && props.onPostComment &&
+            { props.commentCount !== undefined && props.onComment &&
                 <span className="space-right">
-                    <FontAwesomeIcon icon={faComment} onClick={props.onPostComment} className="space-right"/>
+                    <FontAwesomeIcon icon={faComment} onClick={(e) => handleCommentClick(e)} className="space-right"/>
                     <span>{props.commentCount}</span>
                 </span>
             }
-            { props.likeCount !== undefined && props.onPostLike &&
+            { props.likeCount !== undefined && props.onLike &&
                 <span className="space-right">
-                    <FontAwesomeIcon icon={faHeart} onClick={props.onPostLike} className="space-right"/>
+                    <FontAwesomeIcon icon={faHeart} onClick={(e) => handleLikeClick(e)} className="space-right"/>
                     <span>{props.likeCount}</span>
                 </span>
             }

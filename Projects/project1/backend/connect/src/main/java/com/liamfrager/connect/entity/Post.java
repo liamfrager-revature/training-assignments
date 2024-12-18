@@ -10,13 +10,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import com.fasterxml.jackson.annotation.*;
 
 @Data
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -27,18 +24,15 @@ public class Post {
     @Column(name="post_id")
     private Long id;
     
-    @NonNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NonNull
     private String content;
 
     @Lob
     private Byte[] attachment;
 
-    @NonNull
     @CreationTimestamp
     private LocalDateTime timestamp;
 
@@ -50,9 +44,9 @@ public class Post {
     @OneToMany(mappedBy="post", cascade=CascadeType.ALL, orphanRemoval=true)
     private Set<Like> likes;
 
-    @Formula("(select count(*) from likes l where l.post_id = post_id)")
+    @Formula("(select coalesce(count(*), 0) from likes l where l.post_id = post_id)")
     private Long likeCount;
 
-    @Formula("(select count(*) from comments c where c.post_id = post_id)")
+    @Formula("(select coalesce(count(*), 0) from comments c where c.post_id = post_id)")
     private Long commentCount;
 }

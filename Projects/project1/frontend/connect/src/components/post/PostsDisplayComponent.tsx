@@ -1,9 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Post } from "../../utils/Types";
 import PostDisplayComponent from "./PostDisplayComponent";
 
 const PostsDisplayComponent = (props: {posts?: Post[]}) => {
     const [posts, setPosts] = useState<Array<Post> | undefined>(props.posts);
+
+    useEffect(() => {
+        setPosts(props.posts)
+    },[props.posts]);
 
     return (
         <>

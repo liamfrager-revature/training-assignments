@@ -1,4 +1,5 @@
-import { Comment } from "../utils/Types";
+import { Comment } from "../../utils/Types";
+import Metadata from "../Metadata";
 
 const CommentComponent = (props: {comment: Comment}) => {
     const comment = props.comment
@@ -14,15 +15,22 @@ const CommentComponent = (props: {comment: Comment}) => {
         return `${likes.toFixed(1)}${suffixes[i] || ''}`;
     }
 
+    const onCommentLike = () => {
+
+    }
+
     return (
         <div>
             {user.pfp ? <img src={URL.createObjectURL(user.pfp)} alt={user.username + " profile picture"} /> : null}
             <div className="comment-text">
-                <span>{user.username}</span>
+                <span className="bold space-right">{user.username}</span>
                 <span>{comment.content}</span>
                 <br />
-                <span>{comment.timestamp}</span>
-                <span>❤️🤍</span><span>{formatLikes(comment.likeCount)}</span>
+                <Metadata
+                    timestamp={comment.timestamp}
+                    likeCount={comment.likeCount}
+                    onLike={onCommentLike}
+                />
             </div>
         </div>
     )

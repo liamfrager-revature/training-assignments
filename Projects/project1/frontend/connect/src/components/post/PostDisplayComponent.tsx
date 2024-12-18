@@ -2,8 +2,10 @@ import { useState } from "react";
 import axiosUtil from "../../utils/AxiosUtil";
 import { Post } from "../../utils/Types";
 import Metadata from "../Metadata";
+import { useNavigate } from "react-router-dom";
 
 const PostDisplayComponent = (props: {post: Post}) => {
+    const navigate = useNavigate();
     const post = props.post;
 
     const [postLikes, setPostLikes] = useState(post.likeCount);
@@ -20,7 +22,7 @@ const PostDisplayComponent = (props: {post: Post}) => {
     }
 
     return (
-        <div className="postDisplay">
+        <div className="postDisplay" onClick={() => navigate(`/post/${post.id}`)}>
             <div>
                 <img src={"null"} alt="" />
                 <div>
@@ -29,10 +31,10 @@ const PostDisplayComponent = (props: {post: Post}) => {
                     <br/>
                     <Metadata
                         timestamp={post.timestamp}
-                        commentCount={0}
-                        onPostComment={onPostComment}
+                        commentCount={post.commentCount}
+                        onComment={onPostComment}
                         likeCount={postLikes}
-                        onPostLike={onPostLike}
+                        onLike={onPostLike}
                     />
                 </div>
             </div>

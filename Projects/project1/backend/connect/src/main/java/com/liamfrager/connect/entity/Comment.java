@@ -10,13 +10,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import com.fasterxml.jackson.annotation.*;
 
 @Data
-@RequiredArgsConstructor
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -27,29 +24,23 @@ public class Comment {
     @Column(name="comment_id")
     private Long id;
 
-    @NonNull
     private String content;
 
-    @NonNull
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name="user_id")
     private User user;
 
-    @NonNull
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name="post_id")
     private Post post;
 
     @OneToMany(mappedBy="comment", cascade=CascadeType.ALL, orphanRemoval=true)
-    @JsonManagedReference
+    @JsonIgnore
     private Set<Like> likes;
 
-    @Formula("(select count(*) from likes l where l.comment_id = comment_id)")
+    @Formula("(select coalesce(count(*), 0) from likes l where l.comment_id = comment_id)")
     private Long likeCount;
 
-    @NonNull
     @CreationTimestamp
     private LocalDateTime timestamp;
 }

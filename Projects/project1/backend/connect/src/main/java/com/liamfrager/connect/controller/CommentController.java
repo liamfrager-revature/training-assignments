@@ -5,10 +5,13 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.liamfrager.connect.AuthUtil;
 import com.liamfrager.connect.entity.Comment;
 import com.liamfrager.connect.exception.InvalidCommentContentException;
 import com.liamfrager.connect.exception.InvalidCommentIDException;
+import com.liamfrager.connect.exception.InvalidPostIDException;
 import com.liamfrager.connect.exception.InvalidUserException;
+import com.liamfrager.connect.repository.PostRepository;
 import com.liamfrager.connect.service.CommentService;
 
 /**
@@ -17,13 +20,15 @@ import com.liamfrager.connect.service.CommentService;
 @CrossOrigin(origins="http://localhost:3000")
 @RestController
 public class CommentController {
-    private CommentService commentService;
+    private final CommentService commentService;
+    private final PostRepository postRepository;
 
     /**
      * Constructor for the comment controller.
      */
-    public CommentController(CommentService commentService){
+    public CommentController(CommentService commentService, PostRepository postRepository) {
         this.commentService = commentService;
+        this.postRepository = postRepository;
     }
 
     // --------------
@@ -37,7 +42,9 @@ public class CommentController {
      * @throws InvalidCommentContentException 
      */
     @PostMapping("/posts/{id}/comments")
-    private ResponseEntity<Comment> postComment(@RequestBody Comment comment, @PathVariable long id) throws InvalidCommentContentException, InvalidUserException {
+    private ResponseEntity<Comment> postComment(@RequestHeader("Authorization") String token, @RequestBody Comment comment, @PathVariable long id) throws InvalidCommentContentException, InvalidUserException, InvalidPostIDException {
+        comment.setUser(AuthUtil.getUserFromToken(token));
+        comment.setPost(postRepository.findById(comment.getPost().getId()).orElseThrow(() -> new InvalidPostIDException(comment.getPost().getId())));
         return ResponseEntity.ok(commentService.postComment(comment));
     }
 
@@ -82,11 +89,13 @@ public class CommentController {
      * Exception handler for:
      * <code>InvalidCommentContentException</code>,
      * <code>InvalidCommentIDException</code>,
+     * <code>InvalidPostIDException</code>,
      * <code>InvalidUserException</code>.
      */
     @ExceptionHandler({
         InvalidCommentContentException.class,
         InvalidCommentIDException.class,
+        InvalidPostIDException.class,
         InvalidUserException.class,
     })
     private ResponseEntity<Exception> badRequestExceptionHandler(Exception ex) {

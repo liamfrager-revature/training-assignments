@@ -8,9 +8,7 @@ import com.liamfrager.connect.entity.Comment;
 import com.liamfrager.connect.exception.InvalidCommentContentException;
 import com.liamfrager.connect.exception.InvalidCommentIDException;
 import com.liamfrager.connect.exception.InvalidPostContentException;
-import com.liamfrager.connect.exception.InvalidUserException;
 import com.liamfrager.connect.repository.CommentRepository;
-import com.liamfrager.connect.repository.UserRepository;
 
 /**
  * A service for handling the <code>Comment</code> business logic.
@@ -18,14 +16,12 @@ import com.liamfrager.connect.repository.UserRepository;
 @Service
 public class CommentService {
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
 
     /**
      * Constructor for the comment service.
      */
-    public CommentService(CommentRepository commentRepository, UserRepository userRepository) {
+    public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
-        this.userRepository = userRepository;
     }
     
     /**
@@ -35,12 +31,12 @@ public class CommentService {
      * @throws InvalidPostContentException <code>comment.content</code> is either empty or longer than 255 characters.
      * @throws InvalidUserIDException There is no user with the given <code>comment.user</code> ID.
      */
-    public Comment postComment(Comment comment) throws InvalidCommentContentException, InvalidUserException {
+    public Comment postComment(Comment comment) throws InvalidCommentContentException {
         if (comment.getContent().length() <= 0 || comment.getContent().length() >= 255)
             throw new InvalidCommentContentException(comment.getContent());
-        if (!userRepository.existsById(comment.getUser().getId()))
-            throw new InvalidUserException(comment.getUser());
-        return commentRepository.save(comment);
+        Comment newComment = commentRepository.save(comment);
+        newComment.setLikeCount(0L);
+        return newComment;
     }
 
 

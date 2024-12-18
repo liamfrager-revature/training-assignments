@@ -2,10 +2,16 @@ export interface Comment {
   id: number,
   content: string,
   user: User,
-  post?: Post, // Optionally include the post if you need it, to avoid circular references.
   likeCount: number,
   likedByUser: boolean,
   timestamp: EpochTimeStamp
+}
+
+export interface NewComment {
+  content: string,
+  post: {
+    id: number,
+  }
 }
 
 export interface Post {
@@ -16,6 +22,7 @@ export interface Post {
   comments: Comment[], // A post has a list of comments
   timestamp: EpochTimeStamp,
   likeCount: number,
+  commentCount: number,
   likedByUser: boolean
 }
 
