@@ -37,7 +37,7 @@ public class PostServiceTest {
         List<Post> posts = List.of(TestData.generatePost());
         when(postRepository.findAll()).thenReturn(posts);
 
-        List<Post> result = postService.getAllPosts();
+        List<Post> result = postService.getAllPosts(1L);
 
         assertEquals(posts, result);
     }

@@ -37,7 +37,7 @@ public class User {
     public void setPassword(String password) {this.password = password;}
 
     @Lob
-    private Byte[] pfp;
+    private byte[] pfp;
 
     @OneToMany(mappedBy="follower")
     @JsonIgnore

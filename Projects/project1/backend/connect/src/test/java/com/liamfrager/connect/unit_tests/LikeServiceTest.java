@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.liamfrager.connect.TestData;
 import com.liamfrager.connect.entity.Like;
-import com.liamfrager.connect.dto.LikeDTO;
 import com.liamfrager.connect.exception.InvalidCommentIDException;
 import com.liamfrager.connect.exception.InvalidLikeException;
 import com.liamfrager.connect.exception.InvalidPostIDException;
@@ -40,7 +39,7 @@ public class LikeServiceTest {
         Like like = TestData.generatePostLike();
         when(likeRepository.save(like)).thenReturn(like);
 
-        Like result = likeService.postLike(likeRequest);
+        Like result = likeService.postLike(likeRequest, TestData.generateUser());
 
         assertEquals(like, result);
         verify(likeRepository, times(1)).save(like);
@@ -53,7 +52,7 @@ public class LikeServiceTest {
         Like like = TestData.generateCommentLike();
         when(likeRepository.save(like)).thenReturn(like);
 
-        Like result = likeService.postLike(likeRequest);
+        Like result = likeService.postLike(likeRequest, TestData.generateUser());
 
         assertEquals(like, result);
         verify(likeRepository, times(1)).save(like);
@@ -63,16 +62,6 @@ public class LikeServiceTest {
     void deleteLike_ShouldThrowException_WhenLikeDoesNotExist() {
         when(likeRepository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThrows(InvalidLikeException.class, () -> likeService.deleteLike(1L));
-    }
-
-    @Test
-    void getLikesFromPost_ShouldReturnLikes() {
-        when(likeRepository.countLikesByPostId(1L)).thenReturn(10L);
-        when(likeRepository.existsByPostIdAndUserId(1L, 1L)).thenReturn(false);
-
-        LikeDTO response = likeService.getLikesFromPost(1L);
-
-        assertEquals(10, response.getLikesCount());
+        assertThrows(InvalidLikeException.class, () -> likeService.deleteLike(1L, 1L));
     }
 }

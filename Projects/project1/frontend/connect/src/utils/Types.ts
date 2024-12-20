@@ -3,7 +3,7 @@ export interface Comment {
   content: string,
   user: User,
   likeCount: number,
-  likedByUser: boolean,
+  currentUserLikeID: number | null,
   timestamp: EpochTimeStamp
 }
 
@@ -19,15 +19,17 @@ export interface Post {
   title: string,
   user: User,
   content: string,
+  attachment?: string
   comments: Comment[], // A post has a list of comments
   timestamp: EpochTimeStamp,
   likeCount: number,
   commentCount: number,
-  likedByUser: boolean
+  currentUserLikeID: number | null
 }
 
 export interface NewPost {
-  content: string
+  content: string,
+  attachment?: string,
 }
 
 export interface User {
@@ -35,7 +37,7 @@ export interface User {
   username: string,
   email: string,
   password: string,
-  pfp?: Blob,
+  pfp?: string,
 }
 
 export interface RegisterUser {
@@ -48,8 +50,4 @@ export interface AuthenticateUser {
   username?: string,
   email?: string,
   password: string,
-}
-
-export interface Like {
-    
 }

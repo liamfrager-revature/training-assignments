@@ -52,8 +52,8 @@ public class CommentController {
      * Handler for the <code>/posts/{id}/comments</code> <code>GET</code> endpoint.
      */
     @GetMapping("/posts/{id}/comments")
-    private ResponseEntity<List<Comment>> getAllComments(@PathVariable long id) {
-        return ResponseEntity.ok(commentService.getAllCommentsByPostID(id));
+    private ResponseEntity<List<Comment>> getAllComments(@RequestHeader("Authorization") String token, @PathVariable long id) {
+        return ResponseEntity.ok(commentService.getAllCommentsByPostID(id, AuthUtil.extractID(token)));
     }
 
     /**

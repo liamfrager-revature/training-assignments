@@ -50,7 +50,7 @@ public class CommentRepositoryTest {
     @Test
     public void testFindAllByPostId() {
         System.err.println("Starting test");
-        assertThat(commentRepository.findAllByPostId(post.getId())).isNotEmpty();
+        assertThat(commentRepository.findAllByPostId(post.getId(), 1L)).isNotEmpty();
     }
 
     @Test

@@ -31,8 +31,8 @@ public class PostService {
      * Get all posts.
      * @return A list of all posts.
      */
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public List<Post> getAllPosts(long userID) {
+        return postRepository.findAll(userID);
     }
     
     /**

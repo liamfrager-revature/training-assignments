@@ -30,4 +30,9 @@ public class Follow {
     @JsonBackReference
     @JoinColumn(name="followee_id")
     private User followee;
+
+    @Override
+    public String toString() {
+        return "Follow{id=" + id + ", followerId=" + (follower != null ? follower.getId() : null) + ", followeeId=" + (followee != null ? followee.getId() : null) + "}";
+    }
 }

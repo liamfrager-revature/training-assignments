@@ -6,13 +6,14 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.liamfrager.connect.entity.Like;
+import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.exception.InvalidCommentIDException;
 import com.liamfrager.connect.exception.InvalidLikeException;
 import com.liamfrager.connect.exception.InvalidPostIDException;
+import com.liamfrager.connect.exception.UnauthorizedUserException;
 import com.liamfrager.connect.repository.CommentRepository;
 import com.liamfrager.connect.repository.LikeRepository;
 import com.liamfrager.connect.repository.PostRepository;
-import com.liamfrager.connect.dto.LikeDTO;
 
 /**
  * A service for handling the <code>Like</code> business logic.
@@ -38,17 +39,23 @@ public class LikeService {
      * @return The new like.
      * @throws InvalidLikeException
      */
-    public Like postLike(Map<String, Long> likeRequest) throws InvalidLikeException, InvalidPostIDException, InvalidCommentIDException {
+    public Like postLike(Map<String, Long> likeRequest, User currentUser) throws InvalidLikeException, InvalidPostIDException, InvalidCommentIDException {
         Like like = new Like();
         Long postID = likeRequest.get("postID");
         Long commentID = likeRequest.get("commentID");
         if (postID != null) {
+            if (likeRepository.existsByPostIdAndUserId(postID, currentUser.getId()))
+                throw new InvalidLikeException(like.getId());
             like.setPost(postRepository.findById(postID).orElseThrow(() -> new InvalidPostIDException(postID)));
         } else if (commentID != null) {
+            if (likeRepository.existsByCommentIdAndUserId(commentID, currentUser.getId()))
+                throw new InvalidLikeException(like.getId());
             like.setComment(commentRepository.findById(commentID).orElseThrow(() -> new InvalidCommentIDException(commentID)));
         } else {
-            throw new InvalidLikeException(like);
+            throw new InvalidLikeException(like.getId());
         }
+        like.setUser(currentUser);
+
         return likeRepository.save(like);
     }
 
@@ -57,23 +64,11 @@ public class LikeService {
      * @param likeID The ID of the like to remove.
      * @throws InvalidLikeException
      */
-    public int deleteLike(long likeID) throws InvalidLikeException {
-            likeRepository.findById(likeID)
+    public int deleteLike(long likeID, long userID) throws InvalidLikeException, UnauthorizedUserException {
+        Like like = likeRepository.findById(likeID)
             .orElseThrow(() -> new InvalidLikeException(likeID));
+        if (like.getUser().getId() != userID)
+            throw new UnauthorizedUserException();
         return likeRepository.deleteLikeById(likeID);
-    }
-
-    public LikeDTO getLikesFromPost(long postID) {
-        return new LikeDTO(
-            likeRepository.countLikesByPostId(postID),
-            likeRepository.existsByPostIdAndUserId(postID, 1L) // TODO: get current user id
-        );
-    }
-
-    public LikeDTO getLikesFromComment(long commentID) {
-        return new LikeDTO(
-            likeRepository.countLikesByCommentId(commentID),
-            likeRepository.existsByCommentIdAndUserId(commentID, 1L) // TODO: get current user id
-        );
     }
 }

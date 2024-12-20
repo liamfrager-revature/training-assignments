@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RegisterUser } from "../../utils/Types";
 import { useNavigate } from "react-router-dom";
 import axiosUtil from "../../utils/AxiosUtil";
@@ -7,12 +7,14 @@ import { useUser } from "../../utils/Context";
 const RegisterUserComponent = () => {
     const navigate = useNavigate();
     const { currentUser, setCurrentUser } = useUser();
+    const inputRef = useRef<HTMLInputElement>(null);
     // Form control
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
     useEffect(() => {
+        inputRef.current?.focus();
         if (currentUser)
             navigate('/home');
     }, [currentUser, navigate])
@@ -47,7 +49,7 @@ const RegisterUserComponent = () => {
     return (
         <>
         <form onSubmit={onSubmit}>
-            <input type="text" name="username" placeholder="username" onChange={(e) => setUsername(e.target.value)}/><br/>
+            <input ref={inputRef} type="text" name="username" placeholder="username" onChange={(e) => setUsername(e.target.value)}/><br/>
             <input type="email" name="email" placeholder="email" onChange={(e) => setEmail(e.target.value)}/><br/>
             <input type="password" name="password" placeholder="password" minLength={8} onChange={(e) => setPassword(e.target.value)}/><br/>
             <button type="submit">Register</button>

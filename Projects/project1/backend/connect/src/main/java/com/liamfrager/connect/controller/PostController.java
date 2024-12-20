@@ -48,8 +48,9 @@ public class PostController {
      * Handler for the <code>/posts</code> <code>GET</code> endpoint.
      */
     @GetMapping("/posts")
-    private ResponseEntity<List<Post>> getAllPosts() {
-        return ResponseEntity.ok(postService.getAllPosts());
+    private ResponseEntity<List<Post>> getAllPosts(@RequestHeader("Authorization") String token) {
+        long userID = AuthUtil.extractID(token);
+        return ResponseEntity.ok(postService.getAllPosts(userID));
     }
 
     /**

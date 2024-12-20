@@ -31,7 +31,7 @@ public class Post {
     private String content;
 
     @Lob
-    private Byte[] attachment;
+    private byte[] attachment;
 
     @CreationTimestamp
     private LocalDateTime timestamp;
@@ -44,9 +44,24 @@ public class Post {
     @OneToMany(mappedBy="post", cascade=CascadeType.ALL, orphanRemoval=true)
     private List<Like> likes;
 
+    @Transient
+    private Long currentUserLikeID;
+
     @Formula("(select coalesce(count(*), 0) from likes l where l.post_id = post_id)")
     private Long likeCount;
 
     @Formula("(select coalesce(count(*), 0) from comments c where c.post_id = post_id)")
     private Long commentCount;
+
+
+    public Post(Post post, Long currentUserLikeID) {
+        this.id = post.id;
+        this.user = post.user;
+        this.content = post.content;
+        this.attachment = post.attachment;
+        this.timestamp = post.timestamp;
+        this.currentUserLikeID = currentUserLikeID;
+        this.likeCount = post.likeCount;
+        this.commentCount = post.commentCount;
+    }
 }

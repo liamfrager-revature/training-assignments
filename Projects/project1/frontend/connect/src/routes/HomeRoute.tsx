@@ -7,7 +7,7 @@ const HomeRoute = () => {
     const [posts, setPosts] = useState<Post[]>();
 
     useEffect(() => {
-        axiosUtil.get('/posts').then(res => setPosts(res.data))
+        axiosUtil.get('/posts').then(res => {console.log(res.data);setPosts(res.data)})
     }, [])
     return (
         <>

@@ -64,9 +64,9 @@ public class CommentServiceTest {
     @Test
     void getAllCommentsByPostID_ShouldReturnCommentList() {
         List<Comment> comments = List.of(TestData.generateComment());
-        when(commentRepository.findAllByPostId(1L)).thenReturn(comments);
+        when(commentRepository.findAllByPostId(1L, 1L)).thenReturn(comments);
 
-        List<Comment> result = commentService.getAllCommentsByPostID(1L);
+        List<Comment> result = commentService.getAllCommentsByPostID(1L, 1L);
 
         assertEquals(comments, result);
     }

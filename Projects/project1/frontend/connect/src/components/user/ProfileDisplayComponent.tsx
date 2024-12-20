@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NewPost, Post, User } from "../../utils/Types";
+import { Post, User } from "../../utils/Types";
 import axiosUtil from "../../utils/AxiosUtil";
 import PostsDisplayComponent from "../post/PostsDisplayComponent";
 import UserDisplayComponent from "./UserDisplayComponent";
@@ -13,16 +13,11 @@ const ProfileDisplayComponent = (props: {userID: number}) => {
 
     useEffect(() => {
         axiosUtil.get(`/users/${props.userID}`).then(res => setUser(res.data))
-        axiosUtil.get(`/users/${props.userID}/posts`).then(res => setPosts(res.data))
+        axiosUtil.get(`/users/${props.userID}/posts`).then(res => {console.log(res.data); setPosts(res.data)})
     }, [props.userID])
 
-    const addPost = (newPostContent: string) => {
-        const newPost: NewPost = {
-            content: newPostContent
-        }
-        axiosUtil.post('/posts', JSON.stringify(newPost)).then(res => {
-            setPosts([...posts!, res.data]);
-        })
+    const postAdded = (addedPost: Post) => {
+        setPosts([...posts!, addedPost]);
     }
 
     return (
@@ -30,7 +25,7 @@ const ProfileDisplayComponent = (props: {userID: number}) => {
         { user ? (
             <>
             <UserDisplayComponent user={user}/>
-            { currentUser!.id === props.userID && <AddPostComponent onPostAdd={addPost}/>}
+            { currentUser!.id === props.userID && <AddPostComponent onPostAdd={postAdded}/>}
             <PostsDisplayComponent posts={posts}/>
             </>
         ) : (

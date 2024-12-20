@@ -2,15 +2,16 @@ package com.liamfrager.connect.controller;
 
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.liamfrager.connect.entity.Like;
-import com.liamfrager.connect.dto.LikeDTO;
+import com.liamfrager.connect.AuthUtil;
 import com.liamfrager.connect.exception.InvalidCommentIDException;
 import com.liamfrager.connect.exception.InvalidLikeException;
 import com.liamfrager.connect.exception.InvalidPostIDException;
 import com.liamfrager.connect.exception.InvalidUserException;
+import com.liamfrager.connect.exception.UnauthorizedUserException;
 import com.liamfrager.connect.service.LikeService;
 
 /**
@@ -39,28 +40,8 @@ public class LikeController {
      * @throws InvalidLikeContentException 
      */
     @PostMapping("/likes")
-    private ResponseEntity<Like> postLike(@RequestBody Map<String, Long> likeRequest) throws InvalidLikeException, InvalidPostIDException, InvalidCommentIDException {
-        return ResponseEntity.ok(likeService.postLike(likeRequest));
-    }
-
-    /**
-     * Handler for the <code>/post/{postID}/likes</code> <code>GET</code> endpoint.
-     * @param postID The ID of the post whose like data will be returned.
-     * @throws InvalidPostIDException
-     */
-    @GetMapping("/post/{postID}/likes")
-    private ResponseEntity<LikeDTO> getPostLikes(@PathVariable long postID) throws InvalidPostIDException {
-        return ResponseEntity.ok(likeService.getLikesFromPost(postID));
-    }
-
-    /**
-     * Handler for the <code>/comment/{commentID}/likes</code> <code>GET</code> endpoint.
-     * @param commentID The ID of the comment whose like data will be returned.
-     * @throws InvalidPostIDException
-     */
-    @GetMapping("/comment/{commentID}/likes")
-    private ResponseEntity<LikeDTO> getCommentLikes(@PathVariable long commentID) throws InvalidPostIDException {
-        return ResponseEntity.ok(likeService.getLikesFromComment(commentID));
+    private ResponseEntity<Long> postLike(@RequestHeader("Authorization") String token, @RequestBody Map<String, Long> likeRequest) throws InvalidLikeException, InvalidPostIDException, InvalidCommentIDException, InvalidUserException {
+        return ResponseEntity.ok(likeService.postLike(likeRequest, AuthUtil.getUserFromToken(token)).getId());
     }
 
      /**
@@ -68,8 +49,8 @@ public class LikeController {
      * @param id The ID of the like to be deleted.
      */
     @DeleteMapping("/likes/{id}")
-    private ResponseEntity<Integer> deleteLike(@PathVariable long id) throws InvalidLikeException {
-        int deletedRows = likeService.deleteLike(id);
+    private ResponseEntity<Integer> deleteLike(@RequestHeader("Authorization") String token, @PathVariable long id) throws InvalidLikeException, UnauthorizedUserException {
+        int deletedRows = likeService.deleteLike(id, AuthUtil.extractID(token));
         if (deletedRows > 0)
             return ResponseEntity.ok(deletedRows);
         return ResponseEntity.ok().build();
@@ -93,5 +74,17 @@ public class LikeController {
     })
     private ResponseEntity<Exception> badRequestExceptionHandler(Exception ex) {
         return ResponseEntity.badRequest().body(ex);
+    }
+
+    /**
+     * <code>400 Bad Request</code>.
+     * Exception handler for:
+     * <code>UnauthorizedUserException</code>.
+     */
+    @ExceptionHandler({
+        UnauthorizedUserException.class
+    })
+    private ResponseEntity<Exception> unauthorizedExcpetionHandler(Exception ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex);
     }
 }

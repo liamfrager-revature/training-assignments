@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AuthenticateUser } from "../../utils/Types";
 import axiosUtil from "../../utils/AxiosUtil";
 import { useNavigate } from "react-router-dom";
@@ -7,10 +7,12 @@ import { useUser } from "../../utils/Context";
 const AuthenticateUserComponent = () => {
     const navigate = useNavigate();
     const { currentUser, setCurrentUser } = useUser();
+    const inputRef = useRef<HTMLInputElement>(null);
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
 
     useEffect(() => {
+        inputRef.current?.focus();
         if (currentUser)
             navigate('/home');
     }, [currentUser, navigate])
@@ -49,7 +51,7 @@ const AuthenticateUserComponent = () => {
     return (
         <>
         <form onSubmit={onSubmit}>
-            <input type="text" name="usernameOrEmail" placeholder="username/email" onChange={(e) => setUsernameOrEmail(e.target.value)}/><br/>
+            <input ref={inputRef} type="text" name="usernameOrEmail" placeholder="username/email" onChange={(e) => setUsernameOrEmail(e.target.value)}/><br/>
             <input type="password" name="password" placeholder="password" onChange={(e) => setPassword(e.target.value)}/><br/>
             <button type="submit">Login</button>
         </form>

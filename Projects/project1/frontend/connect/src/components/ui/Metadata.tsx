@@ -1,4 +1,5 @@
-import { faComment, faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faComment, faHeart as faHeartRegular } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faHeartSolid } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Metadata = (props: {
@@ -6,9 +7,9 @@ const Metadata = (props: {
     commentCount?: number,
     onComment?: () => void,
     likeCount?: number,
+    isLikedByCurrentUser?: boolean,
     onLike?: () => void
 }) => {
-
     const timeAgo = (epochTimeStamp: EpochTimeStamp) => {
         const date = new Date(epochTimeStamp);
         const now = new Date();
@@ -67,7 +68,7 @@ const Metadata = (props: {
             }
             { props.likeCount !== undefined && props.onLike &&
                 <span className="space-right">
-                    <FontAwesomeIcon icon={faHeart} onClick={(e) => handleLikeClick(e)} className="space-right"/>
+                    <FontAwesomeIcon icon={props.isLikedByCurrentUser ? faHeartSolid : faHeartRegular} onClick={(e) => handleLikeClick(e)} className="space-right"/>
                     <span>{formatNum(props.likeCount)}</span>
                 </span>
             }

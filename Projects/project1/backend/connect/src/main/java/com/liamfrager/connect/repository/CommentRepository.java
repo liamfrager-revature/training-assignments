@@ -16,7 +16,8 @@ import com.liamfrager.connect.entity.Comment;
  */
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    public List<Comment> findAllByPostId(long postID);
+    @Query("SELECT new com.liamfrager.connect.entity.Comment(c, l.id) FROM Comment c LEFT JOIN Like l ON c.id = l.comment.id AND l.user.id = :currentUserID WHERE c.post.id = :postID")
+    public List<Comment> findAllByPostId(@Param("postID") Long postID, @Param("currentUserID") Long currentUserID);
 
     /**
      * Delete a comment with the given ID.
@@ -38,4 +39,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Transactional
     @Query("UPDATE Comment SET content = :commentContent WHERE id = :commentID")
     public int updateContentById(@Param("commentID") long commentID, @Param("commentContent") String commentContent);
+
+    @Query("SELECT c, CASE WHEN l.id IS NOT NULL THEN true ELSE false END AS likedByCurrentUser FROM Comment c LEFT JOIN Like l ON c.id = l.comment.id AND l.user.id = :currentUserID")
+    List<Object[]> findPostsWithLikeStatus(@Param("currentUserID") Long currentUserID);
 }

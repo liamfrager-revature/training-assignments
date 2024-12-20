@@ -44,4 +44,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Transactional
     @Query("UPDATE Post SET content = :postContent WHERE id = :postID")
     public int updateContentById(@Param("postID") long postID, @Param("postContent") String postContent);
+
+    @Query("SELECT new com.liamfrager.connect.entity.Post(p, l.id) FROM Post p LEFT JOIN Like l ON p.id = l.post.id AND l.user.id = :currentUserID")
+    List<Post> findAll(@Param("currentUserID") Long currentUserID);
 }

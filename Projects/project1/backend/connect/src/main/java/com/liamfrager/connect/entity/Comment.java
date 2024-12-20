@@ -37,10 +37,22 @@ public class Comment {
     @OneToMany(mappedBy="comment", cascade=CascadeType.ALL, orphanRemoval=true)
     @JsonIgnore
     private List<Like> likes;
+    
+    @Transient
+    private Long currentUserLikeID;
 
     @Formula("(select coalesce(count(*), 0) from likes l where l.comment_id = comment_id)")
     private Long likeCount;
 
     @CreationTimestamp
     private LocalDateTime timestamp;
+
+    public Comment(Comment comment, Long currentUserLikeID) {
+        this.id = comment.id;
+        this.user = comment.user;
+        this.content = comment.content;
+        this.timestamp = comment.timestamp;
+        this.currentUserLikeID = currentUserLikeID;
+        this.likeCount = comment.likeCount;
+    }
 }

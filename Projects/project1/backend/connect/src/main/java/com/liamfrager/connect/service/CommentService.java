@@ -44,8 +44,8 @@ public class CommentService {
      * Get all comments on a post with the given ID.
      * @return A list of all the post's comments.
      */
-    public List<Comment> getAllCommentsByPostID(long postID) {
-        return commentRepository.findAllByPostId(postID);
+    public List<Comment> getAllCommentsByPostID(long postID, long currentUserID) {
+        return commentRepository.findAllByPostId(postID, currentUserID);
     }
 
     /**
