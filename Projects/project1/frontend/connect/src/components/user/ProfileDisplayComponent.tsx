@@ -16,8 +16,8 @@ const ProfileDisplayComponent = (props: {userID: number}) => {
     const { currentUser } = useUser();
 
     useEffect(() => {
-        axiosUtil.get(`/users/${props.userID}`).then(res => setUser(res.data))
-        axiosUtil.get(`/users/${props.userID}/posts`).then(res => setPosts(res.data))
+        axiosUtil.get(`/users/${props.userID}`).then(res => setUser(res.data));
+        axiosUtil.get(`/users/${props.userID}/posts`).then(res => setPosts(res.data));
     }, [props.userID])
 
     const profileEdited = (updatedUser: UpdateUser) => {

@@ -23,6 +23,14 @@ const EditProfileComponent = (props: {user: User, onClose: (updatedProfile: Upda
     const [passwordUpdated, setPasswordUpdated] = useState<boolean>(false);
     const [conflictError, setConflictError] = useState<boolean>(false);
 
+    const handleUsername = (value: string) => {
+        setUsername(value === props.user.username ? null : value);
+    }
+
+    const handleEmail = (value: string) => {
+        setEmail(value === props.user.email ? null : value);
+    }
+
     const handlePfp = () => {
         setPfp(updatedPfp);
         hidePfpModal();
@@ -41,6 +49,7 @@ const EditProfileComponent = (props: {user: User, onClose: (updatedProfile: Upda
     
     const updateProfile = (e: React.FormEvent<HTMLFormElement>) => {
         if (username || email || password || pfp) {
+            setConflictError(false);
             e.preventDefault();
             let updatedUserDetails: UpdateUser = {}
             if (username) updatedUserDetails.username = username;
@@ -48,10 +57,11 @@ const EditProfileComponent = (props: {user: User, onClose: (updatedProfile: Upda
             if (password) updatedUserDetails.password = password;
             if (pfp) updatedUserDetails.pfp = pfp;
 
-            axiosUtil.patch('/users', updatedUserDetails).then(res => {
+            console.log('updated user details', updatedUserDetails);
+
+            axiosUtil.put('/users', updatedUserDetails).then(res => {
                 props.onClose(updatedUserDetails);
             }).catch(err => {
-                // TODO: Fix duplicate username/email error handling
                 if (err.status === 409)
                     setConflictError(true);
             })
@@ -68,9 +78,9 @@ const EditProfileComponent = (props: {user: User, onClose: (updatedProfile: Upda
             </DoClick>
             {conflictError && <ErrorComponent message="That username or email is already in use."/>}
             <label htmlFor="username">Username</label>
-            <input type="text" name="username" value={username ? username : props.user.username} onChange={(e) => setUsername(e.target.value)}/>
+            <input type="text" name="username" value={username !== null ? username : props.user.username} onChange={(e) => handleUsername(e.target.value)}/>
             <label htmlFor="email">Email</label>
-            <input type="email" name="email" value={email ? email : props.user.email} onChange={(e) => setEmail(e.target.value)}/>
+            <input type="email" name="email" value={email !== null ? email : props.user.email} onChange={(e) => handleEmail(e.target.value)}/>
             <button type="button" onClick={showPasswordModal}>Change Password</button>
             {passwordUpdated && <span className="error rounded">Press save to change your password</span>}
             <button type="submit">Save</button>

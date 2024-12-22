@@ -5,7 +5,7 @@ const URL = process.env.REACT_APP_DB_API_URL;
 const axiosUtil = axios.create({
   baseURL: URL,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   }
 });
 

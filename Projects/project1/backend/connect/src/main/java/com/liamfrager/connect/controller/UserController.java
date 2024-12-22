@@ -100,18 +100,18 @@ public class UserController {
     }
 
     /**
-     * Handler for the <code>/users/pfp</code> <code>PATCH</code> endpoint.
+     * Handler for the <code>/users/pfp</code> <code>PUT</code> endpoint.
      */
-    @PatchMapping("/users/pfp")
+    @PutMapping("/users/pfp")
     private ResponseEntity<Void> setPfp(@RequestHeader("Authorization") String token, @RequestBody byte[] pfp) throws Exception {
         userService.setPfp(AuthUtil.extractID(token), pfp);
         return ResponseEntity.ok().build();
     }
 
     /**
-     * Handler for the <code>/users</code> <code>PATCH</code> endpoint.
+     * Handler for the <code>/users</code> <code>PUT</code> endpoint.
      */
-    @PatchMapping("/users")
+    @PutMapping("/users")
     private ResponseEntity<Integer> updateUser(@RequestHeader("Authorization") String token, @RequestBody User updatedUser) throws UserAlreadyExistsException {
         return ResponseEntity.ok(userService.updateUser(AuthUtil.extractID(token), updatedUser));
     }

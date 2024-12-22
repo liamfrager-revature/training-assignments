@@ -30,7 +30,7 @@ public class AuthController {
     // --------------
 
     /**
-     * Handler for the <code>/users</code> <code>POST</code> endpoint.
+     * Handler for the <code>/auth/register</code> <code>POST</code> endpoint.
      * @param user The body of the request containing the user to be registered.
      */
     @PostMapping("/auth/register")
@@ -44,7 +44,7 @@ public class AuthController {
     }
 
     /**
-     * Handler for the <code>/users/login</code> <code>POST</code> endpoint.
+     * Handler for the <code>/auth/login</code> <code>POST</code> endpoint.
      * @param user The body of the request containing the user to be logged in.
      */
     @PostMapping("/auth/login")
