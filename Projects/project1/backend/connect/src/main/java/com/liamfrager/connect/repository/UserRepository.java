@@ -3,9 +3,14 @@ package com.liamfrager.connect.repository;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.liamfrager.connect.entity.User;
+
+import jakarta.transaction.Transactional;
 
 /**
  * A JPA repository for users.
@@ -42,4 +47,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return An <code>Optional</code> of the user's user information.
      */
     public Optional<User> findByEmailAndPassword(String email, String password);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET u.pfp = :pfp WHERE u.id = :userID")
+    public int setPfpByUserID(@Param("userID") long userID, @Param("pfp") byte[] pfp);
+
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE User u SET " +
+           "u.username = COALESCE(:username, u.username ), " +
+           "u.email = COALESCE(:email, u.email ), " +
+           "u.password = COALESCE(:password, u.password ), " +
+           "u.pfp = COALESCE(:pfp, u.pfp) " +
+           "WHERE u.id = :userID")
+    int updateUserDetails(@Param("userID") long userID, @Param("username") String username, @Param("email") String email, @Param("password") String password, @Param("pfp") byte[] pfp);
 }

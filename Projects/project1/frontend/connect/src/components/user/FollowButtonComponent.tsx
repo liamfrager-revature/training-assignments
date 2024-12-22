@@ -6,11 +6,11 @@ const FollowButtonComponent = (props: {userID: number}) => {
 
     useEffect(() => {
         axiosUtil.get(`users/${props.userID}/follow`).then(res => setFollowingUser(res.data));
-    }, [])
+    }, [props.userID])
     
 
     const followUser = (userID: number) => {
-        const req: any = axiosUtil.post(`/users/${props.userID}/follow`).then(res => {
+        axiosUtil.post(`/users/${userID}/follow`).then(() => {
             setFollowingUser(true);
         }).catch(err => {
             console.error(err);
@@ -18,7 +18,7 @@ const FollowButtonComponent = (props: {userID: number}) => {
     }
 
     const unfollowUser = (userID: number) => {
-        const req: any = axiosUtil.delete(`/users/${props.userID}/follow`).then(res => {
+        axiosUtil.delete(`/users/${userID}/follow`).then(() => {
             setFollowingUser(false);
         }).catch(err => {
             console.error(err);

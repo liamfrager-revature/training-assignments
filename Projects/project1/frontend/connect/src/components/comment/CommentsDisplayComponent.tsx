@@ -21,13 +21,13 @@ const CommentsDisplayComponent = (props: {postID: number}) => {
             }
         }
         axiosUtil.post(`posts/${props.postID}/comments`, JSON.stringify(newComment)).then(res => {
-            setComments([...comments!, res.data]);
+            setComments([res.data, ...comments!]);
         })
     }
     
     return (
         <>
-        <h3>Comments</h3>
+        <h2>Comments</h2>
         <AddCommentComponent onCommentAdd={addComment}/>
         {
             comments !== undefined ? (

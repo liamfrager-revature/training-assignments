@@ -21,10 +21,12 @@ const AddPostComponent = (props: {onPostAdd: (addedPost: Post) => void}) => {
     }
 
     return (
-        <form onSubmit={formSubmitHandler}>
+        <form onSubmit={formSubmitHandler} className="justify-between">
             <input type="text" name="post" placeholder="Add Post" onChange={(e) => setNewContent(e.target.value)} value={newContent}/>
-            <ImageUploader setImage={setNewAttachment}/>
-            <button type="submit">Create Post</button>
+            <span className="justify-between">
+                <ImageUploader setImage={setNewAttachment}/>
+                <button type="submit">Create Post</button>
+            </span>
         </form>
     )
 

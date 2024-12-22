@@ -3,6 +3,7 @@ import axiosUtil from "../../utils/AxiosUtil";
 import { Comment } from "../../utils/Types";
 import Metadata from "../ui/Metadata";
 import UsernameComponent from "../user/UsernameComponent";
+import PfpComponent from "../user/PfpComponent";
 
 const CommentComponent = (props: {comment: Comment}) => {
     const [comment, setComment] = useState(props.comment);
@@ -28,9 +29,9 @@ const CommentComponent = (props: {comment: Comment}) => {
     }
 
     return (
-        <div>
-            {user.pfp ? <img src={user.pfp} alt={user.username + " profile picture"} /> : null}
-            <div className="comment-text">
+        <div className="shadow-box comment">
+            <PfpComponent pfp={user.pfp}/>
+            <div className="comment-text space-left">
                 <UsernameComponent user={user}/>
                 <span>{comment.content}</span>
                 <br />

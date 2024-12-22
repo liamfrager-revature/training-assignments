@@ -3,6 +3,7 @@ import { AuthenticateUser } from "../../utils/Types";
 import axiosUtil from "../../utils/AxiosUtil";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../utils/Context";
+import ErrorComponent from "../error/ErrorComponent";
 
 const AuthenticateUserComponent = () => {
     const navigate = useNavigate();
@@ -10,6 +11,8 @@ const AuthenticateUserComponent = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [usernameOrEmail, setUsernameOrEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errorLoggingIn, setErrorLoggingIn] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("Something went wrong, please try again.");
 
     useEffect(() => {
         inputRef.current?.focus();
@@ -39,17 +42,17 @@ const AuthenticateUserComponent = () => {
             throw new Error();
         }).catch(err => {
             if (err.status === 401) {
-                // TODO: invalid login
-                console.error('invalid login')
+                setErrorMessage("There is no account with that username/email and password.");
+                setErrorLoggingIn(true);
             } else {
-                // TODO: generic error
-                console.error('something went wrong')
+                setErrorLoggingIn(true);
             }
         });
     }
 
     return (
         <>
+        {errorLoggingIn && <ErrorComponent message={errorMessage}/>}
         <form onSubmit={onSubmit}>
             <input ref={inputRef} type="text" name="usernameOrEmail" placeholder="username/email" onChange={(e) => setUsernameOrEmail(e.target.value)}/><br/>
             <input type="password" name="password" placeholder="password" onChange={(e) => setPassword(e.target.value)}/><br/>

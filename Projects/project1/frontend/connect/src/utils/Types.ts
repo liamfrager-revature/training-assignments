@@ -38,12 +38,21 @@ export interface User {
   email: string,
   password: string,
   pfp?: string,
+  followersCount: number,
+  followingCount: number,
 }
 
 export interface RegisterUser {
   username: string,
   email: string,
   password: string,
+}
+
+export interface UpdateUser {
+  username?: string,
+  email?: string,
+  pfp?: string,
+  password?: string,
 }
 
 export interface AuthenticateUser {

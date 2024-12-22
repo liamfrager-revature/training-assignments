@@ -3,11 +3,14 @@ import { RegisterUser } from "../../utils/Types";
 import { useNavigate } from "react-router-dom";
 import axiosUtil from "../../utils/AxiosUtil";
 import { useUser } from "../../utils/Context";
+import ErrorComponent from "../error/ErrorComponent";
 
 const RegisterUserComponent = () => {
     const navigate = useNavigate();
     const { currentUser, setCurrentUser } = useUser();
     const inputRef = useRef<HTMLInputElement>(null);
+    const [errorRegistering, setErrorRegistering] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("Something went wrong, please try again.");
     // Form control
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -37,17 +40,17 @@ const RegisterUserComponent = () => {
             throw new Error();
         }).catch(err => {
             if (err.status === 409) {
-                // TODO: user already exists with that email or username; try logging in.
-                console.error('user already exists')
+                setErrorMessage("There is already an account with that username/email.");
+                setErrorRegistering(true);
             } else {
-                // TODO: generic error
-                console.error('something went wrong')
+                setErrorRegistering(true);
             }
         });
     }
 
     return (
         <>
+        {errorRegistering && <ErrorComponent message={errorMessage}/>}
         <form onSubmit={onSubmit}>
             <input ref={inputRef} type="text" name="username" placeholder="username" onChange={(e) => setUsername(e.target.value)}/><br/>
             <input type="email" name="email" placeholder="email" onChange={(e) => setEmail(e.target.value)}/><br/>

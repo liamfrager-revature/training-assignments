@@ -10,8 +10,8 @@ const AddCommentComponent = (props: {onCommentAdd: (content: string) => void}) =
     }
 
     return (
-        <form onSubmit={formSubmitHandler}>
-            <input type="text" name="comment" placeholder="Add Comment" onChange={(e) => setNewComment(e.target.value)} value={newComment}/>
+        <form onSubmit={formSubmitHandler} className="justify-between">
+            <input type="text" name="comment" placeholder="Add Comment" className="space-right" onChange={(e) => setNewComment(e.target.value)} value={newComment}/>
             <button type="submit">Post Comment</button>
         </form>
     )

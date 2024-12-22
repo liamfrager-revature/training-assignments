@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.liamfrager.connect.AuthUtil;
 import com.liamfrager.connect.entity.Follow;
 import com.liamfrager.connect.entity.User;
 import com.liamfrager.connect.exception.*;
@@ -89,7 +90,30 @@ public class UserService {
         followRepository.deleteFollowByFollowerAndFollowee(followerUserID, followeeUserID);
     }
 
-    public Boolean isFollowing(long followerUserID, long followeeUserID){
+    public Boolean isFollowing(long followerUserID, long followeeUserID) {
         return followRepository.existsByFollowerAndFollowee(followerUserID, followeeUserID);
+    }
+
+    public byte[] setPfp(long currentUserID, byte[] pfp) throws Exception {
+        int updatedRows = userRepository.setPfpByUserID(currentUserID, pfp);
+        if (updatedRows > 0)
+            return pfp;
+        throw new Exception();
+    }
+
+    public int updateUser(long currentUserID, User updatedUser) throws UserAlreadyExistsException {
+        if (updatedUser.getUsername() != null && userRepository.findByUsername(updatedUser.getUsername()).isPresent())
+            throw new UserAlreadyExistsException();
+        if (updatedUser.getEmail() != null && userRepository.findByEmail(updatedUser.getEmail()).isPresent())
+            throw new UserAlreadyExistsException();
+        int updatedRows = userRepository.updateUserDetails(
+            currentUserID,
+            updatedUser.getUsername(),
+            updatedUser.getEmail(),
+            updatedUser.getPassword() == null ? null : AuthUtil.hashPassword(updatedUser.getPassword()),
+            updatedUser.getPfp()
+
+        );
+        return updatedRows;
     }
 }

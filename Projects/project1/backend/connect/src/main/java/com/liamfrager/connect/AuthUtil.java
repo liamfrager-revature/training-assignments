@@ -17,7 +17,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 
 @Component
-public class AuthUtil implements ApplicationContextAware{
+public class AuthUtil implements ApplicationContextAware {
 
     private static UserRepository userRepository;
 
@@ -40,30 +40,25 @@ public class AuthUtil implements ApplicationContextAware{
     }
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-    public static String generateToken(String username, Long userID) {
+    public static String generateToken(Long userID) {
         return Jwts.builder()
-                .setSubject(username)
-                .claim("id", userID)
+                .setSubject(Long.toString(userID))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
                 .signWith(key)
                 .compact();
     }
 
-    public static String extractUsername(String token) {
-        return extractClaims(token).getSubject();
-    }
-
     public static Long extractID(String token) {
-        return extractClaims(token).get("id", Long.class);
+        return Long.parseLong(extractClaims(token).getSubject());
     }
 
     public static boolean isTokenExpired(String token) {
         return extractClaims(token).getExpiration().before(new Date());
     }
 
-    public static boolean validateToken(String token, String username) {
-        return username.equals(extractUsername(token)) && !isTokenExpired(token);
+    public static boolean validateToken(String token, Long id) {
+        return id.equals(extractID(token)) && !isTokenExpired(token);
     }
 
     private static Claims extractClaims(String token) {

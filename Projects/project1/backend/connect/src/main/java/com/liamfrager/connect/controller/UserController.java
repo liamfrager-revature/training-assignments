@@ -2,6 +2,7 @@ package com.liamfrager.connect.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -89,13 +90,30 @@ public class UserController {
     }
 
     /**
-     * Handler for the <code>/users/{userID}/followers</code> <code>Delete</code> endpoint.
+     * Handler for the <code>/users/{userID}/followers</code> <code>DELETE</code> endpoint.
      * @param userID The ID of the user to unfollow.
      */
     @DeleteMapping("/users/{userID}/follow")
     private ResponseEntity<Void> unfollowUser(@RequestHeader("Authorization") String token, @PathVariable long userID) throws InvalidUserException, InvalidFollowException {
         userService.unfollowUser(AuthUtil.extractID(token), userID);
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Handler for the <code>/users/pfp</code> <code>PATCH</code> endpoint.
+     */
+    @PatchMapping("/users/pfp")
+    private ResponseEntity<Void> setPfp(@RequestHeader("Authorization") String token, @RequestBody byte[] pfp) throws Exception {
+        userService.setPfp(AuthUtil.extractID(token), pfp);
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Handler for the <code>/users</code> <code>PATCH</code> endpoint.
+     */
+    @PatchMapping("/users")
+    private ResponseEntity<Integer> updateUser(@RequestHeader("Authorization") String token, @RequestBody User updatedUser) throws UserAlreadyExistsException {
+        return ResponseEntity.ok(userService.updateUser(AuthUtil.extractID(token), updatedUser));
     }
 
     // ------------------
@@ -114,5 +132,14 @@ public class UserController {
     })
     private ResponseEntity<Exception> badRequestExceptionHandler(Exception ex) {
         return ResponseEntity.badRequest().body(ex);
+    }
+
+    /**
+     * <code>409 Conflict</code>.
+     * Exception handler for: <code>UserAlreadyExistsException</code>.
+     */
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    private ResponseEntity<Exception> userAlreadyExistsExceptionHandler(Exception ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex);
     }
 }

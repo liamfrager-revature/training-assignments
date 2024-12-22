@@ -1,10 +1,14 @@
-const Error404Component = (props: {statusCode: string | number, message: string}) => {
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+const ErrorComponent = (props: {statusCode?: string | number, message?: string}) => {
     return (
-        <div className="error">
-            <h1>Error: {props.statusCode}</h1>
-            <p>{props.message}</p>
+        <div className="error rounded justify-center">
+            <FontAwesomeIcon icon={faCircleExclamation} className="space-right"/> 
+            {props.statusCode && <span>Error: {props.statusCode}</span>}
+            {props.message && <span>{props.message}</span>}
         </div>
     )
 }
 
-export default Error404Component;
+export default ErrorComponent;

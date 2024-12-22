@@ -10,7 +10,6 @@ const PostDisplayComponent = (props: {post: Post}) => {
     const navigate = useNavigate();
     const [post, setPost] = useState(props.post);
     const [postLikes, setPostLikes] = useState(post.likeCount);
-    // TODO: fix like count!!
     const onPostComment = () => {
         return
     }
@@ -33,8 +32,9 @@ const PostDisplayComponent = (props: {post: Post}) => {
     }
 
     return (
-        <div className="postDisplay" onClick={() => navigate(`/post/${post.id}`)}>
+        <div className="shadow-box hover" onClick={() => navigate(`/post/${post.id}`)}>
             <div>
+                {/* TODO: Fix image display width */}
                 {post.attachment && <ImageDisplay src={post.attachment}/>}
                 <div>
                     <UsernameComponent user={props.post.user} />

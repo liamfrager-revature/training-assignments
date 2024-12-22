@@ -1,13 +1,101 @@
 import { useState } from "react";
-import { User } from "../../../utils/Types";
+import { UpdateUser, User } from "../../../utils/Types";
 import ImageUploader from "../../post/ImageUploader";
+import Modal from "../../ui/Modal";
+import axiosUtil from "../../../utils/AxiosUtil";
+import DoClick from "../../ui/DoClick";
+import PfpComponent from "../PfpComponent";
+import ErrorComponent from "../../error/ErrorComponent";
 
 
-const EditProfileComponent = (props: {user: User}) => {
-    const [pfp, setPfp] = useState(props.user.pfp);
+const EditProfileComponent = (props: {user: User, onClose: (updatedProfile: UpdateUser) => void}) => {
+    const pfpModalState = useState(false);
+    const [showPfpModal, hidePfpModal] = [() => pfpModalState[1](true), () => pfpModalState[1](false)]
+    const passwordModalState = useState(false);
+    const [showPasswordModal, hidePasswordModal] = [() => passwordModalState[1](true), () => passwordModalState[1](false)]
+    const [updatedPfp, setUpdatedPfp] = useState('');
+    const [pfp, setPfp] = useState<string | null>(null);
+    const [username, setUsername] = useState<string | null>(null);
+    const [email, setEmail] = useState<string | null>(null);
+    const [newPassword, setNewPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const [password, setPassword] = useState<string | null>(null);
+    const [passwordUpdated, setPasswordUpdated] = useState<boolean>(false);
+    const [conflictError, setConflictError] = useState<boolean>(false);
+
+    const handlePfp = () => {
+        setPfp(updatedPfp);
+        hidePfpModal();
+    }
+
+
+    const handlePassword = () => {
+        if (newPassword === confirmPassword) {
+            setPassword(newPassword);
+            console.log('new password')
+            setPasswordUpdated(true);
+            hidePasswordModal();
+        }
+    }
+
+    
+    const updateProfile = (e: React.FormEvent<HTMLFormElement>) => {
+        if (username || email || password || pfp) {
+            e.preventDefault();
+            let updatedUserDetails: UpdateUser = {}
+            if (username) updatedUserDetails.username = username;
+            if (email) updatedUserDetails.email = email;
+            if (password) updatedUserDetails.password = password;
+            if (pfp) updatedUserDetails.pfp = pfp;
+
+            axiosUtil.patch('/users', updatedUserDetails).then(res => {
+                props.onClose(updatedUserDetails);
+            }).catch(err => {
+                // TODO: Fix duplicate username/email error handling
+                if (err.status === 409)
+                    setConflictError(true);
+            })
+        } else {
+            props.onClose({});
+        }
+    }
+    
     return (
-        <form>
-            <ImageUploader setImage={setPfp}/>
+        <form onSubmit={(e) => updateProfile(e)} className="wide-col-form user-display shadow-box rounded">
+            <h1>Edit Profile</h1>
+            <DoClick onClick={() => showPfpModal()} message="edit">
+                <PfpComponent pfp={pfp ? pfp : props.user.pfp}/>
+            </DoClick>
+            {conflictError && <ErrorComponent message="That username or email is already in use."/>}
+            <label htmlFor="username">Username</label>
+            <input type="text" name="username" value={username ? username : props.user.username} onChange={(e) => setUsername(e.target.value)}/>
+            <label htmlFor="email">Email</label>
+            <input type="email" name="email" value={email ? email : props.user.email} onChange={(e) => setEmail(e.target.value)}/>
+            <button type="button" onClick={showPasswordModal}>Change Password</button>
+            {passwordUpdated && <span className="error rounded">Press save to change your password</span>}
+            <button type="submit">Save</button>
+            <Modal modalState={pfpModalState}>
+                <div className="rounded bg-white padded">
+                    <h1>Upload a new profile picture:</h1>
+                    <ImageUploader setImage={setUpdatedPfp} maxSize={5 * 1024 * 1024}/>
+                    <div className="align-center">
+                        <button type="button" onClick={handlePfp}>Update picture</button>
+                        <button type="button" onClick={hidePfpModal}>Cancel</button>
+                    </div>
+                </div>
+            </Modal>
+            <Modal modalState={passwordModalState}>
+                <div className="rounded bg-white padded">
+                    <h1>Change password</h1>
+                    <input type="password" name="password" placeholder="New Password" minLength={8} value={newPassword} onChange={(e) => setNewPassword(e.target.value)}/><br/>
+                    <input type="password" name="confirmPassword" placeholder="Confirm Password" minLength={8} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/><br/>
+                    {newPassword !== confirmPassword && <div className="space-below"><ErrorComponent message="Passwords do not match"/></div>}
+                    <div className="align-center">
+                        <button type="button" onClick={handlePassword}>Change password</button>
+                        <button type="button" onClick={hidePasswordModal}>Cancel</button>
+                    </div>
+                </div>
+            </Modal>
         </form>
     )
 }

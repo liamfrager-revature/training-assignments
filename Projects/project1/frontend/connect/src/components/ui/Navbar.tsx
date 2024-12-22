@@ -19,8 +19,9 @@ const Navbar = () => {
         <div id="navbar">
             <div className="logo align-center">
                 <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo"/>
-                <h1>CONNECT</h1>
+                <h1 className="pointer">CONNECT</h1>
             </div>
+            {/* TODO: consistent icon, word spacing */}
             <ul>
                 {
                 navItems.map((navItem, index) => (

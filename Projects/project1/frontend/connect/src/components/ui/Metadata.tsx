@@ -68,7 +68,7 @@ const Metadata = (props: {
             }
             { props.likeCount !== undefined && props.onLike &&
                 <span className="space-right">
-                    <FontAwesomeIcon icon={props.isLikedByCurrentUser ? faHeartSolid : faHeartRegular} onClick={(e) => handleLikeClick(e)} className="space-right"/>
+                    <FontAwesomeIcon icon={props.isLikedByCurrentUser ? faHeartSolid : faHeartRegular} color={props.isLikedByCurrentUser ? "var(--d2)" : ""} onClick={(e) => handleLikeClick(e)} className="space-right"/>
                     <span>{formatNum(props.likeCount)}</span>
                 </span>
             }
