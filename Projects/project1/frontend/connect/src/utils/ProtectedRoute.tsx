@@ -3,15 +3,17 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../components/ui/Navbar";
 import { useUser } from "./Context";
 import PageContent from "../components/ui/PageContent";
+import axiosUtil from "./AxiosUtil";
 
 const ProtectedRoute = () =>{
     const navigate = useNavigate()
     const {currentUser} = useUser();
-    // TODO: Check token validity on back end.
-
     useEffect(() => {
         if (!currentUser)
-            navigate("/login");
+            navigate("/logout");
+        axiosUtil.get("/auth").then(res => {
+            if (res.data === false) navigate("/logout");
+        })
     }, [currentUser, navigate]);
 
     if (currentUser)

@@ -15,6 +15,7 @@ import com.liamfrager.connect.repository.UserRepository;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 @Component
 public class AuthUtil implements ApplicationContextAware {
@@ -74,5 +75,14 @@ public class AuthUtil implements ApplicationContextAware {
     public static User getUserFromToken(String token) throws InvalidUserException {
         Long userID = extractID(token);
         return userRepository.findById(userID).orElseThrow(() -> new InvalidUserException(userID));
+    }
+
+    public static Boolean isValidToken(String token) {
+        try {
+            extractClaims(token);
+            return true;
+        } catch (SignatureException ex) {
+            return false;
+        }
     }
 }

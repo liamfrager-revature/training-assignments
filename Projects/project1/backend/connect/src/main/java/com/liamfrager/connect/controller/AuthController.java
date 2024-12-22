@@ -56,6 +56,14 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(authenticatedUser);
     }
 
+    /**
+     * Handler for the <code>/auth</code> <code>GET</code> endpoint.
+     */
+    @GetMapping("/auth")
+    private ResponseEntity<Boolean> isValidToken(@RequestHeader("Authorization") String token) {
+        return ResponseEntity.ok(AuthUtil.isValidToken(token));
+    }
+
 
     // ------------------
     // EXCEPTION HANDLERS

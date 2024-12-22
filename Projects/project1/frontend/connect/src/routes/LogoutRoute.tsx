@@ -7,11 +7,12 @@ const LogoutRoute = () => {
     const {currentUser, setCurrentUser} = useUser();
 
     useEffect(() => {
-        if (currentUser)
+        if (currentUser) {
             sessionStorage.removeItem('currentUser');
             sessionStorage.removeItem('token');
             setCurrentUser(null);
             navigate('/login');
+        }
     });
     return (
         <></>

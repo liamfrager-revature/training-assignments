@@ -13,7 +13,9 @@ const axiosUtil = axios.create({
 axiosUtil.interceptors.request.use((config) => {
   const token = sessionStorage.getItem('token');
   if (token) {
-    config.headers['Authorization'] = `Bearer ${token}`;
+    config.headers.set('Authorization', `Bearer ${token}`);
+  } else {
+    config.headers.delete('Authorization');
   }
   return config;
 }, (error) => Promise.reject(error));
