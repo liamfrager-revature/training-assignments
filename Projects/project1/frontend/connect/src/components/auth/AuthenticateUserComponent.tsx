@@ -53,7 +53,7 @@ const AuthenticateUserComponent = () => {
     return (
         <>
         {errorLoggingIn && <ErrorComponent message={errorMessage}/>}
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} className="auth-form">
             <input ref={inputRef} type="text" name="usernameOrEmail" placeholder="username/email" onChange={(e) => setUsernameOrEmail(e.target.value)}/><br/>
             <input type="password" name="password" placeholder="password" onChange={(e) => setPassword(e.target.value)}/><br/>
             <button type="submit">Login</button>

@@ -8,7 +8,7 @@ const Metadata = (props: {
     onComment?: () => void,
     likeCount?: number,
     isLikedByCurrentUser?: boolean,
-    onLike?: () => void
+    onLike?: () => void,
 }) => {
     const timeAgo = (epochTimeStamp: EpochTimeStamp) => {
         const date = new Date(epochTimeStamp);

@@ -3,16 +3,17 @@
     --gray: #efefef;
     --dg: #dddddd;
     --black: black;
-    --l1: #9BFEFE;
-    --l2: #FCFC76;
-    --d1: #2887DD;
-    --d2: #F8A54A;
+    --l1: #4FAEFA;
+    --l2: #FFDC9E;
+    --d1: #1565C0;
+    --d2: #FFC45C;
     --error: red;
     --error-transparent: #ff000033;
 };
 
 * {
     font-family: "Inter", sans-serif;
+    box-sizing: border-box;
 }
 
 h1, h2 {
@@ -39,9 +40,13 @@ h1, h2 {
     margin-bottom: .5rem;
 }
 
+.space-above {
+    margin-top: .5rem;
+}
+
 .metadata {
     color: var(--dg);
-    display: block;
+    display: inline;
     margin-top: .5em;
 }
 
@@ -49,32 +54,45 @@ h1, h2 {
     cursor: pointer;
 }
 
+.hover-color:hover {
+    color: var(--l1);
+}
+
+.hover-error:hover {
+    color: var(--error);
+}
+
 .pointer {
     cursor: default;
 }
 
+#page-layout {
+    display: flex;
+    height: 100vh;
+}
+
 #navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background-color: var(--gray);
+    background-color: var(--d2);
     color: var(--d1);
     max-width: 300px;
     min-width: fit-content;
     width: 25vw;
+    height: 100vh;
     padding: 1em;
+    box-sizing: border-box;
     ul {
         list-style: none;
     }
 }
+
 .nav-link {
     text-decoration: none;
     color: inherit;
     margin-bottom: .5em;
 }
+
 .nav-link:hover {
-    color: var(--d2); /* Define your custom color on hover */
+    color: var(--l1); /* Define your custom color on hover */
 }
 
 .nav-icon {
@@ -83,20 +101,42 @@ h1, h2 {
 }
 
 #page-content {
-    margin-left: calc(300px + 2em);
     padding: 1em;
     display: flex;
     flex-direction: column;
     align-items: center;
+    flex-grow: 1;
+    overflow-y: auto;
+    position: relative;
 }
 
 .content {
-    min-width: 50%;
+    width: 100%;
+    height: 100%;
     max-width: 50em;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding-block: 0;
 }
 
-.post-display > img {
-    max-width: 100%;
+.sticky {
+    position: sticky;
+    top: 0;
+    background-color: var(--white);
+    box-shadow: 0 0 0 1em var(--white);
+}
+
+.relative {
+    position: relative;
+}
+
+.post-display {
+    min-width: min-content;
+    overflow-x: hidden;
+    img {
+        max-width: 100%;
+    }
 }
 
 .small-pfp {
@@ -156,6 +196,7 @@ h1, h2 {
     box-shadow: 1px 1px 5px 1px var(--dg);
     padding: 1em;
     margin-block: 1em;
+    border-radius: .5em;
 }
 
 .comment {
@@ -180,8 +221,13 @@ button, input {
     }
 }
 
-form * {
-    display: block;
+.search {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.add-post * {
+    display: inline;
     margin-right: .5em;
     &:last-child {
         margin: 0;
@@ -190,10 +236,6 @@ form * {
 
 input:not([type=file]) {
     flex-grow: 1;
-}
-
-.relative {
-    position: relative;
 }
 
 .hide {
@@ -213,6 +255,10 @@ input:not([type=file]) {
     transform: translate(-50%, -50%);
 }
 
+.color-gray {
+    color: var(--gray);
+}
+
 .modal-bg {
     position: fixed;
     inset: 0;
@@ -222,14 +268,33 @@ input:not([type=file]) {
 .modal {
     position: absolute;
     width: fit-content;
-    height: fit-content;
+    max-height: 50vh;
+    min-width: 50vw;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
+.scrollable {
+    box-sizing: content-box;
+    min-height: fit-content;
+    max-height: 100%;
+    overflow-y: auto;
+    padding-inline: .5em;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
 .bg-white {
     background-color: var(--white);
+}
+
+.bg-dark {
+    background-color: var(--d2);
 }
 
 .padded {
@@ -239,9 +304,6 @@ input:not([type=file]) {
 .wide-col-form {
     display: flex;
     flex-direction: column;
-    & > * {
-        width: 100%;
-    }
     & > input, & > button, & > img {
         margin-bottom: 1em;
     }
@@ -253,4 +315,19 @@ input:not([type=file]) {
     * {
         margin: 0;
     }
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+}
+
+.flex-grow {
+    flex-grow: 1;
+}
+
+.page-heading {
+    margin-top: 0;
 }

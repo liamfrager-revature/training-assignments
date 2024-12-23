@@ -1,7 +1,8 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faHouse, faSearch, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faRightFromBracket, faSearch, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
+import LogoComponent from "./LogoComponent";
 
 const Navbar = () => {
     type NavItem = {
@@ -13,13 +14,14 @@ const Navbar = () => {
         {text: "Home", icon: faHouse, link: '/home'},
         {text: "Profile", icon: faUser, link: '/profile'},
         {text: "Following", icon: faUsers, link: '/following'},
-        {text: "Search", icon: faSearch, link: '/search'}
+        {text: "Search", icon: faSearch, link: '/search'},
+        {text: "Logout", icon: faRightFromBracket, link: '/logout'},
     ]
 
     return (
         <div id="navbar">
-            <div className="logo align-center">
-                <h1 className="logo pointer">CONNECT</h1>
+            <div className="logo align-center justify-center">
+                <LogoComponent/>
             </div>
             <ul>
                 {

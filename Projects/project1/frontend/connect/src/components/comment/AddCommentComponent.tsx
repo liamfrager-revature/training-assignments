@@ -6,12 +6,13 @@ const AddCommentComponent = (props: {onCommentAdd: (content: string) => void}) =
 
     const formSubmitHandler = (e: React.FormEvent) => {
         e.preventDefault();
+        setNewComment("");
         props.onCommentAdd(newComment);
     }
 
     return (
         <form onSubmit={formSubmitHandler} className="justify-between">
-            <input type="text" name="comment" placeholder="Add Comment" className="space-right" onChange={(e) => setNewComment(e.target.value)} value={newComment}/>
+            <input id="add-comment" type="text" name="comment" placeholder="Add Comment" className="space-right" onChange={(e) => setNewComment(e.target.value)} value={newComment}/>
             <button type="submit">Post Comment</button>
         </form>
     )

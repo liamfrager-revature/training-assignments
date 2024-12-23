@@ -9,7 +9,7 @@ const UsernameComponent = (props: {user: User}) => {
         navigate(`/profile/${props.user.id}`);
     }
     return (
-        <span className="bold space-right hover" onClick={(e) => goToProfile(e)}>{props.user.username}</span>
+        <span className="bold space-right hover hover-color" onClick={(e) => goToProfile(e)}>{props.user.username}</span>
     )
 }
 

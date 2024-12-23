@@ -4,8 +4,9 @@ import { Comment } from "../../utils/Types";
 import Metadata from "../ui/Metadata";
 import UsernameComponent from "../user/UsernameComponent";
 import PfpComponent from "../user/PfpComponent";
+import DeleteCommentComponent from "./DeleteCommentComponent";
 
-const CommentComponent = (props: {comment: Comment}) => {
+const CommentComponent = (props: {comment: Comment, onCommentDelete?: (commentID: number) => void}) => {
     const [comment, setComment] = useState(props.comment);
     const [commentLikes, setCommentLikes] = useState(comment.likeCount);
     const user = comment.user
@@ -34,13 +35,14 @@ const CommentComponent = (props: {comment: Comment}) => {
             <div className="comment-text space-left">
                 <UsernameComponent user={user}/>
                 <span>{comment.content}</span>
-                <br />
+                <br/><br/>
                 <Metadata
                     timestamp={comment.timestamp}
                     likeCount={commentLikes}
                     onLike={onCommentLike}
                     isLikedByCurrentUser={comment.currentUserLikeID != null}
                 />
+                {props.onCommentDelete && <DeleteCommentComponent commentID={props.comment.id} onCommentDelete={props.onCommentDelete}/>}
             </div>
         </div>
     )

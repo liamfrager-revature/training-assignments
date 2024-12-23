@@ -8,9 +8,11 @@ const SearchRoute = () => {
 
     return (
         <>
-        {/* TODO: implement search feature */}
-        <SearchBarComponent setSearchResults={setResults}/>
-        <SearchResultsComponent results={results}/>
+            <div className="sticky">
+                <h1 className="page-heading">Search</h1>
+                <SearchBarComponent setSearchResults={setResults}/>
+            </div>
+            <SearchResultsComponent results={results}/>
         </>
     );
 }

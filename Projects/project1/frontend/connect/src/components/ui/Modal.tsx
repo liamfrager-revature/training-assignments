@@ -13,14 +13,19 @@ const Modal = (props: {children: JSX.Element, modalState: ModalState}) => {
     }
 
     useEffect(() => {
+        if (show) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
         window.addEventListener('keydown', handleEsc);
     });
 
     return (
         <>
             {show &&
-            <div className="modal-bg">
-                <div className="modal">
+            <div onClick={(e) => e.stopPropagation()} className="modal-bg">
+                <div className="modal rounded bg-white padded flex-col">
                     {props.children}
                 </div>
             </div>

@@ -3,9 +3,12 @@ import { Comment, NewComment } from "../../utils/Types"
 import axiosUtil from "../../utils/AxiosUtil";
 import { useEffect, useState } from "react";
 import AddCommentComponent from "./AddCommentComponent";
+import Load from "../ui/Load";
+import { useUser } from "../../utils/Context";
 
 const CommentsDisplayComponent = (props: {postID: number}) => {
     const [comments, setComments] = useState<Comment[]>();
+    const {currentUser} = useUser();
 
     useEffect(() => {
       axiosUtil.get(`posts/${props.postID}/comments`).then(res => {
@@ -24,24 +27,28 @@ const CommentsDisplayComponent = (props: {postID: number}) => {
             setComments([res.data, ...comments!]);
         })
     }
+
+    const deleteComment = (commentID: number) => {
+        setComments(comments?.filter(comment => comment.id !== commentID));
+    }
     
     return (
         <>
         <h2>Comments</h2>
         <AddCommentComponent onCommentAdd={addComment}/>
-        {
-            comments !== undefined ? (
-                <>
+        <Load loading={comments}>
+            {comments?.length ? (
+                <div className="scrollable space-above">
                 {
                     comments.map((comment: Comment) => (
-                        <CommentComponent key={comment.id} comment={comment} />
+                        <CommentComponent key={comment.id} comment={comment} onCommentDelete={currentUser!.id === comment.user.id ? () => deleteComment(comment.id) : undefined}/>
                     ))
                 }
-                </>
+                </div>
             ) : (
-                <p>Loading comments...</p>
-            )
-        }
+                <></>
+            )}
+        </Load>
         </>
     )
 }

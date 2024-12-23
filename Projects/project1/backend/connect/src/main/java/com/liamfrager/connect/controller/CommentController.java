@@ -62,10 +62,10 @@ public class CommentController {
      */
     @DeleteMapping("/comments/{id}")
     private ResponseEntity<Integer> deleteCommentByID(@PathVariable long id) {
+        System.err.println("DELETING COMMENT");
+        System.err.println(id);
         int deletedRows = commentService.deleteCommentByID(id);
-        if (deletedRows > 0)
-            return ResponseEntity.ok(deletedRows);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(deletedRows);
     }
 
     /**

@@ -85,17 +85,17 @@ const EditProfileComponent = (props: {user: User, onClose: (updatedProfile: Upda
             {passwordUpdated && <span className="error rounded">Press save to change your password</span>}
             <button type="submit">Save</button>
             <Modal modalState={pfpModalState}>
-                <div className="rounded bg-white padded">
+                <>
                     <h1>Upload a new profile picture:</h1>
                     <ImageUploader setImage={setUpdatedPfp} maxSize={5 * 1024 * 1024}/>
                     <div className="align-center">
                         <button type="button" onClick={handlePfp}>Update picture</button>
                         <button type="button" onClick={hidePfpModal}>Cancel</button>
                     </div>
-                </div>
+                </>
             </Modal>
             <Modal modalState={passwordModalState}>
-                <div className="rounded bg-white padded">
+                <>
                     <h1>Change password</h1>
                     <input type="password" name="password" placeholder="New Password" minLength={8} value={newPassword} onChange={(e) => setNewPassword(e.target.value)}/><br/>
                     <input type="password" name="confirmPassword" placeholder="Confirm Password" minLength={8} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)}/><br/>
@@ -104,7 +104,7 @@ const EditProfileComponent = (props: {user: User, onClose: (updatedProfile: Upda
                         <button type="button" onClick={handlePassword}>Change password</button>
                         <button type="button" onClick={hidePasswordModal}>Cancel</button>
                     </div>
-                </div>
+                </>
             </Modal>
         </form>
     )

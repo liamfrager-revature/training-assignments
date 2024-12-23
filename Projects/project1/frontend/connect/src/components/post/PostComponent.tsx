@@ -4,9 +4,17 @@ import axiosUtil from "../../utils/AxiosUtil";
 import CommentsDisplayComponent from "../comment/CommentsDisplayComponent";
 import PostDisplayComponent from "./PostDisplayComponent";
 import ErrorComponent from "../error/ErrorComponent";
+import { useSearchParams } from "react-router-dom";
 
 const PostComponent = (props: {postID: string}) => {
     const [post, setPost] = useState<Post>();
+    const [searchParams] = useSearchParams();
+
+    useEffect(() => {
+        if (searchParams.get("comment")) {
+            document.getElementById("add-comment")?.focus();
+        }
+    });
 
     useEffect(() => {
         axiosUtil.get(`/posts/${props.postID}`).then(res => {

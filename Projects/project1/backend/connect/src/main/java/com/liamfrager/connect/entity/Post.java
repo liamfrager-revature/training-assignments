@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Formula;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -38,10 +40,12 @@ public class Post {
 
     @JsonIgnore
     @OneToMany(mappedBy="post", cascade=CascadeType.ALL, orphanRemoval=true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Comment> comments;
 
     @JsonIgnore
     @OneToMany(mappedBy="post", cascade=CascadeType.ALL, orphanRemoval=true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Like> likes;
 
     @Transient

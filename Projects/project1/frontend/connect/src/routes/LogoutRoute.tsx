@@ -11,8 +11,8 @@ const LogoutRoute = () => {
             sessionStorage.removeItem('currentUser');
             sessionStorage.removeItem('token');
             setCurrentUser(null);
-            navigate('/login');
         }
+        navigate('/login');
     });
     return (
         <></>

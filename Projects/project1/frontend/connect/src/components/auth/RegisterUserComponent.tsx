@@ -51,7 +51,7 @@ const RegisterUserComponent = () => {
     return (
         <>
         {errorRegistering && <ErrorComponent message={errorMessage}/>}
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} className="auth-form">
             <input ref={inputRef} type="text" name="username" placeholder="username" onChange={(e) => setUsername(e.target.value)}/><br/>
             <input type="email" name="email" placeholder="email" onChange={(e) => setEmail(e.target.value)}/><br/>
             <input type="password" name="password" placeholder="password" minLength={8} onChange={(e) => setPassword(e.target.value)}/><br/>

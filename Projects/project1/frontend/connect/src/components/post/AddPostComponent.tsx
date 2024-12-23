@@ -16,12 +16,13 @@ const AddPostComponent = (props: {onPostAdd: (addedPost: Post) => void}) => {
             attachment: newAttachment
         }
         axiosUtil.post('/posts', JSON.stringify(newPost)).then(res => {
+            setNewContent("");
             props.onPostAdd(res.data);
         })
     }
 
     return (
-        <form onSubmit={formSubmitHandler} className="justify-between">
+        <form onSubmit={formSubmitHandler} className="justify-between add-post">
             <input type="text" name="post" placeholder="Add Post" onChange={(e) => setNewContent(e.target.value)} value={newContent}/>
             <span className="justify-between">
                 <ImageUploader setImage={setNewAttachment}/>

@@ -56,7 +56,10 @@ public class PostService {
             throw new InvalidPostContentException(post.getContent());
         User user = userRepository.findById(post.getUser().getId()).orElseThrow(() -> new InvalidUserException(post.getUser().getId()));
         post.setUser(user);
-        return postRepository.save(post);
+        Post newPost = postRepository.save(post);
+        newPost.setLikeCount(0L);
+        newPost.setCommentCount(0L);
+        return newPost;
     }
     
     /**

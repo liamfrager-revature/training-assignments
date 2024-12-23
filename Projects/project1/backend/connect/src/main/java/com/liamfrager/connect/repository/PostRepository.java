@@ -19,10 +19,11 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     /**
      * Get all posts posted by the user with the given ID.
-     * @param postedBy The user whose posts will be returned.
+     * @param userID The user whose posts will be returned.
      * @return A list of <code>Post</code>s posted by the given user.
      */
-    public List<Post> findByUserId(long id);
+    @Query("SELECT p FROM Post p WHERE p.user.id = :userID ORDER BY p.timestamp DESC")
+    public List<Post> findByUserId(@Param("userID") long userID);
     
     /**
      * Delete a post with the given ID.
@@ -45,7 +46,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("UPDATE Post SET content = :postContent WHERE id = :postID")
     public int updateContentById(@Param("postID") long postID, @Param("postContent") String postContent);
 
-    @Query("SELECT new com.liamfrager.connect.entity.Post(p, l.id) FROM Post p LEFT JOIN Like l ON p.id = l.post.id AND l.user.id = :currentUserID WHERE p.user.id != :currentUserID ORDER BY p.timestamp DESC")
+    @Query("SELECT new com.liamfrager.connect.entity.Post(p, l.id) FROM Post p LEFT JOIN Like l ON p.id = l.post.id AND l.user.id = :currentUserID WHERE p.user.id IN (SELECT f.followee.id FROM Follow f WHERE f.follower.id = :currentUserID) ORDER BY p.timestamp DESC")
     List<Post> findAll(@Param("currentUserID") Long currentUserID);
 
     @Query("SELECT p FROM Post p WHERE LOWER(p.content) LIKE LOWER(CONCAT('%', :query, '%')) AND p.user.id != :currentUserID")

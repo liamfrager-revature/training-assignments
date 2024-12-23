@@ -20,12 +20,12 @@ const ProtectedRoute = () =>{
         return (
             <>
                 { currentUser &&
-                <>
+                <div id="page-layout">
                 <Navbar/>
                 <PageContent>
                     <Outlet/>
                 </PageContent>
-                </>
+                </div>
                 }
             </>
         )

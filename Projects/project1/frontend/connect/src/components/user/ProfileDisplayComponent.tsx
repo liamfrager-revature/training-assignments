@@ -8,6 +8,7 @@ import AddPostComponent from "../post/AddPostComponent";
 import EditProfileComponent from "./profile-edit/EditProfileComponent";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
+import Load from "../ui/Load";
 
 const ProfileDisplayComponent = (props: {userID: number}) => {
     const [user, setUser] = useState<User>();
@@ -34,29 +35,22 @@ const ProfileDisplayComponent = (props: {userID: number}) => {
     }
 
     return (
-        <>
-        { user ? (
-            <>
+        <Load loading={user}>
             { editingProfile ? (
-                <EditProfileComponent user={user} onClose={profileEdited}/>
+                <EditProfileComponent user={user!} onClose={profileEdited}/>
             ) : (
                 <>
                     <div className="align-center">
                         <h1 className="inline space-right align-center">Profile</h1>
                         { currentUser!.id === props.userID && <button onClick={() => setEditingProfile(true)}><FontAwesomeIcon icon={faGear} className="space-right"/>Edit Profile</button>}
                     </div>
-                    <UserDisplayComponent user={user}/>
+                    <UserDisplayComponent user={user!} showFollowCount={true}/>
                     { currentUser!.id === props.userID && <AddPostComponent onPostAdd={postAdded}/>}
                     <h2>Posts</h2>
                     <PostsDisplayComponent posts={posts}/>
                 </>
             )}
-            </>
-        ) : (
-            <span>Loading user...</span>
-        )
-        }
-        </>
+        </Load>
     )
 }
 
