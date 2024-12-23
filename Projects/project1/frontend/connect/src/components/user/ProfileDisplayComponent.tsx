@@ -41,7 +41,10 @@ const ProfileDisplayComponent = (props: {userID: number}) => {
                 <EditProfileComponent user={user} onClose={profileEdited}/>
             ) : (
                 <>
-                    { currentUser!.id === props.userID && <button onClick={() => setEditingProfile(true)}><FontAwesomeIcon icon={faGear} className="space-right"/>Edit Profile</button>}
+                    <div className="align-center">
+                        <h1 className="inline space-right align-center">Profile</h1>
+                        { currentUser!.id === props.userID && <button onClick={() => setEditingProfile(true)}><FontAwesomeIcon icon={faGear} className="space-right"/>Edit Profile</button>}
+                    </div>
                     <UserDisplayComponent user={user}/>
                     { currentUser!.id === props.userID && <AddPostComponent onPostAdd={postAdded}/>}
                     <h2>Posts</h2>

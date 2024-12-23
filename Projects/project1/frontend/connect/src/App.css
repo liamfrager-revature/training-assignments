@@ -11,6 +11,14 @@
     --error-transparent: #ff000033;
 };
 
+* {
+    font-family: "Inter", sans-serif;
+}
+
+h1, h2 {
+    font-family: "Russo One";
+}
+
 .border {
     border: 1px solid var(--gray);
 }
@@ -116,6 +124,14 @@
 .justify-between {
     display: flex;
     justify-content: space-between;
+}
+
+.inline {
+    display: inline;
+}
+
+.logo {
+    font-family: "Monoton";
 }
 
 .logo, .user-display {

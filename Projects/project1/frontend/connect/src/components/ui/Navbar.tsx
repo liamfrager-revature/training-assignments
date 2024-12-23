@@ -19,7 +19,7 @@ const Navbar = () => {
         <div id="navbar">
             <div className="logo align-center">
                 {/* <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo"/> */}
-                <h1 className="pointer">CONNECT</h1>
+                <h1 className="logo pointer">CONNECT</h1>
             </div>
             <ul>
                 {
