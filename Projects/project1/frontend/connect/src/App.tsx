@@ -9,6 +9,7 @@ import FollowingRoute from './routes/FollowingRoute';
 import ProtectedRoute from './utils/ProtectedRoute';
 import { UserContextProvider } from './utils/Context';
 import LogoutRoute from './routes/LogoutRoute';
+import SearchRoute from './routes/SearchRoute';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
               <Route path="/profile/:userID" element={<ProfileRoute />} />
               <Route path="/post/:postID" element={<PostRoute />} />
               <Route path="/following" element={<FollowingRoute/>} />
+              <Route path="/search" element={<SearchRoute/>} />
             </Route>
             <Route path="/register" element={<RegisterRoute />} />
             <Route path="/login" element={<LoginRoute />} />

@@ -47,4 +47,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT new com.liamfrager.connect.entity.Post(p, l.id) FROM Post p LEFT JOIN Like l ON p.id = l.post.id AND l.user.id = :currentUserID WHERE p.user.id != :currentUserID ORDER BY p.timestamp DESC")
     List<Post> findAll(@Param("currentUserID") Long currentUserID);
+
+    @Query("SELECT p FROM Post p WHERE LOWER(p.content) LIKE LOWER(CONCAT('%', :query, '%')) AND p.user.id != :currentUserID")
+    List<Post> searchByContentExcludingUser(@Param("query") String query, @Param("currentUserID") Long currentUserID);
 }

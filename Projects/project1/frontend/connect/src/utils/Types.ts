@@ -60,3 +60,8 @@ export interface AuthenticateUser {
   email?: string,
   password: string,
 }
+
+export interface SearchResults {
+  users: User[],
+  posts: Post[],
+}

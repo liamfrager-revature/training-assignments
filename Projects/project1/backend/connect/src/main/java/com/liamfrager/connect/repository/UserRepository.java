@@ -1,5 +1,6 @@
 package com.liamfrager.connect.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -63,4 +64,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
            "u.pfp = COALESCE(:pfp, u.pfp) " +
            "WHERE u.id = :userID")
     int updateUserDetails(@Param("userID") long userID, @Param("username") String username, @Param("email") String email, @Param("password") String password, @Param("pfp") byte[] pfp);
+
+    @Query("SELECT u FROM User u WHERE LOWER(u.username) LIKE LOWER(CONCAT('%', :query, '%')) AND u.id != :currentUserID")
+    List<User> searchByUsernameExcludingUser(@Param("query") String query, @Param("currentUserID") Long currentUserID);
 }

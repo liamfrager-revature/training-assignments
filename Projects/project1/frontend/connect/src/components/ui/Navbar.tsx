@@ -1,5 +1,5 @@
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faHouse, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faSearch, faUser, faUsers } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 
@@ -13,12 +13,12 @@ const Navbar = () => {
         {text: "Home", icon: faHouse, link: '/home'},
         {text: "Profile", icon: faUser, link: '/profile'},
         {text: "Following", icon: faUsers, link: '/following'},
+        {text: "Search", icon: faSearch, link: '/search'}
     ]
 
     return (
         <div id="navbar">
             <div className="logo align-center">
-                {/* <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo"/> */}
                 <h1 className="logo pointer">CONNECT</h1>
             </div>
             <ul>
