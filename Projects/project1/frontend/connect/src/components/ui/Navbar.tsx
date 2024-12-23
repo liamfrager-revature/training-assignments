@@ -18,15 +18,17 @@ const Navbar = () => {
     return (
         <div id="navbar">
             <div className="logo align-center">
-                <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo"/>
+                {/* <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo"/> */}
                 <h1 className="pointer">CONNECT</h1>
             </div>
-            {/* TODO: consistent icon, word spacing */}
             <ul>
                 {
                 navItems.map((navItem, index) => (
                     <Link to={navItem.link} key={index} className="nav-link">
-                        <li className="hover"><FontAwesomeIcon icon={navItem.icon} className="space-right" />{navItem.text}</li>
+                        <li className="hover nav-link">
+                            <FontAwesomeIcon icon={navItem.icon} className="nav-icon space-right" />
+                            <span>{navItem.text}</span>
+                        </li>
                     </Link>
                 ))
                 }

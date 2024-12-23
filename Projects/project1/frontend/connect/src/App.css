@@ -63,9 +63,15 @@
 .nav-link {
     text-decoration: none;
     color: inherit;
+    margin-bottom: .5em;
 }
 .nav-link:hover {
     color: var(--d2); /* Define your custom color on hover */
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
 }
 
 #page-content {
