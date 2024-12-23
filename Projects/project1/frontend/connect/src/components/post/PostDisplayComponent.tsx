@@ -5,6 +5,7 @@ import Metadata from "../ui/Metadata";
 import { useNavigate } from "react-router-dom";
 import UsernameComponent from "../user/UsernameComponent";
 import ImageDisplay from "../ui/ImageDisplay";
+import PfpComponent from "../user/PfpComponent";
 
 const PostDisplayComponent = (props: {post: Post}) => {
     const navigate = useNavigate();
@@ -33,21 +34,23 @@ const PostDisplayComponent = (props: {post: Post}) => {
 
     return (
         <div className="shadow-box hover" onClick={() => navigate(`/post/${post.id}`)}>
-            <div>
-                {/* TODO: Fix image display width */}
+            <div className="post-display">
                 {post.attachment && <ImageDisplay src={post.attachment}/>}
-                <div>
-                    <UsernameComponent user={props.post.user} />
-                    <span>{post.content}</span>
-                    <br/>
-                    <Metadata
-                        timestamp={post.timestamp}
-                        commentCount={post.commentCount}
-                        onComment={onPostComment}
-                        likeCount={postLikes}
-                        isLikedByCurrentUser={post.currentUserLikeID != null}
-                        onLike={onPostLike}
-                    />
+                <div className="align-top small-pfp">
+                    <PfpComponent pfp={post.user.pfp} />
+                    <div>
+                        <UsernameComponent user={props.post.user} />
+                        <span>{post.content}</span>
+                        <br/>
+                        <Metadata
+                            timestamp={post.timestamp}
+                            commentCount={post.commentCount}
+                            onComment={onPostComment}
+                            likeCount={postLikes}
+                            isLikedByCurrentUser={post.currentUserLikeID != null}
+                            onLike={onPostLike}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

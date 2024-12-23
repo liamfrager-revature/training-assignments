@@ -1,7 +1,9 @@
 const PageContent = (props: {children: any}) => {
     return (
         <div id="page-content">
-            {props.children}
+            <div className="content">
+                {props.children}
+            </div>
         </div>
     )
 }

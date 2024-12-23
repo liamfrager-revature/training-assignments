@@ -32,7 +32,7 @@
 }
 
 .metadata {
-    color: var(--gray);
+    color: var(--dg);
     display: block;
     margin-top: .5em;
 }
@@ -77,6 +77,30 @@
 #page-content {
     margin-left: calc(300px + 2em);
     padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.content {
+    min-width: 50%;
+    max-width: 50em;
+}
+
+.post-display > img {
+    max-width: 100%;
+}
+
+.small-pfp {
+    img {
+        max-width: 3em;
+        margin-right: 1em;
+    }
+}
+
+.align-top {
+    display: flex;
+    align-items: start;
 }
 
 .align-center {
