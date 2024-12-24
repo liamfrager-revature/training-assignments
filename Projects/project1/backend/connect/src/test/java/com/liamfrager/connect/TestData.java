@@ -1,10 +1,12 @@
 package com.liamfrager.connect;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.liamfrager.connect.entity.Comment;
 import com.liamfrager.connect.entity.Like;
 import com.liamfrager.connect.entity.Post;
+import com.liamfrager.connect.entity.SearchResults;
 import com.liamfrager.connect.entity.User;
 
 public class TestData {
@@ -63,6 +65,7 @@ public class TestData {
             x.setUser(post.getUser());
             x.setContent("Content");
             x.setTimestamp(LocalDateTime.now());
+            x.setPost(post);
         return x;
     }
 
@@ -72,5 +75,9 @@ public class TestData {
 
     public static Like generateNewCommentLike(User user, Comment comment) {
         return new Like(user, comment);
+    }
+
+    public static SearchResults generateSearchResults() {
+        return new SearchResults(List.of(generateUser()), List.of(generatePost()));
     }
 }
