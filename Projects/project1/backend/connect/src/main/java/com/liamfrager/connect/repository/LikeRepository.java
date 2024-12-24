@@ -12,11 +12,7 @@ import com.liamfrager.connect.entity.Like;
  * A JPA repository for likes.
  */
 public interface LikeRepository extends JpaRepository<Like, Long> {
-    /**
-     * Delete a like with the given ID.
-     * @param likeID The ID of the like to delete.
-     * @return The number of entries updated.
-     */
+    
     @Modifying
     @Transactional
     @Query("DELETE FROM Like WHERE id = :likeID")

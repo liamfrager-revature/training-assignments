@@ -31,15 +31,8 @@ public class CommentController {
         this.postRepository = postRepository;
     }
 
-    // --------------
-    // ROUTE HANDLERS
-    // --------------
-
     /**
      * Handler for the <code>/posts/{id}/comments</code> <code>POST</code> endpoint.
-     * @param comment The body of the request containing the comment data to be added.
-     * @throws InvalidUserException 
-     * @throws InvalidCommentContentException 
      */
     @PostMapping("/posts/{id}/comments")
     private ResponseEntity<Comment> postComment(@RequestHeader("Authorization") String token, @RequestBody Comment comment, @PathVariable long id) throws InvalidCommentContentException, InvalidUserException, InvalidPostIDException {
@@ -57,32 +50,21 @@ public class CommentController {
     }
 
     /**
-     * Handler for the <code>/posts/{id}</code> <code>DELETE</code> endpoint.
-     * @param id The ID of the comment to be deleted.
+     * Handler for the <code>/comments/{id}</code> <code>DELETE</code> endpoint.
      */
     @DeleteMapping("/comments/{id}")
     private ResponseEntity<Integer> deleteCommentByID(@PathVariable long id) {
-        System.err.println("DELETING COMMENT");
-        System.err.println(id);
         int deletedRows = commentService.deleteCommentByID(id);
         return ResponseEntity.ok(deletedRows);
     }
 
     /**
-     * Handler for the <code>/posts/{id}</code> <code>PATCH</code> endpoint.
-     * @param id The ID of the comment to be updated.
-     * @param comment The body of the request containing the comment data to be updated.
-     * @throws InvalidCommentIDException 
-     * @throws InvalidCommentContentException 
+     * Handler for the <code>/comments/{id}</code> <code>Put</code> endpoint.
      */
-    @PatchMapping("/comments/{id}")
-    private ResponseEntity<Integer> patchCommentByID(@PathVariable long id, @RequestBody Comment comment) throws InvalidCommentContentException, InvalidCommentIDException {
-        return ResponseEntity.ok(commentService.patchCommentByID(id, comment));
+    @PutMapping("/comments/{id}")
+    private ResponseEntity<Integer> updateCommentByID(@PathVariable long id, @RequestBody Comment comment) throws InvalidCommentContentException, InvalidCommentIDException {
+        return ResponseEntity.ok(commentService.updateCommentByID(id, comment));
     }
-
-    // ------------------
-    // EXCEPTION HANDLERS
-    // ------------------
 
     /**
      * <code>400 Bad Request</code>.

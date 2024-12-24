@@ -33,12 +33,6 @@ public class LikeService {
         this.commentRepository = commentRepository;
     }
 
-    /**
-     * Mark a post as liked by a user.
-     * @param like The like to add.
-     * @return The new like.
-     * @throws InvalidLikeException
-     */
     public Like postLike(Map<String, Long> likeRequest, User currentUser) throws InvalidLikeException, InvalidPostIDException, InvalidCommentIDException {
         Like like = new Like();
         Long postID = likeRequest.get("postID");
@@ -59,11 +53,6 @@ public class LikeService {
         return likeRepository.save(like);
     }
 
-    /**
-     * Mark a post as unliked by a user.
-     * @param likeID The ID of the like to remove.
-     * @throws InvalidLikeException
-     */
     public int deleteLike(long likeID, long userID) throws InvalidLikeException, UnauthorizedUserException {
         Like like = likeRepository.findById(likeID)
             .orElseThrow(() -> new InvalidLikeException(likeID));

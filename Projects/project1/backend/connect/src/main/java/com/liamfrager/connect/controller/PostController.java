@@ -28,15 +28,8 @@ public class PostController {
         this.postService = postService;
     }
 
-    // --------------
-    // ROUTE HANDLERS
-    // --------------
-
     /**
      * Handler for the <code>/posts</code> <code>POST</code> endpoint.
-     * @param post The body of the request containing the post data to be added.
-     * @throws InvalidUserException 
-     * @throws InvalidPostContentException 
      */
     @PostMapping("/posts")
     private ResponseEntity<Post> postPost(@RequestHeader("Authorization") String token, @RequestBody Post post) throws InvalidPostContentException, InvalidUserException {
@@ -68,7 +61,6 @@ public class PostController {
 
     /**
      * Handler for the <code>/posts/{id}</code> <code>DELETE</code> endpoint.
-     * @param id The ID of the post to be deleted.
      */
     @DeleteMapping("/posts/{id}")
     private ResponseEntity<Integer> deletePostByID(@PathVariable long id) {
@@ -79,20 +71,12 @@ public class PostController {
     }
 
     /**
-     * Handler for the <code>/posts/{id}</code> <code>PATCH</code> endpoint.
-     * @param id The ID of the post to be updated.
-     * @param post The body of the request containing the post data to be updated.
-     * @throws InvalidPostIDException 
-     * @throws InvalidPostContentException 
+     * Handler for the <code>/posts/{id}</code> <code>PUT</code> endpoint.
      */
-    @PatchMapping("/posts/{id}")
-    private ResponseEntity<Integer> patchPostByID(@PathVariable long id, @RequestBody Post post) throws InvalidPostContentException, InvalidPostIDException {
-        return ResponseEntity.ok(postService.patchPostByID(id, post));
+    @PutMapping("/posts/{id}")
+    private ResponseEntity<Integer> updatePostByID(@PathVariable long id, @RequestBody Post post) throws InvalidPostContentException, InvalidPostIDException {
+        return ResponseEntity.ok(postService.updatePostByID(id, post));
     }
-
-    // ------------------
-    // EXCEPTION HANDLERS
-    // ------------------
 
     /**
      * <code>400 Bad Request</code>.

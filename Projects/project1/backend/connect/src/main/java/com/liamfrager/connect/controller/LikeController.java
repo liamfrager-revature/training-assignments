@@ -23,21 +23,14 @@ public class LikeController {
     private LikeService likeService;
 
     /**
-     * Constructor for the post controller.
+     * Constructor for the like controller.
      */
     public LikeController(LikeService likeService){
         this.likeService = likeService;
     }
 
-    // --------------
-    // ROUTE HANDLERS
-    // --------------
-
     /**
      * Handler for the <code>/likes</code> <code>POST</code> endpoint.
-     * @param post The body of the request containing the like data to be added.
-     * @throws InvalidUserException 
-     * @throws InvalidLikeContentException 
      */
     @PostMapping("/likes")
     private ResponseEntity<Long> postLike(@RequestHeader("Authorization") String token, @RequestBody Map<String, Long> likeRequest) throws InvalidLikeException, InvalidPostIDException, InvalidCommentIDException, InvalidUserException {
@@ -45,8 +38,7 @@ public class LikeController {
     }
 
      /**
-     * Handler for the <code>/likes/{postID}/{userID</code> <code>DELETE</code> endpoint.
-     * @param id The ID of the like to be deleted.
+     * Handler for the <code>/likes/{id}</code> <code>DELETE</code> endpoint.
      */
     @DeleteMapping("/likes/{id}")
     private ResponseEntity<Integer> deleteLike(@RequestHeader("Authorization") String token, @PathVariable long id) throws InvalidLikeException, UnauthorizedUserException {
@@ -55,10 +47,6 @@ public class LikeController {
             return ResponseEntity.ok(deletedRows);
         return ResponseEntity.ok().build();
     }
-
-    // ------------------
-    // EXCEPTION HANDLERS
-    // ------------------
 
     /**
      * <code>400 Bad Request</code>.

@@ -11,7 +11,7 @@ import com.liamfrager.connect.exception.*;
 import com.liamfrager.connect.service.AuthService;
 
 /**
- * The REST controller that exposes the user endpoints for the API.
+ * The REST controller that exposes the auth endpoints for the API.
  */
 @CrossOrigin(origins="http://localhost:3000")
 @RestController
@@ -19,23 +19,17 @@ public class AuthController {
     private AuthService authService;
 
     /**
-     * Constructor for the user controller.
+     * Constructor for the auth controller.
      */
     public AuthController(AuthService authService){
         this.authService = authService;
     }
 
-    // --------------
-    // ROUTE HANDLERS
-    // --------------
-
     /**
      * Handler for the <code>/auth/register</code> <code>POST</code> endpoint.
-     * @param user The body of the request containing the user to be registered.
      */
     @PostMapping("/auth/register")
     private ResponseEntity<User> register(@RequestBody User user) throws InvalidUsernameException, InvalidPasswordException, UserAlreadyExistsException {
-        System.err.println(user);
         User registeredUser = authService.register(user);
         String token = AuthUtil.generateToken(registeredUser.getId());
         HttpHeaders headers = new HttpHeaders();
@@ -45,7 +39,6 @@ public class AuthController {
 
     /**
      * Handler for the <code>/auth/login</code> <code>POST</code> endpoint.
-     * @param user The body of the request containing the user to be logged in.
      */
     @PostMapping("/auth/login")
     private ResponseEntity<User> login(@RequestBody User user) throws InvalidLoginException {
@@ -63,11 +56,6 @@ public class AuthController {
     private ResponseEntity<Boolean> isValidToken(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(AuthUtil.isValidToken(token));
     }
-
-
-    // ------------------
-    // EXCEPTION HANDLERS
-    // ------------------
 
     /**
      * <code>401 Unauthorized</code>.

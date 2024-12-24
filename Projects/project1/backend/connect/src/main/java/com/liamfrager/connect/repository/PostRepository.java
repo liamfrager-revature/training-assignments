@@ -17,30 +17,14 @@ import com.liamfrager.connect.entity.Post;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    /**
-     * Get all posts posted by the user with the given ID.
-     * @param userID The user whose posts will be returned.
-     * @return A list of <code>Post</code>s posted by the given user.
-     */
     @Query("SELECT p FROM Post p WHERE p.user.id = :userID ORDER BY p.timestamp DESC")
     public List<Post> findByUserId(@Param("userID") long userID);
     
-    /**
-     * Delete a post with the given ID.
-     * @param postID The ID of the post to delete.
-     * @return The number of entries updated.
-     */
     @Modifying
     @Transactional
     @Query("DELETE FROM Post WHERE id = :postID")
     public int deletePostById(@Param("postID") long postID);
 
-    /**
-     * Update the post text of the post with the given ID.
-     * @param postID The ID of the post to update.
-     * @param postContent The new content to update the post with.
-     * @return The number of entries updated.
-     */
     @Modifying
     @Transactional
     @Query("UPDATE Post SET content = :postContent WHERE id = :postID")

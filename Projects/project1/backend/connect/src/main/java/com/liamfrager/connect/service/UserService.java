@@ -28,34 +28,16 @@ public class UserService {
         this.followRepository = followRepository;
     }
 
-    /**
-     * Get data for the given user.
-     * @param userID The ID of the user whose data to return.
-     * @return The friends of the user.
-     * @throws InvalidUserException User with id <code>userID</code> does not exist.
-     */
     public User getUser(long userID) throws InvalidUserException {
         User user = userRepository.findById(userID).orElseThrow(() -> new InvalidUserException(userID));
         user.setPassword(null);
         return user;
     }
 
-    /**
-     * Get the friends of a given user.
-     * @param userID The ID of the user whose friends to return.
-     * @return The friends of the user.
-     * @throws InvalidUserException User with id <code>userID</code> does not exist.
-     */
     public List<User> getAllFollowingByUserID(long userID) throws InvalidUserException {
         return followRepository.findFollowing(userID).orElseThrow(() -> new InvalidUserException(userID));
     }
 
-    /**
-     * Get the followers of a given user.
-     * @param userID The ID of the user whose followers to return.
-     * @return The followers of the user.
-     * @throws InvalidUserException User with id <code>userID</code> does not exist.
-     */
     public List<User> getAllFollowersByUserID(long userID) throws InvalidUserException {
         return followRepository.findFollowers(userID).orElseThrow(() -> new InvalidUserException(userID));
     }
@@ -92,13 +74,6 @@ public class UserService {
 
     public Boolean isFollowing(long followerUserID, long followeeUserID) {
         return followRepository.existsByFollowerAndFollowee(followerUserID, followeeUserID);
-    }
-
-    public byte[] setPfp(long currentUserID, byte[] pfp) throws Exception {
-        int updatedRows = userRepository.setPfpByUserID(currentUserID, pfp);
-        if (updatedRows > 0)
-            return pfp;
-        throw new Exception();
     }
 
     public int updateUser(long currentUserID, User updatedUser) throws UserAlreadyExistsException {

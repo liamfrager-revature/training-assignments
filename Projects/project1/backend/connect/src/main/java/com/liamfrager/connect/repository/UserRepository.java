@@ -19,41 +19,13 @@ import jakarta.transaction.Transactional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    /**
-     * Get the user with the given username.
-     * @param username The username of the user to return.
-     * @return An <code>Optional</code> of the user's user information.
-     */
     public Optional<User> findByUsername(String username);
 
-    /**
-     * Get the user with the given email.
-     * @param email The email of the user to return.
-     * @return An <code>Optional</code> of the user's user information.
-     */
     public Optional<User> findByEmail(String email);
 
-    /**
-     * Get the user with the given username and password.
-     * @param username The username of the user to return.
-     * @param password The password of the user to return.
-     * @return An <code>Optional</code> of the user's user information.
-     */
     public Optional<User> findByUsernameAndPassword(String username, String password);
 
-    /**
-     * Get the user with the given email and password.
-     * @param email The email of the user to return.
-     * @param password The password of the user to return.
-     * @return An <code>Optional</code> of the user's user information.
-     */
     public Optional<User> findByEmailAndPassword(String email, String password);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE User u SET u.pfp = :pfp WHERE u.id = :userID")
-    public int setPfpByUserID(@Param("userID") long userID, @Param("pfp") byte[] pfp);
-
 
     @Modifying
     @Transactional

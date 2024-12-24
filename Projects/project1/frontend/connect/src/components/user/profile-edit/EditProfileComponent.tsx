@@ -40,7 +40,6 @@ const EditProfileComponent = (props: {user: User, onClose: (updatedProfile: Upda
     const handlePassword = () => {
         if (newPassword === confirmPassword) {
             setPassword(newPassword);
-            console.log('new password')
             setPasswordUpdated(true);
             hidePasswordModal();
         }
@@ -56,8 +55,6 @@ const EditProfileComponent = (props: {user: User, onClose: (updatedProfile: Upda
             if (email) updatedUserDetails.email = email;
             if (password) updatedUserDetails.password = password;
             if (pfp) updatedUserDetails.pfp = pfp;
-
-            console.log('updated user details', updatedUserDetails);
 
             axiosUtil.put('/users', updatedUserDetails).then(res => {
                 props.onClose(updatedUserDetails);

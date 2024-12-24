@@ -13,14 +13,10 @@ import com.liamfrager.connect.entity.Follow;
 import com.liamfrager.connect.entity.User;
 
 /**
- * A JPA repository for likes.
+ * A JPA repository for follows.
  */
 public interface FollowRepository extends JpaRepository<Follow, Long> {
-    /**
-     * Delete a follow with the given ID.
-     * @param followID The ID of the follow to delete.
-     * @return The number of entries updated.
-     */
+
     @Modifying
     @Transactional
     @Query("DELETE FROM Follow f WHERE f.follower.id = :followerID AND f.followee.id = :followeeID")

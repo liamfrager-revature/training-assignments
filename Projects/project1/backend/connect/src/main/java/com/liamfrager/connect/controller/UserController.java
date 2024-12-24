@@ -30,13 +30,8 @@ public class UserController {
         this.userService = userService;
     }
 
-    // --------------
-    // ROUTE HANDLERS
-    // --------------
-
     /**
-     * Handler for the <code>/login</code> <code>GET</code> endpoint.
-     * @param userID The ID of the user whose data will be returned.
+     * Handler for the <code>/users/{userID}</code> <code>GET</code> endpoint.
      */
     @GetMapping("/users/{userID}")
     private ResponseEntity<User> getUser(@PathVariable long userID) throws InvalidUserException {
@@ -45,7 +40,6 @@ public class UserController {
 
     /**
      * Handler for the <code>/users/{userID}/posts</code> <code>GET</code> endpoint.
-     * @param userID The ID of the user of whose messsages will be returned.
      */
     @GetMapping("/users/{userID}/posts")
     private ResponseEntity<List<Post>> getAllPostsByUserID(@PathVariable long userID) throws InvalidUserException {
@@ -53,8 +47,7 @@ public class UserController {
     }
 
     /**
-     * Handler for the <code>/users/{userID}/friends</code> <code>GET</code> endpoint.
-     * @param userID The ID of the user of whose friends will be returned.
+     * Handler for the <code>/users/{userID}/following</code> <code>GET</code> endpoint.
      */
     @GetMapping("/users/{userID}/following")
     private ResponseEntity<List<User>> getAllFollowingByUserID(@PathVariable long userID) throws InvalidUserException {
@@ -63,7 +56,6 @@ public class UserController {
 
     /**
      * Handler for the <code>/users/{userID}/followers</code> <code>GET</code> endpoint.
-     * @param userID The ID of the user of whose followers will be returned.
      */
     @GetMapping("/users/{userID}/followers")
     private ResponseEntity<List<User>> getAllFollowersByUserID(@PathVariable long userID) throws InvalidUserException {
@@ -71,8 +63,7 @@ public class UserController {
     }
 
     /**
-     * Handler for the <code>/users/{userID}/followers</code> <code>GET</code> endpoint.
-     * @param userID The ID of the user of whose followers will be returned.
+     * Handler for the <code>/users/{userID}/follow</code> <code>GET</code> endpoint.
      */
     @GetMapping("/users/{userID}/follow")
     private ResponseEntity<Boolean> isFollowing(@RequestHeader("Authorization") String token, @PathVariable long userID) {
@@ -80,8 +71,7 @@ public class UserController {
     }
 
     /**
-     * Handler for the <code>/users/{userID}/followers</code> <code>GET</code> endpoint.
-     * @param userID The ID of the user to follow.
+     * Handler for the <code>/users/{userID}/follow</code> <code>POST</code> endpoint.
      */
     @PostMapping("/users/{userID}/follow")
     private ResponseEntity<Void> followUser(@RequestHeader("Authorization") String token, @PathVariable long userID) throws InvalidUserException, InvalidFollowException {
@@ -90,21 +80,11 @@ public class UserController {
     }
 
     /**
-     * Handler for the <code>/users/{userID}/followers</code> <code>DELETE</code> endpoint.
-     * @param userID The ID of the user to unfollow.
+     * Handler for the <code>/users/{userID}/follow</code> <code>DELETE</code> endpoint.
      */
     @DeleteMapping("/users/{userID}/follow")
     private ResponseEntity<Void> unfollowUser(@RequestHeader("Authorization") String token, @PathVariable long userID) throws InvalidUserException, InvalidFollowException {
         userService.unfollowUser(AuthUtil.extractID(token), userID);
-        return ResponseEntity.ok().build();
-    }
-
-    /**
-     * Handler for the <code>/users/pfp</code> <code>PUT</code> endpoint.
-     */
-    @PutMapping("/users/pfp")
-    private ResponseEntity<Void> setPfp(@RequestHeader("Authorization") String token, @RequestBody byte[] pfp) throws Exception {
-        userService.setPfp(AuthUtil.extractID(token), pfp);
         return ResponseEntity.ok().build();
     }
 
@@ -115,10 +95,6 @@ public class UserController {
     private ResponseEntity<Integer> updateUser(@RequestHeader("Authorization") String token, @RequestBody User updatedUser) throws UserAlreadyExistsException {
         return ResponseEntity.ok(userService.updateUser(AuthUtil.extractID(token), updatedUser));
     }
-
-    // ------------------
-    // EXCEPTION HANDLERS
-    // ------------------
 
     /**
      * <code>400 Bad Request</code>.
