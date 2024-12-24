@@ -13,7 +13,9 @@ const ProtectedRoute = () =>{
             navigate("/logout");
         axiosUtil.get("/auth").then(res => {
             if (res.data === false) navigate("/logout");
-        })
+        }).catch(err => {
+            navigate("/logout");
+        });
     }, [currentUser, navigate]);
 
     if (currentUser)
