@@ -4,6 +4,7 @@ public class StackImpl<T> {
 
     private T val;
     private StackImpl<T> next;
+    private int size = 0;
 
     public StackImpl() {}
 
@@ -14,6 +15,7 @@ public class StackImpl<T> {
             newNode.next = this.next;
             this.next = newNode;
             this.val = newVal;
+            this.size++;
         }
     }
 
@@ -30,7 +32,12 @@ public class StackImpl<T> {
             this.val = next.val;
             this.next = this.next.next;
         }
+        if (popVal != null) this.size--;
         return popVal;
+    }
+
+    public int size() {
+        return this.size;
     }
 
     public void print() {

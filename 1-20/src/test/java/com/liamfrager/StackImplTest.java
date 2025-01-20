@@ -13,6 +13,9 @@ public class StackImplTest
     @BeforeEach
     public void beforeEach() {
         this.stack = new StackImpl<Integer>();
+        this.stack.push(1);
+        this.stack.push(2);
+        this.stack.push(3);
     }
     
     @Test
@@ -24,22 +27,22 @@ public class StackImplTest
     @Test
     public void peekTest() {
         assertNull(this.stack.peek());
-        this.stack.push(1);
-        this.stack.push(2);
-        assertEquals(2, stack.peek());
+        assertEquals(3, stack.peek());
         this.stack.pop();
-        assertEquals(1, stack.peek());
+        assertEquals(2, stack.peek());
     }
 
     @Test
     public void popTest() {
-        this.stack.push(1);
-        this.stack.push(2);
-        this.stack.push(3);
         assertEquals(3, this.stack.pop());
         assertEquals(2, this.stack.pop());
         assertEquals(1, this.stack.pop());
         assertNull(this.stack.pop());
+    }
+
+    @Test
+    public void sizeTest() {
+        assertEquals(3, this.stack.size());
     }
 
 }
