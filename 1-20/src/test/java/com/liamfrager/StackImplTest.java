@@ -1,7 +1,5 @@
 import org.junit.jupiter.api.*;
 
-import StackImplementation.StackImpl;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 

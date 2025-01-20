@@ -1,5 +1,3 @@
-import StackImplementation.StackImpl;
-
 public class App {
     public static void main(String[] args) {
         StackImpl<Integer> stack = new StackImpl<Integer>();
