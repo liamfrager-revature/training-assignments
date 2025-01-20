@@ -26,10 +26,13 @@ public class StackImplTest
 
     @Test
     public void peekTest() {
-        assertNull(this.stack.peek());
         assertEquals(3, stack.peek());
         this.stack.pop();
         assertEquals(2, stack.peek());
+        this.stack.pop();
+        assertEquals(1, stack.peek());
+        this.stack.pop();
+        assertNull(stack.peek());
     }
 
     @Test
@@ -43,6 +46,13 @@ public class StackImplTest
     @Test
     public void sizeTest() {
         assertEquals(3, this.stack.size());
+    }
+
+    @Test
+    public void removeTest() {
+        assertEquals(2, this.stack.remove(1));
+        assertEquals(3, this.stack.peek());
+        assertEquals(2, this.stack.size());
     }
 
 }

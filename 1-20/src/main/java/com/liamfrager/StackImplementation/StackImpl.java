@@ -36,6 +36,24 @@ public class StackImpl<T> {
         return popVal;
     }
 
+    public T remove(int index) {
+        if (index >= this.size || index < 0) {
+            return null;
+        }
+        if (index == 0) {
+            return this.pop();
+        } else {
+            StackImpl<T> nodeAtIndex = this.next;
+            int i = 1;
+            while (i < index) {
+                nodeAtIndex = nodeAtIndex.next;
+                i++;
+            }
+            this.size--;
+            return nodeAtIndex.pop();
+        }
+    }
+
     public int size() {
         return this.size;
     }
