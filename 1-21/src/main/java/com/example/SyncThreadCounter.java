@@ -13,6 +13,7 @@ public class SyncThreadCounter {
                 return count;
             }
         }
+        public SynchronizedCounter sCounter = new SynchronizedCounter();
 
         class UnsynchronizedCounter {
             private int count = 0;
@@ -25,12 +26,10 @@ public class SyncThreadCounter {
                 return count;
             }
         }
+        public UnsynchronizedCounter uCounter = new UnsynchronizedCounter();
 
         public void run() {
             System.out.println("// COUNTING TO 1000, TWICE //");
-
-            SynchronizedCounter sCounter = new SynchronizedCounter();
-            UnsynchronizedCounter uCounter = new UnsynchronizedCounter();
 
             Runnable r1 = () -> {
                 for (int i = 0; i < 1000; i++) {
