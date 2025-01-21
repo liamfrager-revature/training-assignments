@@ -7,5 +7,9 @@ public class App {
         stack.print();
         stack.remove(1);
         stack.print();
+
+
+        new Thread(new KafkaProducerExample()).start();
+        new Thread(new KafkaConsumerExample()).start();
     }
 }
